@@ -1,0 +1,5 @@
+try{
+    project.catkin.tree.generateMessageArtifact(project, 'rss_msgs')
+} catch (NullPointerException e){
+    println("rss_msgs not found in ROS_PACKAGE_PATH")
+}

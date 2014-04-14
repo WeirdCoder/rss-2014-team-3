@@ -1,0 +1,2 @@
+set(lab5_msgs_MESSAGE_FILES "/home/rss-student/rss-2014-team-3/src/lab5_msgs/msg/ColorMsg.msg;/home/rss-student/rss-2014-team-3/src/lab5_msgs/msg/GUIEraseMsg.msg;/home/rss-student/rss-2014-team-3/src/lab5_msgs/msg/GUILineMsg.msg;/home/rss-student/rss-2014-team-3/src/lab5_msgs/msg/GUIPointMsg.msg;/home/rss-student/rss-2014-team-3/src/lab5_msgs/msg/GUISegmentMsg.msg")
+set(lab5_msgs_SERVICE_FILES "")

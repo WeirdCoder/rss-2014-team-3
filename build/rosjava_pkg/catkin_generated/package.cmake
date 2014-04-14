@@ -1,0 +1,7 @@
+set(_CATKIN_CURRENT_PACKAGE "rosjava_pkg")
+set(rosjava_pkg_MAINTAINER "rss-student <rss-student@todo.todo>")
+set(rosjava_pkg_DEPRECATED "")
+set(rosjava_pkg_VERSION "0.1.0")
+set(rosjava_pkg_BUILD_DEPENDS "rosjava_build_tools" "rosjava_bootstrap" "rosjava_msg_pkg")
+set(rosjava_pkg_RUN_DEPENDS )
+set(rosjava_pkg_BUILDTOOL_DEPENDS "catkin")

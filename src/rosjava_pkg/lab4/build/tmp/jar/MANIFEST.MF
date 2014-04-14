@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Export-Package: VisualServo;version="0.1.0";uses:="javax.swing,javax.s
+ wing.event,org.ros.namespace,org.ros.node,org.ros.node.topic,rss_msgs
+ ,sensor_msgs"
+Bundle-Version: 0.1.0
+Tool: Bnd-2.1.0.20130426-122213
+Bundle-Name: lab4
+Bnd-LastModified: 1397505212000
+Created-By: 1.6.0_30 (Sun Microsystems Inc.)
+Bundle-ManifestVersion: 2
+Bundle-SymbolicName: com.github.rosjava.rosjava_pkg.lab4
+Import-Package: javax.imageio,javax.swing,javax.swing.event,org.jboss.
+ netty.buffer;version="[3.5,4)",org.ros.message,org.ros.namespace,org.
+ ros.node,org.ros.node.parameter,org.ros.node.topic,rss_msgs;version="
+ [0.1,1)",sensor_msgs;version="[1.10,2)"
+

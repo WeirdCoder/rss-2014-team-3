@@ -1,0 +1,25 @@
+(cl:defpackage rss_msgs-msg
+  (:use )
+  (:export
+   "<ARMMSG>"
+   "ARMMSG"
+   "<DIGITALSTATUSMSG>"
+   "DIGITALSTATUSMSG"
+   "<ODOMETRYMSG>"
+   "ODOMETRYMSG"
+   "<SONARMSG>"
+   "SONARMSG"
+   "<ANALOGSTATUSMSG>"
+   "ANALOGSTATUSMSG"
+   "<BUMPMSG>"
+   "BUMPMSG"
+   "<BREAKBEAMMSG>"
+   "BREAKBEAMMSG"
+   "<ENCODERMSG>"
+   "ENCODERMSG"
+   "<MOTIONMSG>"
+   "MOTIONMSG"
+   "<RESETMSG>"
+   "RESETMSG"
+  ))
+

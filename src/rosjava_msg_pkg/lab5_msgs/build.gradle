@@ -1,0 +1,5 @@
+try{
+    project.catkin.tree.generateMessageArtifact(project, 'lab5_msgs')
+} catch (NullPointerException e){
+    println("lab5_msgs not found in ROS_PACKAGE_PATH")
+}
