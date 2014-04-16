@@ -85,8 +85,11 @@ ENDIF(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unsp
 IF(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
   INCLUDE("/home/rss-student/rss-2014-team-3/build/gtest/cmake_install.cmake")
+  INCLUDE("/home/rss-student/rss-2014-team-3/build/gc_msgs/cmake_install.cmake")
   INCLUDE("/home/rss-student/rss-2014-team-3/build/lab5_msgs/cmake_install.cmake")
   INCLUDE("/home/rss-student/rss-2014-team-3/build/lab6_msgs/cmake_install.cmake")
+  INCLUDE("/home/rss-student/rss-2014-team-3/build/odometry/cmake_install.cmake")
+  INCLUDE("/home/rss-student/rss-2014-team-3/build/robotbrain/cmake_install.cmake")
   INCLUDE("/home/rss-student/rss-2014-team-3/build/rss_msgs/cmake_install.cmake")
   INCLUDE("/home/rss-student/rss-2014-team-3/build/rosjava_msg_pkg/cmake_install.cmake")
   INCLUDE("/home/rss-student/rss-2014-team-3/build/rosjava_pkg/cmake_install.cmake")

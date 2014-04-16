@@ -1,2 +1,0 @@
-int lWheelTicks
-int rWheelTicks

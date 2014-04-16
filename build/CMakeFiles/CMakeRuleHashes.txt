@@ -1,4 +1,8 @@
 # Hashes of file build rules.
+7c81301c704f145695fbcd3f7e158c1a /home/rss-student/rss-2014-team-3/devel/include/gc_msgs/EncoderMsg.h
+3d21e71c7590b9d8fb811200668d6d08 /home/rss-student/rss-2014-team-3/devel/include/gc_msgs/MotorCommandMsg.h
+c2d502a6d01516d45ff2ab208628154c /home/rss-student/rss-2014-team-3/devel/include/gc_msgs/PoseMsg.h
+b04040e87b9be9cdcb12d23992c9625c /home/rss-student/rss-2014-team-3/devel/include/gc_msgs/WheelVelocityMsg.h
 38d5fef77fe876a7815a4242839ee97c /home/rss-student/rss-2014-team-3/devel/include/lab5_msgs/ColorMsg.h
 3ce1137d16681083baba212dab5c250d /home/rss-student/rss-2014-team-3/devel/include/lab5_msgs/GUIEraseMsg.h
 0849af07a6b6c838b9446d31987f46f4 /home/rss-student/rss-2014-team-3/devel/include/lab5_msgs/GUILineMsg.h
@@ -16,6 +20,11 @@ d5c79b8f5e6d9afc605c8b4971af08ac /home/rss-student/rss-2014-team-3/devel/include
 45e4b2d31bb027e89c35fdf2da4b4a78 /home/rss-student/rss-2014-team-3/devel/include/rss_msgs/OdometryMsg.h
 163e70064b341cc90ead6f4c44b7bea2 /home/rss-student/rss-2014-team-3/devel/include/rss_msgs/ResetMsg.h
 19b36b25b24bfc0ce6fb6f53c160d57c /home/rss-student/rss-2014-team-3/devel/include/rss_msgs/SonarMsg.h
+3131c50c92aa1e52e7bdb329de59f97f /home/rss-student/rss-2014-team-3/devel/lib/python2.7/dist-packages/gc_msgs/msg/_EncoderMsg.py
+3caabd079d8689d9f5337c1c25303667 /home/rss-student/rss-2014-team-3/devel/lib/python2.7/dist-packages/gc_msgs/msg/_MotorCommandMsg.py
+750b5a76265e21879642bcdef47d5b8f /home/rss-student/rss-2014-team-3/devel/lib/python2.7/dist-packages/gc_msgs/msg/_PoseMsg.py
+a725541fda704059a9befc67031bebab /home/rss-student/rss-2014-team-3/devel/lib/python2.7/dist-packages/gc_msgs/msg/_WheelVelocityMsg.py
+cfa450e91ed9bc485777231aa368c7a7 /home/rss-student/rss-2014-team-3/devel/lib/python2.7/dist-packages/gc_msgs/msg/__init__.py
 23a62d8e11819ef678079e0a58e30d4a /home/rss-student/rss-2014-team-3/devel/lib/python2.7/dist-packages/lab5_msgs/msg/_ColorMsg.py
 0ecedd881155cbdb83d52ce9e8022104 /home/rss-student/rss-2014-team-3/devel/lib/python2.7/dist-packages/lab5_msgs/msg/_GUIEraseMsg.py
 2494e1673234f5dc6669b61dba1c028f /home/rss-student/rss-2014-team-3/devel/lib/python2.7/dist-packages/lab5_msgs/msg/_GUILineMsg.py
@@ -36,6 +45,10 @@ b3dcc2229aaef6d977038db60d8fc3a9 /home/rss-student/rss-2014-team-3/devel/lib/pyt
 56290be9b98381fb72e32f12c7e4aae0 /home/rss-student/rss-2014-team-3/devel/lib/python2.7/dist-packages/rss_msgs/msg/_ResetMsg.py
 714ee86546ddda018950bf7aa5d76f76 /home/rss-student/rss-2014-team-3/devel/lib/python2.7/dist-packages/rss_msgs/msg/_SonarMsg.py
 6770695eb12d86bca4cb0fcea5e23b94 /home/rss-student/rss-2014-team-3/devel/lib/python2.7/dist-packages/rss_msgs/msg/__init__.py
+44ab4737d0eae884ad7b6e2e3b6a23df /home/rss-student/rss-2014-team-3/devel/share/common-lisp/ros/gc_msgs/msg/EncoderMsg.lisp
+6a5df6c342e1429d128a7f573177edb3 /home/rss-student/rss-2014-team-3/devel/share/common-lisp/ros/gc_msgs/msg/MotorCommandMsg.lisp
+f05db1bbc9442dcf5ee6500b9bd87778 /home/rss-student/rss-2014-team-3/devel/share/common-lisp/ros/gc_msgs/msg/PoseMsg.lisp
+983d48be92c7c524d959a729f2565106 /home/rss-student/rss-2014-team-3/devel/share/common-lisp/ros/gc_msgs/msg/WheelVelocityMsg.lisp
 ddc3de31e1da297c725c3015a3195b23 /home/rss-student/rss-2014-team-3/devel/share/common-lisp/ros/lab5_msgs/msg/ColorMsg.lisp
 310f2f99470de7e480374f118f0ff99a /home/rss-student/rss-2014-team-3/devel/share/common-lisp/ros/lab5_msgs/msg/GUIEraseMsg.lisp
 7ff7e3c5dc962672c62112debdc8f8cc /home/rss-student/rss-2014-team-3/devel/share/common-lisp/ros/lab5_msgs/msg/GUILineMsg.lisp
@@ -57,6 +70,16 @@ a3310b41f1bb796f6ac5c60708f041e8 /home/rss-student/rss-2014-team-3/devel/share/c
 4b1210539d255b7709b5aefb24880183 CMakeFiles/doxygen
 4b1210539d255b7709b5aefb24880183 CMakeFiles/run_tests
 4b1210539d255b7709b5aefb24880183 CMakeFiles/tests
+dc67b40d5381c8c889ab4909b0220ec6 gc_msgs/CMakeFiles/gc_msgs_gencpp
+dc67b40d5381c8c889ab4909b0220ec6 gc_msgs/CMakeFiles/gc_msgs_generate_messages
+dc67b40d5381c8c889ab4909b0220ec6 gc_msgs/CMakeFiles/gc_msgs_generate_messages_cpp
+dc67b40d5381c8c889ab4909b0220ec6 gc_msgs/CMakeFiles/gc_msgs_generate_messages_lisp
+dc67b40d5381c8c889ab4909b0220ec6 gc_msgs/CMakeFiles/gc_msgs_generate_messages_py
+dc67b40d5381c8c889ab4909b0220ec6 gc_msgs/CMakeFiles/gc_msgs_genlisp
+dc67b40d5381c8c889ab4909b0220ec6 gc_msgs/CMakeFiles/gc_msgs_genpy
+dc67b40d5381c8c889ab4909b0220ec6 gc_msgs/CMakeFiles/std_msgs_generate_messages_cpp
+dc67b40d5381c8c889ab4909b0220ec6 gc_msgs/CMakeFiles/std_msgs_generate_messages_lisp
+dc67b40d5381c8c889ab4909b0220ec6 gc_msgs/CMakeFiles/std_msgs_generate_messages_py
 44d1b26ea6ab0eda54c72b4c2d52b26c lab5_msgs/CMakeFiles/_catkin_empty_exported_target
 44d1b26ea6ab0eda54c72b4c2d52b26c lab5_msgs/CMakeFiles/lab5_msgs_gencpp
 44d1b26ea6ab0eda54c72b4c2d52b26c lab5_msgs/CMakeFiles/lab5_msgs_generate_messages
@@ -65,9 +88,6 @@ a3310b41f1bb796f6ac5c60708f041e8 /home/rss-student/rss-2014-team-3/devel/share/c
 44d1b26ea6ab0eda54c72b4c2d52b26c lab5_msgs/CMakeFiles/lab5_msgs_generate_messages_py
 44d1b26ea6ab0eda54c72b4c2d52b26c lab5_msgs/CMakeFiles/lab5_msgs_genlisp
 44d1b26ea6ab0eda54c72b4c2d52b26c lab5_msgs/CMakeFiles/lab5_msgs_genpy
-44d1b26ea6ab0eda54c72b4c2d52b26c lab5_msgs/CMakeFiles/std_msgs_generate_messages_cpp
-44d1b26ea6ab0eda54c72b4c2d52b26c lab5_msgs/CMakeFiles/std_msgs_generate_messages_lisp
-44d1b26ea6ab0eda54c72b4c2d52b26c lab5_msgs/CMakeFiles/std_msgs_generate_messages_py
 0e90b0448601cebd2ae81205fba88338 lab6_msgs/CMakeFiles/lab6_msgs_gencpp
 0e90b0448601cebd2ae81205fba88338 lab6_msgs/CMakeFiles/lab6_msgs_generate_messages
 0e90b0448601cebd2ae81205fba88338 lab6_msgs/CMakeFiles/lab6_msgs_generate_messages_cpp

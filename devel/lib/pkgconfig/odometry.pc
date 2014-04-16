@@ -1,0 +1,8 @@
+prefix=/home/rss-student/rss-2014-team-3/devel
+
+Name: odometry
+Description: Description of odometry
+Version: 0.0.0
+Cflags: 
+Libs: -L/home/rss-student/rss-2014-team-3/devel/lib 
+Requires: 

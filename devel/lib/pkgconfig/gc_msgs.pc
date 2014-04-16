@@ -1,0 +1,8 @@
+prefix=/home/rss-student/rss-2014-team-3/devel
+
+Name: gc_msgs
+Description: Description of gc_msgs
+Version: 0.1.0
+Cflags: -I/home/rss-student/rss-2014-team-3/devel/include
+Libs: -L/home/rss-student/rss-2014-team-3/devel/lib 
+Requires: std_msgs message_runtime

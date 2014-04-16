@@ -258,48 +258,6 @@ lab5_msgs_genpy/fast:
 	cd /home/rss-student/rss-2014-team-3/build && $(MAKE) -f lab5_msgs/CMakeFiles/lab5_msgs_genpy.dir/build.make lab5_msgs/CMakeFiles/lab5_msgs_genpy.dir/build
 .PHONY : lab5_msgs_genpy/fast
 
-# Convenience name for target.
-lab5_msgs/CMakeFiles/std_msgs_generate_messages_cpp.dir/rule:
-	cd /home/rss-student/rss-2014-team-3/build && $(MAKE) -f CMakeFiles/Makefile2 lab5_msgs/CMakeFiles/std_msgs_generate_messages_cpp.dir/rule
-.PHONY : lab5_msgs/CMakeFiles/std_msgs_generate_messages_cpp.dir/rule
-
-# Convenience name for target.
-std_msgs_generate_messages_cpp: lab5_msgs/CMakeFiles/std_msgs_generate_messages_cpp.dir/rule
-.PHONY : std_msgs_generate_messages_cpp
-
-# fast build rule for target.
-std_msgs_generate_messages_cpp/fast:
-	cd /home/rss-student/rss-2014-team-3/build && $(MAKE) -f lab5_msgs/CMakeFiles/std_msgs_generate_messages_cpp.dir/build.make lab5_msgs/CMakeFiles/std_msgs_generate_messages_cpp.dir/build
-.PHONY : std_msgs_generate_messages_cpp/fast
-
-# Convenience name for target.
-lab5_msgs/CMakeFiles/std_msgs_generate_messages_lisp.dir/rule:
-	cd /home/rss-student/rss-2014-team-3/build && $(MAKE) -f CMakeFiles/Makefile2 lab5_msgs/CMakeFiles/std_msgs_generate_messages_lisp.dir/rule
-.PHONY : lab5_msgs/CMakeFiles/std_msgs_generate_messages_lisp.dir/rule
-
-# Convenience name for target.
-std_msgs_generate_messages_lisp: lab5_msgs/CMakeFiles/std_msgs_generate_messages_lisp.dir/rule
-.PHONY : std_msgs_generate_messages_lisp
-
-# fast build rule for target.
-std_msgs_generate_messages_lisp/fast:
-	cd /home/rss-student/rss-2014-team-3/build && $(MAKE) -f lab5_msgs/CMakeFiles/std_msgs_generate_messages_lisp.dir/build.make lab5_msgs/CMakeFiles/std_msgs_generate_messages_lisp.dir/build
-.PHONY : std_msgs_generate_messages_lisp/fast
-
-# Convenience name for target.
-lab5_msgs/CMakeFiles/std_msgs_generate_messages_py.dir/rule:
-	cd /home/rss-student/rss-2014-team-3/build && $(MAKE) -f CMakeFiles/Makefile2 lab5_msgs/CMakeFiles/std_msgs_generate_messages_py.dir/rule
-.PHONY : lab5_msgs/CMakeFiles/std_msgs_generate_messages_py.dir/rule
-
-# Convenience name for target.
-std_msgs_generate_messages_py: lab5_msgs/CMakeFiles/std_msgs_generate_messages_py.dir/rule
-.PHONY : std_msgs_generate_messages_py
-
-# fast build rule for target.
-std_msgs_generate_messages_py/fast:
-	cd /home/rss-student/rss-2014-team-3/build && $(MAKE) -f lab5_msgs/CMakeFiles/std_msgs_generate_messages_py.dir/build.make lab5_msgs/CMakeFiles/std_msgs_generate_messages_py.dir/build
-.PHONY : std_msgs_generate_messages_py/fast
-
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -320,9 +278,6 @@ help:
 	@echo "... lab5_msgs_genpy"
 	@echo "... list_install_components"
 	@echo "... rebuild_cache"
-	@echo "... std_msgs_generate_messages_cpp"
-	@echo "... std_msgs_generate_messages_lisp"
-	@echo "... std_msgs_generate_messages_py"
 	@echo "... test"
 .PHONY : help
 
