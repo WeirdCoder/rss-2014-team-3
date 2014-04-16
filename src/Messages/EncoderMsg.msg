@@ -1,0 +1,2 @@
+int lWheelTicks
+int rWheelTicks

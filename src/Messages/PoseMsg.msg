@@ -1,0 +1,3 @@
+float64 xPosition
+float64 yPosition
+float64 angle
