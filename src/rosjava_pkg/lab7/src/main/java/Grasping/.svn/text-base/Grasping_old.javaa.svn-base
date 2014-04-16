@@ -1,0 +1,471 @@
+package Grasping;
+
+/*
+ * Grasping.java
+ */
+
+import org.ros.node.topic.Subscriber;
+import org.ros.message.rss_msgs.ArmMsg;
+import org.ros.namespace.GraphName;
+import org.ros.node.Node;
+import org.ros.node.NodeMain;
+import org.ros.node.topic.Publisher;
+import java.awt.geom.*;
+import java.awt.Point;
+import org.ros.message.MessageListener;
+@SuppressWarnings("serial")
+public class Grasping implements NodeMain{
+	
+	//Geometric Arm
+	private static final double armLength = 0.245d; //in Meters
+	private static double gripperLength = 0.125d;
+    private static final int SHOULDER = 0;
+    private static final int WRIST = 1;
+    private static final int GRIPPER = 2;
+    
+    private static final int SHOULDER_MIN = 452; // placeholders?
+    private static final int WRIST_MIN = 250;
+    private static final int GRIPPER_MIN = 270;
+    
+    private static final int SHOULDER_MAX = 2081; // placeholders?
+    private static final int WRIST_MAX = 2350;
+    private static final int GRIPPER_MAX = 1290;
+
+    // Slew rates (in PWMs per iteration) for servos
+    private static final int SHOULDER_SLEW_RATE = 20;
+    private static final int WRIST_SLEW_RATE = 30;
+    private static final int GRIPPER_SLEW_RATE = 100;
+
+    // Known positions
+    private static final double SHOULDER_FLOOR = 3;
+    private static final double WRIST_FLOOR = -1.4;
+    private static final double GRIPPER_OPEN = 0;
+    private static final double GRIPPER_CLOSED = 2;
+
+    // For stepping thru gym_index
+    private int gym_index = 0;
+    private int gym_pause=0;
+    private static final double[][] GYM_POSE={
+        {SHOULDER_FLOOR,WRIST_FLOOR,GRIPPER_CLOSED},
+        {SHOULDER_FLOOR,WRIST_FLOOR,GRIPPER_OPEN},
+        {0,0,GRIPPER_OPEN},
+        {0,1,GRIPPER_OPEN},
+    };
+    
+	private Publisher<ArmMsg> armPub;
+    private Subscriber<org.ros.message.rss_msgs.ArmMsg> armSub;
+
+    private double shoulderAngle=0;
+    private double wristAngle=0;
+    private double gripperAngle=0;
+
+    private ArmMsg lastMsg;
+
+    public class State{ 
+        public final double shoulder; 
+        public final double wrist; 
+        public State(double shoulder, double wrist) { 
+            this.shoulder = shoulder; 
+            this.wrist = wrist;
+        } 
+    }
+	/**
+	 * Constructor for ArmPoseGUI
+	 */
+	public Grasping() {
+        lastMsg=new ArmMsg();
+        // Approximate "at rest" positions
+        lastMsg.pwms[SHOULDER]=742;
+        lastMsg.pwms[WRIST]=565;
+        lastMsg.pwms[GRIPPER]=565;
+	}
+
+    public void armController()
+    {
+        System.err.println("Angles: "+shoulderAngle+","+wristAngle+","+gripperAngle);
+        System.err.println("PWMS: "+angleToPWM(SHOULDER,shoulderAngle)+","+angleToPWM(WRIST,wristAngle)+","+angleToPWM(GRIPPER,gripperAngle));
+        ArmMsg newMsg = new ArmMsg();
+        newMsg.pwms[SHOULDER] = slew((int)lastMsg.pwms[SHOULDER],angleToPWM(SHOULDER,shoulderAngle),SHOULDER_SLEW_RATE);
+        newMsg.pwms[WRIST] = slew((int)lastMsg.pwms[WRIST],angleToPWM(WRIST,wristAngle),WRIST_SLEW_RATE);
+        newMsg.pwms[GRIPPER] = slew((int)lastMsg.pwms[GRIPPER],angleToPWM(GRIPPER,gripperAngle),GRIPPER_SLEW_RATE);
+        armPub.publish(newMsg);
+        lastMsg=newMsg;
+    }
+
+    public static int slew(int cur,int goal,int rate)
+    {
+        int delta=goal-cur;
+        if(delta>rate)
+        {
+            delta=rate;
+        }
+        else if(delta<-rate)
+        {
+            delta=-rate;
+        }
+        return cur+delta;
+    } 
+
+    // cycle through motions
+    public void handle(ArmMsg discard) {
+        //int tick = (int)(state/numStates);
+        //int tick = 1;
+
+        gymnastics();
+        armController();
+
+        // The following if/else block moves the arm through its motion concurrently
+        // Part 2 - Arm Control
+       
+//        shoulderPWM = SHOULDER_MIN + (int)(Math.abs(state)*(SHOULDER_MAX-SHOULDER_MIN)/numStates);
+//        wristPWM = WRIST_MIN + (int)(Math.abs(state)*(WRIST_MAX-WRIST_MIN)/numStates);
+//        gripperPWM = GRIPPER_MIN + (int)(Math.abs(state)*(GRIPPER_MAX-GRIPPER_MIN)/numStates);
+       
+        // End Arm Control
+        
+        // Part 3 - Arm Gymnastics
+        /*
+        System.err.println("state: " + gym_index);
+        
+        if (gym_index == 0) {
+            targetMsg = closeGripper(msg);
+            targetMsg = armToAngle(targetMsg, 0);
+            newMsg = incrementArm(msg, targetMsg, tick);
+            if (Math.abs(targetMsg.pwms[GRIPPER] - msg.pwms[GRIPPER]) <= 6) {
+                gym_index += 1;
+            }
+        }
+        
+        if (gym_index == 1) {
+            targetMsg = wristToAngle(msg, Math.PI/2);
+            targetMsg = armToAngle(targetMsg, Math.PI/2);
+            newMsg = incrementArm(msg, targetMsg, tick);
+            if (Math.abs(targetMsg.pwms[WRIST] - msg.pwms[WRIST]) <= 6 && Math.abs(targetMsg.pwms[SHOULDER] - msg.pwms[SHOULDER]) <= 6) {
+                gym_index = 2;
+            }
+        }
+        
+        if (gym_index == 2) {
+            targetMsg = wristToAngle(msg, 0);
+            targetMsg = armToAngle(targetMsg, 0);
+            newMsg = incrementArm(msg, targetMsg, tick);
+            if (Math.abs(targetMsg.pwms[WRIST] - msg.pwms[WRIST]) <= 6 && Math.abs(targetMsg.pwms[SHOULDER] - msg.pwms[SHOULDER]) <= 6) {
+                gym_index = 3;
+            }
+        }
+        
+        if (gym_index == 3) {
+            targetMsg = wristToAngle(msg, -1*Math.PI/2);
+            newMsg = incrementArm(msg, targetMsg, tick);
+            if (Math.abs(targetMsg.pwms[WRIST] - msg.pwms[WRIST]) <= 6) {
+                gym_index = 4;
+            }
+        }
+        
+        if (gym_index == 4) {
+            targetMsg = armToAngle(msg, 0);
+            newMsg = incrementArm(msg, targetMsg, tick);
+            if (Math.abs(targetMsg.pwms[SHOULDER] - newMsg.pwms[SHOULDER]) <= 6) {
+                gym_index = 5;
+            }
+        }
+        
+        if (gym_index == 5) {
+            targetMsg = wristToAngle(msg, Math.PI/2);
+            targetMsg = openGripper(targetMsg);
+            newMsg = incrementArm(msg, targetMsg, tick);
+            if (Math.abs(targetMsg.pwms[GRIPPER] - newMsg.pwms[GRIPPER]) <= 6 && Math.abs(targetMsg.pwms[WRIST] - newMsg.pwms[WRIST]) <= 6) {
+                gym_index = 6;
+            }
+        }
+        
+        if (gym_index == 6) {
+            targetMsg = closeGripper(msg);
+            targetMsg = wristToAngle(targetMsg, -1*Math.PI/2);
+            newMsg = incrementArm(msg, targetMsg, tick);
+            if (Math.abs(targetMsg.pwms[GRIPPER] - newMsg.pwms[GRIPPER]) <= 6 && Math.abs(targetMsg.pwms[WRIST] - newMsg.pwms[WRIST]) <= 6) {
+                gym_index = 7;
+            }
+        }
+        
+        if (gym_index == 7) {
+            targetMsg = armToAngle(msg, 0);
+            targetMsg = wristToAngle(targetMsg, 0);
+            newMsg = incrementArm(msg, targetMsg, tick);
+            if (Math.abs(targetMsg.pwms[SHOULDER] - newMsg.pwms[SHOULDER]) <= 6 && Math.abs(targetMsg.pwms[WRIST] - newMsg.pwms[WRIST]) <= 6) {
+                gym_index = 8;
+            }
+        }
+
+        
+        if (gym_index == 8) {
+            targetMsg = openGripper(msg);
+            newMsg = incrementArm(msg, targetMsg, tick);
+            if (Math.abs(targetMsg.pwms[GRIPPER] - newMsg.pwms[GRIPPER]) <= 6) {
+                gym_index = 0;
+            }
+        }
+
+        
+        // debugging
+        // System.err.println("s:" + state + " sP:" + shoulderPWM + " wP:" + wristPWM + " gP:" + gripperPWM);
+        
+        // Be sure we are not exceeding limits.
+        newMsg.pwms[SHOULDER] = checkShoulderPWM(newMsg.pwms[SHOULDER]);
+        newMsg.pwms[WRIST] = checkWristPWM(newMsg.pwms[WRIST]);
+        newMsg.pwms[GRIPPER] = checkGripperPWM(newMsg.pwms[GRIPPER]);
+        
+        //moveServo(state);
+        //newMsg.pwms = new int[]{shoulderPWM, wristPWM, gripperPWM,0,0,0,0,0};
+        armPub.publish(newMsg);
+
+      
+        state = (state + 1);
+        // Part 2 - Arm Control code.
+//        if (state == numStates){
+//            state = -1*(int)numStates;
+//        }
+        // Part 3 - Gymnastics code.
+        if (state > (int)numStates) {
+            state = 0;
+        }
+        */
+    }
+
+    public void gymnastics()
+    {
+        gym_pause--;
+        if(gym_pause>0)
+        {
+            return;
+        }
+
+        gym_pause=100;
+        gym_index=(gym_index+1)%GYM_POSE.length;
+        System.err.println("Pose "+gym_index);
+
+        shoulderAngle=GYM_POSE[gym_index][0];
+        wristAngle=GYM_POSE[gym_index][1];
+        gripperAngle=GYM_POSE[gym_index][2];
+    }
+    
+    // Increments the whole arm towards a value.
+    /*
+    public ArmMsg incrementArm(ArmMsg current, ArmMsg target, int increment){
+        ArmMsg newPosition = current;
+        int difference[] = {0,0,0};
+        
+        difference[SHOULDER] = target.pwms[SHOULDER] - current.pwms[SHOULDER];
+        difference[WRIST] = target.pwms[WRIST] - current.pwms[WRIST];
+        difference[GRIPPER] = target.pwms[GRIPPER] - current.pwms[GRIPPER];
+
+        if (Math.abs(difference[SHOULDER]) >= 10) {
+            newPosition.pwms[SHOULDER] = newPosition.pwms[SHOULDER] + (int)Math.signum(difference[SHOULDER])*10*increment;
+        }
+        else {
+             newPosition.pwms[SHOULDER] = newPosition.pwms[SHOULDER] + (int)Math.signum(difference[SHOULDER])*10*increment;
+        }
+
+        =0if (Math.abs(difference[WRIST]) >= 10) {
+            newPosition.pwms[WRIST] = newPosition.pwms[WRIST] + (int)Math.signum(difference[WRIST])*10*increment;
+        }
+        else {
+             newPosition.pwms[WRIST] = newPosition.pwms[WRIST] + (int)Math.signum(difference[WRIST])*10*increment;
+        }
+
+        if (Math.abs(difference[GRIPPER]) >= 10) {
+            newPosition.pwms[GRIPPER] = newPosition.pwms[GRIPPER] + (int)Math.signum(difference[GRIPPER])*10*increment;
+        }
+        else {
+             newPosition.pwms[GRIPPER] = newPosition.pwms[GRIPPER] + (int)Math.signum(difference[GRIPPER])*10*increment;
+        }
+        
+        return newPosition;
+    }
+    
+    // Fully opens the gripper
+    public ArmMsg openGripper(ArmMsg msg){
+        ArmMsg mrsg = new ArmMsg();
+        mrsg.pwms[SHOULDER] = msg.pwms[SHOULDER];
+        mrsg.pwms[WRIST] = msg.pwms[WRIST];
+        mrsg.pwms[GRIPPER] = GRIPPER_OPEN_PWM;
+        return mrsg;
+    }
+    
+    // Fully closes the gripper
+    public ArmMsg closeGripper(ArmMsg msg){
+        ArmMsg mrsg = new ArmMsg();
+        mrsg.pwms[SHOULDER] = msg.pwms[SHOULDER];
+        mrsg.pwms[WRIST] = msg.pwms[WRIST];
+        mrsg.pwms[GRIPPER] = GRIPPER_CLOSED_PWM;
+        return mrsg;
+    }
+    
+    // Everything is in radians.
+    // Keeps the gripper parallel to the floor while moving the shoulder to
+    // the desired angle
+    public ArmMsg armToAngle(ArmMsg msg, double angle) {
+        int shoulderPWM = angleToPWM(SHOULDER, angle);
+        ArmMsg mrsg = new ArmMsg();
+        mrsg.pwms[GRIPPER] = msg.pwms[GRIPPER];
+        mrsg.pwms[WRIST] = msg.pwms[WRIST];
+        mrsg.pwms[SHOULDER] = shoulderPWM;
+        return mrsg;
+    }
+    
+    public ArmMsg wristToAngle(ArmMsg msg, double angle) {
+        int wristPWM = angleToPWM(WRIST, angle);
+        ArmMsg mrsg = new ArmMsg();
+        mrsg.pwms[SHOULDER] = msg.pwms[SHOULDER];
+        mrsg.pwms[GRIPPER] = msg.pwms[GRIPPER];
+        mrsg.pwms[WRIST] = wristPWM;
+        return mrsg;
+    }
+    
+    // Moves the arm to the floor
+    public ArmMsg armToFloor(ArmMsg msg){
+        ArmMsg mrsg = new ArmMsg();
+        mrsg.pwms[GRIPPER] = msg.pwms[GRIPPER];
+        mrsg.pwms[SHOULDER] = SHOULDER_FLOOR_PWM;
+        mrsg.pwms[WRIST] = WRIST_FLOOR_PWM;
+        return mrsg;
+    }
+    */
+    
+    
+    // For a given servo channel, return a pwm value from an angle in radians
+    public int  angleToPWM(int channel, double angle){
+        int pwm = 0;
+        //double range = 0;
+        int lowerPWM = 0;
+        int upperPWM = 0;
+        double slope[] = new double[]{-.00209, .00184, -.00203};
+        double offset[] = new double[]{4.18, -2.015, 1.7661}; // 4.35
+        
+        if (channel == SHOULDER) {
+            lowerPWM = SHOULDER_MIN;
+            upperPWM = SHOULDER_MAX;
+        }
+        if (channel == WRIST) {
+            lowerPWM = WRIST_MIN;
+            upperPWM = WRIST_MAX;
+        }
+        if (channel == GRIPPER) {
+            lowerPWM = GRIPPER_MIN;
+            upperPWM = GRIPPER_MAX;
+        }
+        
+        pwm = (int)((angle - offset[channel])/slope[channel]);
+        if(pwm<lowerPWM)
+        {
+            pwm=lowerPWM;
+        }
+        else if(pwm>upperPWM)
+        {
+            pwm=upperPWM;
+        }
+        return pwm;
+    }
+
+    /* 
+    // Be absolutely sure our values are not going to exceed min or max
+    // in case we mess up our logic somewhere.
+    public int checkShoulderPWM(int pwm) {
+        if (pwm < SHOULDER_MIN) {
+            return SHOULDER_MIN;
+        }
+        else if (pwm > SHOULDER_MAX) {
+            return SHOULDER_MAX;
+        }
+        else {
+            return pwm;
+        }
+    }
+    
+    public int checkWristPWM(int pwm) {
+        if (pwm < WRIST_MIN) {
+            return WRIST_MIN;
+        }
+        else if (pwm > WRIST_MAX) {
+            return WRIST_MAX;
+        }
+        else {
+            return pwm;
+        }
+    }
+    
+    public int checkGripperPWM(int pwm) {
+        if (pwm < GRIPPER_MIN) {
+            return GRIPPER_MIN;
+        }
+        else if (pwm > GRIPPER_MAX) {
+            return GRIPPER_MAX;
+        }
+        else {
+            return pwm;
+        }
+    }
+    */
+    
+	@Override
+    public void onShutdownComplete(Node node) {
+	}
+
+	@Override
+    public GraphName getDefaultNodeName() {
+		return new GraphName("rss/grasping");
+	}
+
+	@Override
+	public void onShutdown(Node node) {
+	}
+
+	@Override
+	public void onStart(Node node) {
+		armPub = node.newPublisher("command/Arm", "rss_msgs/ArmMsg");
+        armSub = node.newSubscriber("rss/ArmStatus", "rss_msgs/ArmMsg");
+        armSub.addMessageListener(new ArmListener());
+	}
+
+    public class ArmListener implements MessageListener<ArmMsg> {
+        @Override
+        public void onNewMessage(ArmMsg msg) {
+            handle(msg);
+        }
+    }
+    
+	//Kinematics  And Inverse Kinematics
+    //Kinematics calculate point of grasper relative to the center
+    //of the two wheels projected onto the ground.
+    //Note: plane is XZ.
+    public Point2D.Double kinematics(double shoulder, double wrist){
+        double x = +0.09d + Math.cos(shoulder)*armLength + Math.cos(shoulder+wrist)*gripperLength;
+        double z = 0.27d + Math.sin(shoulder)*armLength + Math.sin(shoulder+wrist)*gripperLength;
+        return new Point2D.Double(x,z);
+    }
+
+    public Point2D.Double kinematics(State s){
+        return kinematics(s.shoulder, s.wrist);
+    }
+
+    //inverse kinematics will define the ideal state to be where
+    //the grasper is most parallel with the ground.
+    public State inverseKinematics(double x, double z){
+        x -= 0.09d;
+        z -= 0.27d; //transform origin point to the shoulder.
+        //Use law of cosine to determine wrist angle.
+        double wrist = 3.1415 - Math.acos((armLength*armLength + gripperLength*gripperLength-(x*x + z*z))/(2*armLength*gripperLength));
+        
+        //Use law of cosine to determine shoulder angle.
+        double shoulder = Math.atan2(z,-x) - Math.acos((armLength*armLength + (x*x + z*z) - gripperLength*gripperLength)/(2*armLength*Math.sqrt(x*x+z*z)));
+        
+        return new State(shoulder,wrist);
+    }
+
+    public State inverseKinematics(Point2D.Double pt){
+        return inverseKinematics(pt.getX(), pt.getY()); // actually x, z.
+    }
+}
+
+
+

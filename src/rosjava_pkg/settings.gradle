@@ -15,6 +15,12 @@
  */
 
 
-include 'orc_utils'
 include 'lab4'
 include 'orc_utils'
+include 'lab5'
+//include 'lab6'
+include 'lab7'
+include 'MotionControl'
+include 'odometry'
+include 'uorc_listener'
+include 'uorc_publisher'
