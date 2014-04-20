@@ -1,14 +1,14 @@
 package odometry;
 
 import org.ros.message.MessageListener;
-import org.ros.message.rss_msgs.EncoderMsg;
-import org.ros.message.rss_msgs.OdometryMsg;
+import rss_msgs.EncoderMsg;
+import rss_msgs.OdometryMsg;
 import org.ros.namespace.GraphName;
 import org.ros.node.Node;
 import org.ros.node.NodeMain;
+import org.ros.node.ConnectedNode;
 import org.ros.node.topic.Publisher;
 import org.ros.node.topic.Subscriber;
-
 public class Odometry implements NodeMain {
 
 	private int[] prev_ticks; // (left wheel, right wheel, make int[]
@@ -23,11 +23,11 @@ public class Odometry implements NodeMain {
 	 */
 	private double[] pose = {0, 0, 0};
 	private boolean reset = false;
-	private OdometryMsg msg = new OdometryMsg();
-	private Publisher<OdometryMsg> pub;
-	private Publisher<org.ros.message.std_msgs.String> statePub;
-	private Subscriber<EncoderMsg> encoderSub;
-	private Subscriber<OdometryMsg> resetOdometrySub;
+	private Publisher<rss_msgs.OdometryMsg> pub;
+	private Publisher<std_msgs.String> statePub;
+	private Subscriber<rss_msgs.EncoderMsg> encoderSub;
+	private Subscriber<rss_msgs.OdometryMsg> resetOdometrySub;
+        private rss_msgs.OdometryMsg msg = pub.newMessage();
 
 	public void update(int[] new_ticks) {
 		if ((prev_ticks == null && (new_ticks[0]==0 && new_ticks[1]==0)) || reset) {
@@ -49,15 +49,14 @@ public class Odometry implements NodeMain {
 		double s_left = (ticks[0])*WHEEL_METERS_PER_TICK;
 		double s_right = (ticks[1])*WHEEL_METERS_PER_TICK;
 		double theta = (s_left - s_right)/WHEELBASE;
-
-		msg.theta += -theta;
-		if(msg.theta < 0){
-			msg.theta += 2* Math.PI;
-		} else if (msg.theta > 2*Math.PI){
-			msg.theta -=2*Math.PI;
+		msg.setTheta( msg.getTheta()-theta);
+		if(msg.getTheta() < 0){
+			msg.setTheta(msg.getTheta()+2*Math.PI);
+		} else if (msg.getTheta() > 2*Math.PI){
+			msg.setTheta(-2*Math.PI+(msg.getTheta()));
 		}
-		msg.x += (s_left+s_right)*Math.cos(msg.theta)/2.0;
-		msg.y += (s_left+s_right)*Math.sin(msg.theta)/2.0;
+		msg.setX((s_left+s_right)*Math.cos(msg.getTheta())/2.0+(msg.getX()));
+		msg.setY((s_left+s_right)*Math.sin(msg.getTheta())/2.0+(msg.getY()));
 
 		prev_ticks[0] = new_ticks[0];
 		prev_ticks[1] = new_ticks[1];
@@ -71,18 +70,18 @@ public class Odometry implements NodeMain {
 	}
 
 	@Override
-	public void onStart(Node node) {
+	public void onStart(ConnectedNode node) {
 		pub = node.newPublisher("/rss/odometry", "rss_msgs/OdometryMsg");
 		encoderSub = node.newSubscriber("/rss/Encoder", "rss_msgs/EncoderMsg");
 		encoderSub.addMessageListener(new EcoderListener(this));
 
 		resetOdometrySub = node.newSubscriber("/rss/odometry_update", "rss_msgs/OdometryMsg");
-		resetOdometrySub.addMessageListener(new MessageListener<org.ros.message.rss_msgs.OdometryMsg>() {
+		resetOdometrySub.addMessageListener(new MessageListener<rss_msgs.OdometryMsg>() {
 			@Override
-			public void onNewMessage(org.ros.message.rss_msgs.OdometryMsg message) {
-				if (message.x == 0 && message.y == 0 && message.theta == 0) {
+			public void onNewMessage(rss_msgs.OdometryMsg message) {
+				if (message.getX() == 0 && message.getY() == 0 && message.getTheta() == 0) {
 					prev_ticks = null;
-					msg.x = message.x; msg.y = message.y; msg.theta = message.theta;
+					msg.setX(message.getX()); msg.setY(message.getY()); msg.setTheta(message.getTheta());
 					reset = true;
 				}
 			}
@@ -97,6 +96,9 @@ public class Odometry implements NodeMain {
 
 	@Override
 	public GraphName getDefaultNodeName() {
-		return new GraphName("rss/odometry");
+		return GraphName.of("rss/odometry");
 	}
+        @Override
+	public void onError(Node node, Throwable thrown){
+        }
 }

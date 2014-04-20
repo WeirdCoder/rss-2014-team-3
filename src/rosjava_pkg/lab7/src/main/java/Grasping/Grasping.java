@@ -24,6 +24,7 @@ import org.ros.node.topic.Publisher;
 import java.awt.geom.*;
 import java.awt.Point;
 import org.ros.message.MessageListener;
+import org.jboss.netty.buffer.ChannelBuffers;
 @SuppressWarnings("serial")
 public class Grasping implements NodeMain{
 	
@@ -216,7 +217,7 @@ public class Grasping implements NodeMain{
       pubImage.setEncoding("rgb8");
       //pubImage.setIs_bigendian(0);
       pubImage.setStep(width*3);
-      pubImage.setData(dest);
+      pubImage.setData(ChannelBuffers.copiedBuffer(dest.toArray()));
       vidPub.publish(pubImage);
       if(blobTrack.getTargetDetected()){
           // Begin Student Code
@@ -446,11 +447,11 @@ public class Grasping implements NodeMain{
         public void onNewMessage(sensor_msgs.Image message){
             byte[] rgbData;
             if (!reverseRGB) {
-                rgbData = Image.RGB2BGR(message.getData().toArray(),
+                rgbData = Image.RGB2BGR(message.getData().array(),
                         (int) message.getWidth(), (int) message.getHeight());
             }
             else {
-                rgbData = message.getData().toArray();
+                rgbData = message.getData().array();
             }
             assert ((int) message.getWidth() == width);
             assert ((int) message.getHeight() == height);
@@ -500,7 +501,7 @@ public class Grasping implements NodeMain{
         return inverseKinematics(pt.getX(), pt.getY()); // actually x, z.
     }
     @Override
-    public onError(Node node, Throwable thrown){
+    public void onError(Node node, Throwable thrown){
     }
 }
 

@@ -1,9 +1,9 @@
 package odometry;
 
 import org.ros.message.MessageListener;
-import org.ros.message.rss_msgs.EncoderMsg;
+import rss_msgs.EncoderMsg;
 
-public class EcoderListener implements MessageListener<EncoderMsg> {
+public class EcoderListener implements MessageListener<rss_msgs.EncoderMsg> {
 
 	private Odometry parent;
 	
@@ -12,10 +12,10 @@ public class EcoderListener implements MessageListener<EncoderMsg> {
 	}
 
 	@Override
-	public void onNewMessage(EncoderMsg msg) {
+	public void onNewMessage(rss_msgs.EncoderMsg msg) {
 		int[] ticks = new int[2];
-		ticks[0] = (int) msg.left;
-		ticks[1] = (int) msg.right;
+		ticks[0] = (int) msg.getLeft();
+		ticks[1] = (int) msg.getRight();
 		parent.update(ticks);
 	}
 

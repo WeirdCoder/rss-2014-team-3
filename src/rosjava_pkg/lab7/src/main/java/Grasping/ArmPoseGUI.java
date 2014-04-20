@@ -26,10 +26,11 @@ import javax.swing.event.ChangeListener;
 
 import rss_msgs.ArmMsg;
 import org.ros.namespace.GraphName;
-import org.ros.node.DefaultNode;
+import org.ros.internal.node.DefaultNode;
 import org.ros.node.Node;
 import org.ros.node.NodeMain;
 import org.ros.node.ConnectedNode;
+import org.ros.node.*;
 import org.ros.node.topic.Publisher;
 
 @SuppressWarnings("serial")
