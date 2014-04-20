@@ -79,9 +79,9 @@ find_package(catkin REQUIRED COMPONENTS
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-#  INCLUDE_DIRS include
+#  INCLUDE_DIRS src
 #  LIBRARIES odometry
-#  CATKIN_DEPENDS rospy std_msgs
+ CATKIN_DEPENDS rospy std_msgs
 #  DEPENDS system_lib
 )
 
@@ -122,17 +122,17 @@ include_directories(
 
 ## Mark executable scripts (Python etc.) for installation
 ## in contrast to setup.py, you can choose the destination
-# install(PROGRAMS
-#   scripts/my_python_script
+#install(PROGRAMS
+#   src/odometry
 #   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
-# )
+#)
 
 ## Mark executables and/or libraries for installation
-# install(TARGETS odometry odometry_node
+#install(TARGETS src/odometry odometry_node
 #   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
 #   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
 #   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
-# )
+#)
 
 ## Mark cpp header files for installation
 # install(DIRECTORY include/${PROJECT_NAME}/
@@ -160,3 +160,8 @@ include_directories(
 
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
+catkin_python_setup()
+install(PROGRAMS src/odometry/Odometry
+       DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)
+
