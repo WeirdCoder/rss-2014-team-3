@@ -146,20 +146,6 @@ depend:
 	cd /home/rss-student/rss-2014-team-3/build && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
 
-# Convenience name for target.
-odometry/CMakeFiles/odometry_generate_messages.dir/rule:
-	cd /home/rss-student/rss-2014-team-3/build && $(MAKE) -f CMakeFiles/Makefile2 odometry/CMakeFiles/odometry_generate_messages.dir/rule
-.PHONY : odometry/CMakeFiles/odometry_generate_messages.dir/rule
-
-# Convenience name for target.
-odometry_generate_messages: odometry/CMakeFiles/odometry_generate_messages.dir/rule
-.PHONY : odometry_generate_messages
-
-# fast build rule for target.
-odometry_generate_messages/fast:
-	cd /home/rss-student/rss-2014-team-3/build && $(MAKE) -f odometry/CMakeFiles/odometry_generate_messages.dir/build.make odometry/CMakeFiles/odometry_generate_messages.dir/build
-.PHONY : odometry_generate_messages/fast
-
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -171,7 +157,6 @@ help:
 	@echo "... install/local"
 	@echo "... install/strip"
 	@echo "... list_install_components"
-	@echo "... odometry_generate_messages"
 	@echo "... rebuild_cache"
 	@echo "... test"
 .PHONY : help

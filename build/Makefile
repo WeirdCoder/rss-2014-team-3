@@ -550,19 +550,6 @@ lab6_msgs_genpy/fast:
 .PHONY : lab6_msgs_genpy/fast
 
 #=============================================================================
-# Target rules for targets named odometry_generate_messages
-
-# Build rule for target.
-odometry_generate_messages: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 odometry_generate_messages
-.PHONY : odometry_generate_messages
-
-# fast build rule for target.
-odometry_generate_messages/fast:
-	$(MAKE) -f odometry/CMakeFiles/odometry_generate_messages.dir/build.make odometry/CMakeFiles/odometry_generate_messages.dir/build
-.PHONY : odometry_generate_messages/fast
-
-#=============================================================================
 # Target rules for targets named rss_msgs_gencpp
 
 # Build rule for target.
@@ -762,7 +749,6 @@ help:
 	@echo "... lab6_msgs_generate_messages_py"
 	@echo "... lab6_msgs_genlisp"
 	@echo "... lab6_msgs_genpy"
-	@echo "... odometry_generate_messages"
 	@echo "... rss_msgs_gencpp"
 	@echo "... rss_msgs_generate_messages"
 	@echo "... rss_msgs_generate_messages_cpp"

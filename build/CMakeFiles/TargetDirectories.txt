@@ -29,7 +29,6 @@
 /home/rss-student/rss-2014-team-3/build/lab6_msgs/CMakeFiles/lab6_msgs_generate_messages_py.dir
 /home/rss-student/rss-2014-team-3/build/lab6_msgs/CMakeFiles/lab6_msgs_genlisp.dir
 /home/rss-student/rss-2014-team-3/build/lab6_msgs/CMakeFiles/lab6_msgs_genpy.dir
-/home/rss-student/rss-2014-team-3/build/odometry/CMakeFiles/odometry_generate_messages.dir
 /home/rss-student/rss-2014-team-3/build/rss_msgs/CMakeFiles/rss_msgs_gencpp.dir
 /home/rss-student/rss-2014-team-3/build/rss_msgs/CMakeFiles/rss_msgs_generate_messages.dir
 /home/rss-student/rss-2014-team-3/build/rss_msgs/CMakeFiles/rss_msgs_generate_messages_cpp.dir
