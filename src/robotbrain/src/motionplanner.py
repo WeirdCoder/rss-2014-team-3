@@ -1,11 +1,11 @@
 import rospy
 import math
-
+import time
 #
 # This class is used by the RobotBrain to send PWM messages to the HAL to control the motion of the motors. This includes both wheel motors and theconveyor belt motors. Also has methods to abstract some elements of motor control; has proportional control for the wheels
 #
 
-class MotionControl(object):
+class MotionPlanner(object):
     def __init__(self):
 
         # kept updated to reflect robot status
@@ -23,9 +23,9 @@ class MotionControl(object):
         self.WHEEL_RADIUS = 0.0625;         # wheel radius in m
         self.WHEELBASE =  .428;             # distance from origin to wheel; similar to a robot radius
         self.MAX_PWM = 255;
-        self.ENCONDER_RESOLUTION = 2000;    # ticks/revolution, without gear ratio
+        self.ENCODER_RESOLUTION = 2000;    # ticks/revolution, without gear ratio
         self.GEAR_RATIO = 65.5; 
-        self.TICKS_PER_REVOLUTION = ENCODER_RESOLUTION*GEAR_RATIO;
+        self.TICKS_PER_REVOLUTION = self.ENCODER_RESOLUTION*self.GEAR_RATIO;
         self.LEFT_WHEEL = 0;                # for indexing into leftWheel, rightWheel tuples
         self.RIGHT_WHEEL = 1;
         self.lastEncoderMsgTime = time.clock() # time in seconds. Used for calculating current wheel velocities
@@ -88,25 +88,13 @@ def handleEncoderMsg(msg):
 
 #################
 # Wheel motion ##
-#################
-    # params: currentPose: pose containing current location of robot
-    #         startPose: pose the robot was in when movement began
-    # returns: none
-    # rotate robot 360 degrees
-    def rotate360(self, currentPose, startPose):
-        self.rotate(.001)
-        time.sleep(.5)
-        if (math.abs(currentPose.getAngle() - startPose.getAngle()) > self.ANG_ERROR):
-            self.rotate(.001)
+################# 
 
-        return    
-        
 
     # params: currentPose: pose containing current location of robot
     #         destinationPose: pose containing desination of robot (angle is 0)
     #         angVel: float angular velocity in rad/s
     #         vel; float velocity in m/s
-    #         startPose: pose the robot was in when movement began
     # returns: void
     # using rotateTowards and translateTowards, first rotates to face destination and then translates to it
     def travelTowards(self, currentPose, destinationLoc, angVel, vel, startPose):

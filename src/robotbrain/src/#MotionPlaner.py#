@@ -91,15 +91,18 @@ def handleEncoderMsg(msg):
 #################
     # params: currentPose: pose containing current location of robot
     #         startPose: pose the robot was in when movement began
-    # returns: none
+    # returns: true when done, else false
     # rotate robot 360 degrees
     def rotate360(self, currentPose, startPose):
+        # rotate a little and wait so currentPose != startPose
         self.rotate(.001)
         time.sleep(.5)
+
+        # keep roting until done. Assuming rotating slowly enough that won't overswing by much
         if (math.abs(currentPose.getAngle() - startPose.getAngle()) > self.ANG_ERROR):
             self.rotate(.001)
-
-        return    
+            return False
+        return True   
         
 
     # params: currentPose: pose containing current location of robot
