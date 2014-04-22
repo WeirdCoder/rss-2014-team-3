@@ -3,8 +3,8 @@ package digitalIO;
 import orc.DigitalInput;
 import orc.Orc;
 
-import org.ros.message.rss_msgs.BumpMsg;
-import org.ros.node.Node;
+import rss_msgs.BumpMsg;
+import org.ros.node.ConnectedNode;
 import org.ros.node.topic.Publisher;
 
 public class BumperPublisher implements Runnable {
@@ -14,11 +14,11 @@ public class BumperPublisher implements Runnable {
 
 	private DigitalInput left;
 	private DigitalInput right;
-	private BumpMsg msg;
-	private Publisher<BumpMsg> pub;
+	private rss_msgs.BumpMsg msg;
+	private Publisher<rss_msgs.BumpMsg> pub;
 	private Object lock;
 
-	public BumperPublisher(Node node, Orc orc, Object lock){
+	public BumperPublisher(ConnectedNode node, Orc orc, Object lock){
 		this.lock = lock;
 		left = new DigitalInput(orc, 0, true, true);
 		right = new DigitalInput(orc, 1, true, true);
@@ -26,11 +26,11 @@ public class BumperPublisher implements Runnable {
 	}
 
 	@Override public void run() {
-		msg = new BumpMsg();
+		msg = pub.newMessage();
 		while(true){
 			synchronized(lock) {
-				msg.left = left.getValue();
-				msg.right = right.getValue();
+				msg.setLeft(left.getValue());
+				msg.setRight(right.getValue());
 			}
 			pub.publish(msg);
 			try {

@@ -1,0 +1,18 @@
+Manifest-Version: 1.0
+Export-Package: Publisher.class;version="0.1.0",analogIO;version="0.1.
+ 0";uses:="orc,org.ros.node",digitalIO;version="0.1.0";uses:="orc,org.
+ ros.node",motion;version="0.1.0";uses:="orc,org.ros.node",sonar;versi
+ on="0.1.0";uses:="orc,org.ros.node"
+Private-Package: .
+Bundle-Version: 0.1.0
+Tool: Bnd-2.1.0.20130426-122213
+Bundle-Name: uorc_publisher
+Bnd-LastModified: 1398176021000
+Created-By: 1.6.0_30 (Sun Microsystems Inc.)
+Bundle-ManifestVersion: 2
+Bundle-SymbolicName: com.github.rosjava.rosjava_pkg.uorc_publisher
+Import-Package: analogIO;version="[0.1,1)",digitalIO;version="[0.1,1)"
+ ,motion;version="[0.1,1)",orc;version="[0.1,1)",org.ros.namespace,org
+ .ros.node,org.ros.node.topic,rss_msgs;version="[0.1,1)",sonar;version
+ ="[0.1,1)"
+

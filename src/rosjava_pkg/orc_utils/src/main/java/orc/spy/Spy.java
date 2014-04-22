@@ -49,7 +49,7 @@
 /*  49:    */     } else {
 /*  50: 33 */       this.orc = Orc.makeOrc();
 /*  51:    */     }
-/*  52: 35 */     this.jf = new JFrame("OrcSpy: " + this.orc.getAddress());
+/*  52: 35 */     this.jf = new JFrame("OrcSpy: " + this.orc.orcAddr);
 /*  53: 36 */     this.jf.setLayout(new BorderLayout());
 /*  54: 37 */     this.jf.add(this.jdp, "Center");
 /*  55:    */     

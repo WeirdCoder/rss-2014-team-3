@@ -70,10 +70,10 @@
   "7e6caa6f77d06950d365d446a6483a22")
 (cl:defmethod roslisp-msg-protocol:message-definition ((type (cl:eql '<AnalogStatusMsg>)))
   "Returns full string definition for message of type '<AnalogStatusMsg>"
-  (cl:format cl:nil "float64[8] values~%~%"))
+  (cl:format cl:nil "float64[8] values~%~%~%"))
 (cl:defmethod roslisp-msg-protocol:message-definition ((type (cl:eql 'AnalogStatusMsg)))
   "Returns full string definition for message of type 'AnalogStatusMsg"
-  (cl:format cl:nil "float64[8] values~%~%"))
+  (cl:format cl:nil "float64[8] values~%~%~%"))
 (cl:defmethod roslisp-msg-protocol:serialization-length ((msg <AnalogStatusMsg>))
   (cl:+ 0
      0 (cl:reduce #'cl:+ (cl:slot-value msg 'values) :key #'(cl:lambda (ele) (cl:declare (cl:ignorable ele)) (cl:+ 8)))

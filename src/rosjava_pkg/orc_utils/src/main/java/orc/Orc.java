@@ -17,7 +17,7 @@ public class Orc
 {
   DatagramSocket sock;
   ReaderThread reader;
-  InetAddress orcAddr;
+  public InetAddress orcAddr;
   int nextTransactionId;
   static final int ORC_BASE_PORT = 2378;
   static final double MIN_TIMEOUT = 0.002D;
@@ -159,9 +159,9 @@ public class Orc
   
   public byte[] i2cTransaction(final int addr, final Object... os)
   {
-    final ByteArrayOutputStream bout = new  ByteArrayOutputStream();
-    bout.write((byte)addr);
-    bout.write(1);
+    final ByteArrayOutputStream bouts = new  ByteArrayOutputStream();
+    bouts.write((byte)addr);
+    bouts.write(1);
     assert ((os.length & 0x1) == 0x0);
     assert (os.length >= 2);
     final int  ntransactions = os.length / 2;
@@ -181,7 +181,7 @@ public class Orc
     final ByteArrayOutputStream readData = new ByteArrayOutputStream();
     try
     {
-      for (int k = 0; k < i; k++)
+      for (int k = 0; k < ntransactions; k++)
       {
         final int error  = resp.ins.readByte() & 0xFF;
         if (error != 0) {
@@ -270,7 +270,7 @@ public class Orc
               localOrcResponse.responseBuffer = arrayOfByte;
               localOrcResponse.responseBufferOffset = 20;
               localOrcResponse.responseBufferLength = localDatagramPacket.getLength();
-              localOrcResponse.utime = l;
+              localOrcResponse.utimeOrc = l;
               localOrcResponse.responseId = k;
               localOrcResponse.gotResponse();
             }

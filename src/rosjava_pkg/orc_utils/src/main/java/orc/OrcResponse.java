@@ -7,7 +7,8 @@ public final class OrcResponse
 {
   public boolean responded = false;
   public int transactionId;
-  public long utime;
+  public long utimeOrc;
+  public long utimeHost;
   public int responseId;
   public DataInputStream ins;
   public byte[] responseBuffer;

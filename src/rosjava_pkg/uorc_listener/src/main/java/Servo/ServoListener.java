@@ -4,7 +4,7 @@ import orc.Orc;
 import orc.Servo;
 
 import org.ros.message.MessageListener;
-import org.ros.message.rss_msgs.ArmMsg;
+import rss_msgs.ArmMsg;
 import org.ros.node.topic.Publisher;
 
 /**
@@ -18,7 +18,7 @@ import org.ros.node.topic.Publisher;
  *
  */
 
-public class ServoListener implements MessageListener<ArmMsg>{
+public class ServoListener implements MessageListener<rss_msgs.ArmMsg>{
 
         private Orc orc;
 	private Servo bigServo;
@@ -29,7 +29,7 @@ public class ServoListener implements MessageListener<ArmMsg>{
 
 	public int received =0;
 
-	public ServoListener(Orc orc, Publisher<ArmMsg> armPublisher, boolean safe){
+	public ServoListener(Orc orc, Publisher<rss_msgs.ArmMsg> armPublisher, boolean safe){
 	        this.orc = orc;
 		if (safe){
 			bigServo = new SafeServo(orc, 5, 452, 2081, 1500);//start in the upright position
@@ -46,11 +46,11 @@ public class ServoListener implements MessageListener<ArmMsg>{
 	}
 
 	@Override
-	public void onNewMessage(ArmMsg msg) {
+	public void onNewMessage(rss_msgs.ArmMsg msg) {
 		// TODO Auto-generated method stub
-		long bigPWM = msg.pwms[0];
-		long wristPWM = msg.pwms[1];
-		long gripperPWM = msg.pwms[2];
+		long bigPWM = msg.getPwms()[0];
+		long wristPWM = msg.getPwms()[1];
+		long gripperPWM = msg.getPwms()[2];
 
 		if(bigPWM == 0){
 		    bigServo.idle();
@@ -82,16 +82,16 @@ public class ServoListener implements MessageListener<ArmMsg>{
 	 */
 	private class ArmPubThread implements Runnable{
 
-		private Publisher<ArmMsg> armPub;
-		private ArmMsg msg;
+		private Publisher<rss_msgs.ArmMsg> armPub;
+		private rss_msgs.ArmMsg msg;
 
-		private ArmPubThread(Publisher<ArmMsg> pub){
+		private ArmPubThread(Publisher<rss_msgs.ArmMsg> pub){
 			this.armPub = pub;
-			msg = new ArmMsg();
-			msg.pwms = new long[8];
+			msg = armPub.newMessage();
+			msg.setPwms(new long[8]);
 		}
 
-		private void update(ArmMsg msg){
+		private void update(rss_msgs.ArmMsg msg){
 			synchronized(this.msg){
 				this.msg = msg;
 			}

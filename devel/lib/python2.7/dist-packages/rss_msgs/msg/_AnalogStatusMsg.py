@@ -10,6 +10,7 @@ class AnalogStatusMsg(genpy.Message):
   _type = "rss_msgs/AnalogStatusMsg"
   _has_header = False #flag to mark the presence of a Header object
   _full_text = """float64[8] values
+
 """
   __slots__ = ['values']
   _slot_types = ['float64[8]']

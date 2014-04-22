@@ -14,19 +14,19 @@
 /* 14:20 */     int deviceId = getDeviceId();
 /* 15:21 */     assert (deviceId == 229);
 /* 16:   */     
-/* 17:23 */     orc.i2cTransaction(29, new Object[] { { 45, 8 }, Integer.valueOf(0) });
+/* 17:23 */     orc.i2cTransaction(29, new byte[] { 45, 8 }, Integer.valueOf(0) );
 /* 18:   */   }
 /* 19:   */   
 /* 20:   */   public int getDeviceId()
 /* 21:   */   {
-/* 22:28 */     byte[] res = this.orc.i2cTransaction(29, new Object[] { { 0 }, Integer.valueOf(1) });
+/* 22:28 */     byte[] res = this.orc.i2cTransaction(29, new byte[] { 0 }, Integer.valueOf(1) );
 /* 23:   */     
 /* 24:30 */     return res[0] & 0xFF;
 /* 25:   */   }
 /* 26:   */   
 /* 27:   */   public int[] readAxes()
 /* 28:   */   {
-/* 29:35 */     byte[] resp = this.orc.i2cTransaction(29, new Object[] { { 50 }, Integer.valueOf(6) });
+/* 29:35 */     byte[] resp = this.orc.i2cTransaction(29, new byte[] {  50 }, Integer.valueOf(6) );
 /* 30:   */     
 /* 31:37 */     int[] v = new int[3];
 /* 32:38 */     v[0] = ((resp[0] & 0xFF) + (resp[1] << 8));
@@ -44,7 +44,7 @@
 /* 44:   */     {
 /* 45:51 */       int[] axes = accel.readAxes();
 /* 46:   */       
-/* 47:53 */       System.out.printf("%10d %10d %10d\n", new Object[] { Integer.valueOf(axes[0]), Integer.valueOf(axes[1]), Integer.valueOf(axes[2]) });
+/* 47:53 */       System.out.printf("%10d %10d %10d\n",axes[0],axes[1],axes[2]);
 /* 48:   */       try
 /* 49:   */       {
 /* 50:56 */         Thread.sleep(30L);

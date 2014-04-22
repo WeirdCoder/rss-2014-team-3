@@ -3,21 +3,21 @@ package motion;
 import orc.Orc;
 import orc.QuadratureEncoder;
 
-import org.ros.message.rss_msgs.EncoderMsg;
-import org.ros.node.Node;
+import rss_msgs.EncoderMsg;
+import org.ros.node.ConnectedNode;
 import org.ros.node.topic.Publisher;
 
 public class EncoderPublisher implements Runnable {
 
-    Node node;
+    ConnectedNode node;
     Orc orc;
     QuadratureEncoder left;
     QuadratureEncoder right;
-    EncoderMsg msg;
-    Publisher<EncoderMsg> pub;
+    rss_msgs.EncoderMsg msg;
+    Publisher<rss_msgs.EncoderMsg> pub;
     Object lock;
 	
-    public EncoderPublisher(Node node, Orc orc, Object lock) {
+    public EncoderPublisher(ConnectedNode node, Orc orc, Object lock) {
 	this.node = node;
 	this.orc = orc;
 	this.lock = lock;
@@ -27,11 +27,11 @@ public class EncoderPublisher implements Runnable {
     }
     
     @Override public void run() {
-	msg = new EncoderMsg();
+	msg = pub.newMessage();
 	while(true){
 	    synchronized(lock) {
-            msg.left = left.getPosition();
-            msg.right = right.getPosition();
+            msg.setLeft(left.getPosition());
+            msg.setRight(right.getPosition());
 	    }
 	    pub.publish(msg);
 	    try {

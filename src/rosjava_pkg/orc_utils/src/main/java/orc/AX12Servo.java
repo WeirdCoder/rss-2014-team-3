@@ -126,9 +126,8 @@
 /* 126:    */   public AX12Status getStatus()
 /* 127:    */   {
 /* 128:161 */     AX12Status status = new AX12Status();
-/* 129:    */     for (;;)
-/* 130:    */     {
-/* 131:165 */       OrcResponse resp = this.orc.doCommand(16808448, makeCommand(this.id, 2, new byte[] { 36, 8 }));
+/* 129:    */     while(true){
+/* 131:165 */       final OrcResponse resp = this.orc.doCommand(16808448, makeCommand(this.id, 2, new byte[] { 36, 8 }));
 /* 132:168 */       if (this.verbose) {
 /* 133:169 */         resp.print();
 /* 134:    */       }
@@ -176,7 +175,10 @@
 /* 176:    */           }
 /* 177:    */         }
 /* 178:    */       }
-/* 179:    */       catch (IOException ex) {}
+/* 179:    */       catch (IOException ex) {
+			continue;
+                    }
+                    break;
 /* 180:    */     }
 /* 181:218 */     return status;
 /* 182:    */   }

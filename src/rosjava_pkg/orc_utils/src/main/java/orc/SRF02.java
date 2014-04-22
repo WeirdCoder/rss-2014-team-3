@@ -22,12 +22,12 @@
 /* 22:   */   
 /* 23:   */   public void ping()
 /* 24:   */   {
-/* 25:26 */     byte[] resp = this.orc.i2cTransaction(this.i2caddr, new Object[] { { 0, 82 }, Integer.valueOf(0) });
+/* 25:26 */     byte[] resp = this.orc.i2cTransaction(this.i2caddr, new Object[] { 0, 82 }, Integer.valueOf(0));
 /* 26:   */   }
 /* 27:   */   
 /* 28:   */   public double readTime()
 /* 29:   */   {
-/* 30:32 */     byte[] resp = this.orc.i2cTransaction(this.i2caddr, new Object[] { { 2 }, Integer.valueOf(4) });
+/* 30:32 */     byte[] resp = this.orc.i2cTransaction(this.i2caddr, new Object[] { 2 }, Integer.valueOf(4));
 /* 31:   */     
 /* 32:34 */     int usecs = ((resp[0] & 0xFF) << 8) + (resp[1] & 0xFF);
 /* 33:   */     

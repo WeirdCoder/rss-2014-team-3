@@ -3,21 +3,20 @@ package digitalIO;
 import orc.DigitalInput;
 import orc.Orc;
 
-import org.ros.message.rss_msgs.DigitalStatusMsg;
-import org.ros.node.Node;
+import rss_msgs.DigitalStatusMsg;
+import org.ros.node.ConnectedNode;
 import org.ros.node.topic.Publisher;
-
 public class DigitalIOPublisher implements Runnable {
 
-    Node node;
+    ConnectedNode node;
     Orc orc;
     DigitalInput[] slowInputs = new DigitalInput[8];
     DigitalInput[] fastInputs = new DigitalInput[8];
-    DigitalStatusMsg msg;
-    Publisher<DigitalStatusMsg> pub;
+    rss_msgs.DigitalStatusMsg msg;
+    Publisher<rss_msgs.DigitalStatusMsg> pub;
     Object lock;
 
-    public DigitalIOPublisher(Node node, Orc orc, Object lock){
+    public DigitalIOPublisher(ConnectedNode node, Orc orc, Object lock){
 	this.node = node;
 	this.orc = orc;
 	this.lock = lock;
@@ -34,14 +33,18 @@ public class DigitalIOPublisher implements Runnable {
 
 
     @Override public void run() {
-	msg = new DigitalStatusMsg();
+	msg = pub.newMessage();
 	while (true){
+	    boolean[] tempFast = new boolean[8];
+            boolean[] tempSlow = new boolean[8];
 	    for (int i = 0; i <8; i ++) {
 		synchronized(lock) {
-		    msg.fast[i] = fastInputs[i].getValue();
-		    msg.slow[i] = slowInputs[i].getValue();
+		    tempFast[i] = fastInputs[i].getValue();
+		    tempSlow[i] = slowInputs[i].getValue();
 		}
 	    }
+            msg.setFast(tempFast);
+            msg.setSlow(tempSlow);
 	    pub.publish(msg);
 	    try {
 		Thread.sleep(50);

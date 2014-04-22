@@ -58,8 +58,8 @@ public class GlobalNavigation implements NodeMain{
     public Subscriber<rss_msgs.OdometryMsg> odoSub;
     public Publisher<std_msgs.String> statePub;
     public Publisher<rss_msgs.MotionMsg> motionPub;
-    public Publisher<lab5_msgs.GUIRectMsg> guiRectPub;
-    public Publisher<lab5_msgs.GUIPolyMsg> guiPolyPub;
+    public Publisher<lab6_msgs.GUIRectMsg> guiRectPub;
+    public Publisher<lab6_msgs.GUIPolyMsg> guiPolyPub;
     public Publisher<lab5_msgs.GUIPointMsg> guiPointPub;
     public Publisher<lab5_msgs.GUISegmentMsg> guiSegPub;
 
@@ -74,7 +74,7 @@ public class GlobalNavigation implements NodeMain{
     public void displayMap(){
         System.err.println("displaying Map");
 	   // send rectangle representing boundary of map
-       lab5_msgs.GUIRectMsg rectMsg = guiRectPub.newMessage();
+       lab6_msgs.GUIRectMsg rectMsg = guiRectPub.newMessage();
        fillRectMsg(rectMsg, worldRect, Color.black,false); //msg, rectangle, color, filled
        guiRectPub.publish(rectMsg);
        
@@ -82,7 +82,7 @@ public class GlobalNavigation implements NodeMain{
 	   java.util.List<PolygonObstacle> obstacleList = map.getObstacles();
 	
 	   for(int i = 0; i < obstacleList.size(); i++){
-           lab5_msgs.GUIPolyMsg polyMsg = guiPolyPub.newMessage();
+           lab6_msgs.GUIPolyMsg polyMsg = guiPolyPub.newMessage();
            fillPolyMsg(polyMsg, obstacleList.get(i), Color.black, true, true); //picking a color for all; assuming are closed, draw filled
            guiPolyPub.publish(polyMsg);
        } 
@@ -121,17 +121,17 @@ public class GlobalNavigation implements NodeMain{
 	//setting color
 	//TODO msg.c = new ColorMsg();
 	msg.getC().setR(c.getRed());
-	msg.getC().setB(getBlue());
+	msg.getC().setB(c.getBlue());
         msg.getC().setG(c.getGreen());
 
 	//opening up Polygon object to get points
 	java.util.List<java.awt.geom.Point2D.Double> pointList = obstacle.getVertices();
-	msg.numVertices = pointList.size();
+	msg.setNumVertices(pointList.size());
 	float[] xList = new float[msg.getNumVertices()];
 	float[] yList = new float[msg.getNumVertices()];
 
 	//looping through all points, adding to list
-	for (int i = 0; i < msg.numVertices; i++){
+	for (int i = 0; i < msg.getNumVertices(); i++){
 	    java.awt.geom.Point2D.Double currentPoint = pointList.get(i);
 	    xList[i] = (float) currentPoint.getX();
 	    yList[i] = (float) currentPoint.getY();
@@ -338,7 +338,7 @@ public class GlobalNavigation implements NodeMain{
         //Method Constants
         double poseTolerance = 0.1; //in meters
         //Current Pose
-        Point2D.Double currentPose = new Point2D.Double(msg.x,msg.y);
+        Point2D.Double currentPose = new Point2D.Double(msg.getX(),msg.getY());
         double x = msg.getX();
         double y = msg.getY();
         double theta = msg.getTheta();
@@ -360,7 +360,7 @@ public class GlobalNavigation implements NodeMain{
             if(waypoints.size() == index +1){
             	//No more waypoint.  FINISH
             	changeState(FINISH_WAYPOINT);
-            	setMotionMsg(new MotionMsg(), 0,0);//TODO
+            	setMotionMsg(motionPub.newMessage(), 0,0);//TODO
             	return;
     	    }
             publishState(new Integer(index+1).toString());
@@ -386,7 +386,7 @@ public class GlobalNavigation implements NodeMain{
             else if (rv < -0.05)
                 rv = -0.05;
         }
-        setMotionMsg(new MotionMsg(), tv,rv); //TODO
+        setMotionMsg(motionPub.newMessage(), tv,rv); //TODO
     	//setMotionMsg(new MotionMsg(),0.1*(Math.cos(theta)*(double)(currentWaypoint.x-x) + Math.sin(theta)*(double)(currentWaypoint.y-y)),0.4*(desiredTheta - theta));
     }
         
@@ -432,10 +432,11 @@ public class GlobalNavigation implements NodeMain{
     // implements stop on bump
     public void handle(BumpMsg msg){
         if(msg.getLeft() == true && msg.getRight() == true)
-	    setMotionMsg(new MotionMsg(), 0,0);//TODO
+	    setMotionMsg(motionPub.newMessage(), 0,0);//TODO
     }
 
-
+    public void onError(Node node, Throwable thrown){
+    }
     // driver, calls instanceMain
     public void onStart(final ConnectedNode node){
 

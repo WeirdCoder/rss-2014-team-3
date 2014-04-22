@@ -1,11 +1,12 @@
 import orc.Orc;
 
-import org.ros.message.rss_msgs.ArmMsg;
+import rss_msgs.ArmMsg;
 import org.ros.node.NodeConfiguration;
 import org.ros.node.NodeMain;
 import org.ros.node.Node;
+import org.ros.node.ConnectedNode;
 import org.ros.node.topic.Publisher;
-import org.ros.message.rss_msgs.MotionMsg;
+import rss_msgs.MotionMsg;
 import org.ros.message.MessageListener;
 import org.ros.namespace.GraphName;
 import org.ros.node.topic.Subscriber;
@@ -14,9 +15,9 @@ import org.ros.internal.node.topic.PublisherIdentifier;
 import org.ros.internal.node.topic.DefaultSubscriber;
 
 import Motor.MotorListener;
-import MotorControlSolution.RobotBase;
-import MotorControlSolution.RobotVelocityController;
-import MotorControlSolution.RobotVelocityControllerBalanced;
+import MotorControl.RobotBase;
+import MotorControl.RobotVelocityController;
+import MotorControl.RobotVelocityControllerBalanced;
 import Servo.ServoListener;
 import java.util.ArrayList;
 
@@ -24,12 +25,13 @@ public class Listener implements NodeMain {
 	
     Orc orc;
     ServoListener sl;
-    private Publisher<ArmMsg> armPub;
-    private Subscriber<MotionMsg> motorSub;
-    private Subscriber<ArmMsg> armSub;
+    private Publisher<rss_msgs.ArmMsg> armPub;
+    private Subscriber<rss_msgs.MotionMsg> motorSub;
+    private Subscriber<rss_msgs.ArmMsg> armSub;
 
-    @Override public void onStart(Node node) {
-
+    @Override public void onError(Node node, Throwable thrown){
+    }
+    @Override public void onStart(final ConnectedNode node) {
 	final Log log = node.getLog();
 	    
 	// TODO Auto-generated method stub
@@ -107,8 +109,7 @@ public class Listener implements NodeMain {
 
     @Override public void onShutdownComplete(Node node) {
     }
-
     @Override public GraphName getDefaultNodeName() {
-	return new GraphName("rss/uorc_listener");
+	return GraphName.of("rss/uorc_listener");
     }
 }

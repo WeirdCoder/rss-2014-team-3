@@ -5,7 +5,7 @@ import java.io.IOException;
 
 public class OrcStatus
 {
-  public long utime;
+  public long utimeOrc;
   public int statusFlags;
   public int debugCharsWaiting;
   public int[] analogInput = new int[13];
@@ -47,7 +47,7 @@ public class OrcStatus
     throws IOException
   {
     DataInputStream localDataInputStream = paramOrcResponse.ins;
-    this.utime = paramOrcResponse.utime;
+    this.utimeOrc = paramOrcResponse.utimeOrc;
     this.statusFlags = localDataInputStream.readInt();
     this.debugCharsWaiting = readU16(localDataInputStream);
     for (int i = 0; i < 13; i++)
@@ -58,25 +58,25 @@ public class OrcStatus
     }
     this.simpleDigitalValues = localDataInputStream.readInt();
     this.simpleDigitalDirections = localDataInputStream.readInt();
-    for (i = 0; i < 3; i++)
+    for (int i = 0; i < 3; i++)
     {
-      this.motorEnable[i] = (readU8(localDataInputStream) != 0 ? 1 : false);
+      this.motorEnable[i] = (readU8(localDataInputStream) != 0);
       this.motorPWMactual[i] = readS16(localDataInputStream);
       this.motorPWMgoal[i] = readS16(localDataInputStream);
       this.motorSlewRaw[i] = readU16(localDataInputStream);
       this.motorSlewSeconds[i] = (510.0D / this.motorSlewRaw[i] / 1000.0D * 128.0D);
     }
-    for (i = 0; i < 2; i++)
+    for (int i = 0; i < 2; i++)
     {
       this.qeiPosition[i] = localDataInputStream.readInt();
       this.qeiVelocity[i] = localDataInputStream.readInt();
     }
-    for (i = 0; i < 8; i++)
+    for (int i = 0; i < 8; i++)
     {
       this.fastDigitalMode[i] = readU8(localDataInputStream);
       this.fastDigitalConfig[i] = localDataInputStream.readInt();
     }
-    for (i = 0; i < 3; i++)
+    for (int i = 0; i < 3; i++)
     {
       this.gyroIntegrator[i] = localDataInputStream.readLong();
       this.gyroIntegratorCount[i] = localDataInputStream.readInt();

@@ -38,7 +38,7 @@ public class OrcController
       this.portSet[i] = paramArrayOfInt[i];
     }
     for (int i = 0; i < 16; i++) {
-      if (DIGITAL_SETUP[i] != 0)
+      if (DIGITAL_SETUP[i] != false)
       {
         boolean bool = true;
         this.dIn[i] = new DigitalInput(this.orc, i, bool, false);
@@ -63,7 +63,7 @@ public class OrcController
   
   public long clockReadSlave()
   {
-    return this.orc.getStatus().utime;
+    return this.orc.getStatus().utimeOrc;
   }
   
   public void motorSet(int paramInt1, int paramInt2)

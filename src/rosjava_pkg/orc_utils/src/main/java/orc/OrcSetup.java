@@ -587,7 +587,7 @@
 /* 587:574 */               OrcSetup.OrcDetection od = (OrcSetup.OrcDetection)OrcSetup.FindOrcThread.this.detectionsMap.get(Integer.valueOf(bootNonce));
 /* 588:575 */               if (od == null)
 /* 589:    */               {
-/* 590:576 */                 od = new OrcSetup.OrcDetection(OrcSetup.this);
+/* 590:576 */                 od = new OrcDetection();
 /* 591:577 */                 od.bootNonce = bootNonce;
 /* 592:578 */                 OrcSetup.FindOrcThread.this.detectionsMap.put(Integer.valueOf(bootNonce), od);
 /* 593:    */               }

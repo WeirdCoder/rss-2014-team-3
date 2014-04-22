@@ -31,22 +31,6 @@
 /*  31: 77 */     this.last_device_ticks_wrapping = device_ticks_wrapping;
 /*  32:    */     
 /*  33: 79 */     long device_ticks = this.device_ticks_offset + device_ticks_wrapping;
-/*  34:    */     
-/*  35:    */ 
-/*  36:    */ 
-/*  37:    */ 
-/*  38:    */ 
-/*  39:    */ 
-/*  40:    */ 
-/*  41:    */ 
-/*  42:    */ 
-/*  43:    */ 
-/*  44:    */ 
-/*  45:    */ 
-/*  46:    */ 
-/*  47:    */ 
-/*  48:    */ 
-/*  49:    */ 
 /*  50: 96 */     long pi_ticks = device_ticks;
 /*  51: 97 */     long qi_ticks = host_utime;
 /*  52:    */     
@@ -75,7 +59,6 @@
 /*  75:126 */     assert (this.p_ticks != -1L);
 /*  76:127 */     assert (device_ticks_wrapping >= 0L);
 /*  77:    */     long device_ticks;
-/*  78:    */     long device_ticks;
 /*  79:145 */     if (device_ticks_wrapping <= this.last_device_ticks_wrapping) {
 /*  80:147 */       device_ticks = this.device_ticks_offset + device_ticks_wrapping;
 /*  81:    */     } else {
@@ -87,7 +70,7 @@
 /*  87:158 */     double dp = (pi_ticks - this.p_ticks) / this.device_ticks_per_second;
 /*  88:    */     
 /*  89:    */ 
-/*  90:161 */     return (dp * 1000000.0D) + this.q_ticks + (1000000.0D * Math.abs(this.rate_error * dp));
+/*  90:161 */     return (long)(dp * 1000000.0D) + this.q_ticks + (long)(1000000.0D * Math.abs(this.rate_error * dp));
 /*  91:    */   }
 /*  92:    */ }
 

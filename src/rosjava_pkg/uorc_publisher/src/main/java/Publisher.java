@@ -4,7 +4,7 @@ import orc.Orc;
 import org.ros.namespace.GraphName;
 import org.ros.node.Node;
 import org.ros.node.NodeMain;
-
+import org.ros.node.ConnectedNode;
 import sonar.SonarPublisher;
 import analogIO.AnalogIOPublisher;
 import digitalIO.BreakBeamPublisher;
@@ -27,9 +27,11 @@ public class Publisher implements NodeMain {
 	Thread backSonarThread;
 
 	Object lock;
-
 	@Override
-	public void onStart(Node node) {
+	public void onError(Node node, Throwable thrown){
+        }
+	@Override
+	public void onStart(ConnectedNode node) {
 		lock = new Object();
 
 		orc = Orc.makeOrc();
@@ -84,7 +86,7 @@ public class Publisher implements NodeMain {
 
 	@Override
 	public GraphName getDefaultNodeName() {
-		return new GraphName("rss/uorc_publisher");
+		return GraphName.of("rss/uorc_publisher");
 	}
 
 }

@@ -1,6 +1,6 @@
 package Servo;
 
-import MotorControlSolution.RobotBase;
+import MotorControl.RobotBase;
 import orc.Orc;
 import orc.Servo;
 

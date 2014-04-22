@@ -14,15 +14,15 @@
 /* 14:   */     
 /* 15:   */ 
 /* 16:   */ 
-/* 17:25 */     orc.i2cTransaction(83, new Object[] { { -2, 4 }, Integer.valueOf(0) });
+/* 17:25 */     orc.i2cTransaction(83, new byte[] { -2, 4 }, Integer.valueOf(0) );
 /* 18:   */     
 /* 19:   */ 
-/* 20:28 */     orc.i2cTransaction(82, new Object[] { { 0 }, Integer.valueOf(0) });
+/* 20:28 */     orc.i2cTransaction(82, new byte[] { 0 }, Integer.valueOf(0));
 /* 21:   */   }
 /* 22:   */   
 /* 23:   */   public int[] readAxes()
 /* 24:   */   {
-/* 25:36 */     byte[] resp = this.orc.i2cTransaction(82, new Object[] { { 0 }, Integer.valueOf(6) });
+/* 25:36 */     byte[] resp = this.orc.i2cTransaction(82, new byte[] { 0 }, Integer.valueOf(6));
 /* 26:   */     
 /* 27:   */ 
 /* 28:39 */     int[] data = new int[3];
@@ -42,7 +42,7 @@
 /* 42:   */     {
 /* 43:54 */       int[] axes = wmp.readAxes();
 /* 44:   */       
-/* 45:56 */       System.out.printf("%10d %10d %10d\n", new Object[] { Integer.valueOf(axes[0]), Integer.valueOf(axes[1]), Integer.valueOf(axes[2]) });
+/* 45:56 */       System.out.printf("%10d %10d %10d\n",axes[0],axes[1],axes[2]);
 /* 46:   */       try
 /* 47:   */       {
 /* 48:58 */         Thread.sleep(30L);

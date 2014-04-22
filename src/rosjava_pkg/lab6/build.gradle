@@ -34,9 +34,11 @@ dependencies {
   compile 'com.github.rosjava.rosjava_msg_pkg:rss_msgs:[0.1,)'
   compile 'com.github.rosjava.rosjava_msg_pkg:lab5_msgs:[0.1,)'
   compile 'com.github.rosjava.rosjava_msg_pkg:lab6_msgs:[0.1,)'
-  compile 'com.github.rosjava.rosjava_pkg:lab4:[0.1,)'
-  /*compile 'com.github.rosjava.rosjava_pkg:lab5:[0.1,)'*/
+  /*compile 'com.github.rosjava.rosjava_pkg:lab4:[0.1,)'
+  compile 'com.github.rosjava.rosjava_pkg:lab5:[0.1,)'*/
   /* Example of a local subproject dependency */ 
   /* compile project(':sibling_gradle_project') */
+  compile project(':lab4')
+  compile project(':lab5')
 }
 

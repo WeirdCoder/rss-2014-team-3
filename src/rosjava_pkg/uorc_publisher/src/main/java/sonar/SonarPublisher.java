@@ -3,16 +3,16 @@ package sonar;
 import orc.Orc;
 import orc.SRF02;
 
-import org.ros.message.rss_msgs.SonarMsg;
-import org.ros.node.Node;
+import rss_msgs.SonarMsg;
+import org.ros.node.ConnectedNode;
 import org.ros.node.topic.Publisher;
 
 public class SonarPublisher implements Runnable {
-	Node node;
+	ConnectedNode node;
 	Orc orc;
 	SRF02 sonar;
 	boolean isFront;
-	Publisher<SonarMsg> pub;
+	Publisher<rss_msgs.SonarMsg> pub;
 	final int frontAddr = 0x70;
 	final int backAddr = 0x72;
 	Object lock;
@@ -27,7 +27,7 @@ public class SonarPublisher implements Runnable {
 		}
 	}
 
-	public SonarPublisher(Node n, Orc o, boolean isFront, Object lock){
+	public SonarPublisher(ConnectedNode n, Orc o, boolean isFront, Object lock){
 		this.node = n;
 		this.orc = o;
 		this.isFront = isFront;
@@ -45,16 +45,16 @@ public class SonarPublisher implements Runnable {
 
 	@Override public void run() {
 		// TODO Auto-generated method stub
-		SonarMsg msg = new SonarMsg();
+		SonarMsg msg = pub.newMessage();
 		while(true){
 			double s = 0.0;
 			synchronized(lock) {
 				s = sonar.measure();
 			}
 			if (s!=0){
-				msg.range = s;
+				msg.setRange(s);
 			}
-			msg.isFront = isFront;
+			msg.setIsFront(isFront);
 			pub.publish(msg);
 		}
 	}

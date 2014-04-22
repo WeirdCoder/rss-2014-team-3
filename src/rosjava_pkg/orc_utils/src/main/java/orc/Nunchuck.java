@@ -15,13 +15,13 @@
 /* 15:46 */     this.orc = orc;
 /* 16:47 */     this.writeme2[0] = 0;
 /* 17:   */     
-/* 18:49 */     orc.i2cTransaction(-92, new Object[] { { 64, 0 }, Integer.valueOf(0) });
+/* 18:49 */     orc.i2cTransaction(-92, new byte[] { 64, 0 }, Integer.valueOf(0) );
 /* 19:   */   }
 /* 20:   */   
 /* 21:   */   public int[] readState()
 /* 22:   */   {
-/* 23:57 */     this.orc.i2cTransaction(-92, new Object[] { { 0 }, Integer.valueOf(0) });
-/* 24:58 */     byte[] resp = this.orc.i2cTransaction(-92, new Object[] { null, Integer.valueOf(6) });
+/* 23:57 */     this.orc.i2cTransaction(-92, new byte[] { 0 }, Integer.valueOf(0) );
+/* 24:58 */     byte[] resp = this.orc.i2cTransaction(-92, null, Integer.valueOf(6) );
 /* 25:   */     
 /* 26:   */ 
 /* 27:   */ 

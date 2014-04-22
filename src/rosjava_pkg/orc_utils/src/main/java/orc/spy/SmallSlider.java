@@ -11,8 +11,8 @@
 /*  11:    */ import java.awt.event.MouseEvent;
 /*  12:    */ import java.awt.event.MouseListener;
 /*  13:    */ import java.awt.event.MouseMotionListener;
-/*  14:    */ import java.awt.geom.Ellipse2D.Double;
-/*  15:    */ //import java.awt.geom.RoundRectangle2D.Double;
+/*  14:    */ import java.awt.geom.Ellipse2D;
+/*  15:    */ import java.awt.geom.RoundRectangle2D;
 /*  16:    */ import java.util.ArrayList;
 /*  17:    */ import javax.swing.JComponent;
 /*  18:    */ 

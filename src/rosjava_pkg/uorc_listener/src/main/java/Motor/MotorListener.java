@@ -2,8 +2,8 @@ package Motor;
 
 import org.ros.message.MessageListener;
 
-import MotorControlSolution.RobotVelocityController;
-import org.ros.message.rss_msgs.MotionMsg;
+import MotorControl.RobotVelocityController;
+import rss_msgs.MotionMsg;
 
 
 public class MotorListener implements MessageListener<MotionMsg> {
@@ -15,15 +15,15 @@ public class MotorListener implements MessageListener<MotionMsg> {
     }
     
     @Override
-	public void onNewMessage(MotionMsg msg){
+	public void onNewMessage(rss_msgs.MotionMsg msg){
 	
 	//System.out.println("got velocity command: " + msg.translationalVelocity + ", " + msg.rotationalVelocity);
 	
-	double left = msg.translationalVelocity;
-	double right = msg.translationalVelocity;
+	double left = msg.getTranslationalVelocity();
+	double right = msg.getTranslationalVelocity();
 	
-	left -= msg.rotationalVelocity;
-	right += msg.rotationalVelocity;
+	left -= msg.getRotationalVelocity();
+	right += msg.getRotationalVelocity();
 	
 	left *= 3.5;
 	right *= 3.5;

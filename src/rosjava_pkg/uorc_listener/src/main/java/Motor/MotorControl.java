@@ -1,13 +1,14 @@
 package Motor;
 
-import MotorControlSolution.RobotBase;
-import MotorControlSolution.RobotVelocityControllerBalanced;
-import MotorControlSolution.RobotVelocityController;
-import org.ros.message.rss_msgs.MotionMsg;
+import MotorControl.RobotBase;
+import MotorControl.RobotVelocityControllerBalanced;
+import MotorControl.RobotVelocityController;
+import rss_msgs.MotionMsg;
 import org.ros.message.MessageListener;
 import org.ros.node.Node;
 import org.ros.node.NodeConfiguration;
 import org.ros.node.NodeMain;
+import org.ros.node.ConnectedNode;
 import org.ros.node.topic.Publisher;
 import org.ros.namespace.GraphName;
 import org.ros.node.topic.Subscriber;
@@ -23,17 +24,19 @@ public class MotorControl implements NodeMain {
 	    node.shutdown();
 	}
     }
-
+    @Override
+	public void onError(Node node, Throwable Thrown){
+    }
     @Override
 	public void onShutdownComplete(Node node) {
     }
     
     @Override
 	public GraphName getDefaultNodeName() {
-	return new GraphName("rss/motorcontrol");
+	return GraphName.of("rss/motorcontrol");
     }
 
-    public Subscriber<MotionMsg> subscriber;
+    public Subscriber<rss_msgs.MotionMsg> subscriber;
 
 	/**
 	 * <p>Entry point for the Motor Control lab.</p>
@@ -41,7 +44,7 @@ public class MotorControl implements NodeMain {
 	 * @param args command line arguments
 	 **/
 	@Override
-	public void onStart(Node node) {
+	public void onStart(ConnectedNode node) {
 		try{
 
 			System.out.println("in main");

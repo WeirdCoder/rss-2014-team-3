@@ -82,11 +82,11 @@ public class PolygonMap implements NodeMain{
 	protected LinkedList<PolygonObstacle> obstacles =
 		new LinkedList<PolygonObstacle>();
 
-	private Publisher<Object> erasePub;
+	private Publisher<lab5_msgs.GUIEraseMsg> erasePub;
 
-	private Publisher<Object> rectPub;
+	private Publisher<lab6_msgs.GUIRectMsg> rectPub;
 
-	private Publisher<Object> polyPub;
+	private Publisher<lab6_msgs.GUIPolyMsg> polyPub;
 
 	private String mapFile = "/home/rss-staff/ros/rss/solutions/lab6/src/global-nav-maze-2011-basic.map";
 
@@ -400,14 +400,14 @@ public class PolygonMap implements NodeMain{
 
 			System.out.println(toString());
 
-			erasePub.publish(new GUIEraseMsg());
+			erasePub.publish(erasePub.newMessage());
 
-			GUIRectMsg rectMsg = new GUIRectMsg();
+			GUIRectMsg rectMsg = rectPub.newMessage();
 			GlobalNavigation.fillRectMsg(rectMsg, getWorldRect(), null, false);
 			rectPub.publish(rectMsg);
-			GUIPolyMsg polyMsg = new GUIPolyMsg();
+			GUIPolyMsg polyMsg = polyPub.newMessage();
 			for (PolygonObstacle obstacle : getObstacles()){
-				polyMsg = new GUIPolyMsg();
+				polyMsg = polyPub.newMessage();
 				GlobalNavigation.fillPolyMsg(polyMsg, obstacle, SonarGUI.makeRandomColor(), true, true);
 				polyPub.publish(polyMsg);
 			}
@@ -458,6 +458,9 @@ public class PolygonMap implements NodeMain{
 		polyPub = node.newPublisher("gui/Poly", "lab6_msgs/GUIPolyMsg");
 		this.instanceMain(mapFile);
 	}
+        @Override
+	public void onError(Node node, Throwable thrown){
+        }
 
 
 	@Override public void onShutdownComplete(Node node) {
