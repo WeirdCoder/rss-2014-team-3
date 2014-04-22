@@ -310,8 +310,8 @@ clean: gc_msgs/CMakeFiles/gc_msgs_gencpp.dir/clean
 # Target rules for target gc_msgs/CMakeFiles/gc_msgs_generate_messages.dir
 
 # All Build rule for target.
-gc_msgs/CMakeFiles/gc_msgs_generate_messages.dir/all: gc_msgs/CMakeFiles/gc_msgs_generate_messages_lisp.dir/all
 gc_msgs/CMakeFiles/gc_msgs_generate_messages.dir/all: gc_msgs/CMakeFiles/gc_msgs_generate_messages_cpp.dir/all
+gc_msgs/CMakeFiles/gc_msgs_generate_messages.dir/all: gc_msgs/CMakeFiles/gc_msgs_generate_messages_lisp.dir/all
 gc_msgs/CMakeFiles/gc_msgs_generate_messages.dir/all: gc_msgs/CMakeFiles/gc_msgs_generate_messages_py.dir/all
 	$(MAKE) -f gc_msgs/CMakeFiles/gc_msgs_generate_messages.dir/build.make gc_msgs/CMakeFiles/gc_msgs_generate_messages.dir/depend
 	$(MAKE) -f gc_msgs/CMakeFiles/gc_msgs_generate_messages.dir/build.make gc_msgs/CMakeFiles/gc_msgs_generate_messages.dir/build
@@ -923,9 +923,9 @@ clean: lab6_msgs/CMakeFiles/lab6_msgs_gencpp.dir/clean
 # Target rules for target lab6_msgs/CMakeFiles/lab6_msgs_generate_messages.dir
 
 # All Build rule for target.
+lab6_msgs/CMakeFiles/lab6_msgs_generate_messages.dir/all: lab6_msgs/CMakeFiles/lab6_msgs_generate_messages_cpp.dir/all
 lab6_msgs/CMakeFiles/lab6_msgs_generate_messages.dir/all: lab6_msgs/CMakeFiles/lab6_msgs_generate_messages_py.dir/all
 lab6_msgs/CMakeFiles/lab6_msgs_generate_messages.dir/all: lab6_msgs/CMakeFiles/lab6_msgs_generate_messages_lisp.dir/all
-lab6_msgs/CMakeFiles/lab6_msgs_generate_messages.dir/all: lab6_msgs/CMakeFiles/lab6_msgs_generate_messages_cpp.dir/all
 	$(MAKE) -f lab6_msgs/CMakeFiles/lab6_msgs_generate_messages.dir/build.make lab6_msgs/CMakeFiles/lab6_msgs_generate_messages.dir/depend
 	$(MAKE) -f lab6_msgs/CMakeFiles/lab6_msgs_generate_messages.dir/build.make lab6_msgs/CMakeFiles/lab6_msgs_generate_messages.dir/build
 	$(CMAKE_COMMAND) -E cmake_progress_report /home/rss-student/rss-2014-team-3/build/CMakeFiles 

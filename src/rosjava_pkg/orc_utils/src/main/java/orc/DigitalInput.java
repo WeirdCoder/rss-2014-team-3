@@ -1,12 +1,12 @@
+package orc;
 
-
-DigitalInput
-
-  orc
-  port
-  invert
+public class DigitalInput
+{
+  Orc orc;
+  int port;
+  boolean invert;
   
-  DigitalInput, , , 
+  public DigitalInput(final Orc paramOrc, final int paramInt, final boolean paramBoolean1, final boolean paramBoolean2){
   
     orc = paramOrc;
     this.port = paramInt;
@@ -31,8 +31,3 @@ DigitalInput
   }
 }
 
-
-/* Location:           C:\Users\Aldebaran_\Documents\GitHub\rss-2014-team-3\src\rosjava_pkg\orc_utils\src\main\java\uORCInterface-0.0.jar
- * Qualified Name:     orc.DigitalInput
- * JD-Core Version:    0.7.0.1
- */

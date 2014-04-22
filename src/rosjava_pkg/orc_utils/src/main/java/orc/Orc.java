@@ -157,48 +157,44 @@ public class Orc
     }
   }
   
-  public byte[] i2cTransaction(int paramInt, Object... paramVarArgs)
+  public byte[] i2cTransaction(final int addr, final Object... os)
   {
-    ByteArrayOutputStream localByteArrayOutputStream = new ByteArrayOutputStream();
-    localByteArrayOutputStream.write((byte)paramInt);
-    localByteArrayOutputStream.write(1);
-    assert ((paramVarArgs.length & 0x1) == 0);
-    assert (paramVarArgs.length >= 2);
-    int i = paramVarArgs.length / 2;
-    int k;
-    int m;
-    int n;
-    for (int j = 0; j < i; j++)
+    final ByteArrayOutputStream bout = new  ByteArrayOutputStream();
+    bout.write((byte)addr);
+    bout.write(1);
+    assert ((os.length & 0x1) == 0x0);
+    assert (os.length >= 2);
+    final int  ntransactions = os.length / 2;
+    for (int j = 0; j < ntransactions; j++)
     {
-      localObject = (byte[])paramVarArgs[(2 * j + 0)];
-      k = localObject == null ? 0 : localObject.length;
-      m = ((Integer)paramVarArgs[(2 * j + 1)]).intValue();
-      localByteArrayOutputStream.write((byte)k);
-      localByteArrayOutputStream.write((byte)m);
-      for (n = 0; n < k; n++) {
-        localByteArrayOutputStream.write(localObject[n]);
+      final byte[] writebuf = (byte[])os[(2 * j + 0)];
+      final int writebuflen = (writebuf == null) ? 0 : writebuf.length;
+      final int readlen = (Integer)os[2*j+1];
+      bouts.write((byte)writebuflen);
+      bouts.write((byte)readlen);
+      for (int i = 0; i < writebuflen; i++) {
+        bouts.write(writebuf[i]);
       }
     }
-    OrcResponse localOrcResponse = doCommand(20480, localByteArrayOutputStream.toByteArray());
-    assert (localOrcResponse.responded);
-    Object localObject = new ByteArrayOutputStream();
+    final OrcResponse resp = this.doCommand(20480, bouts.toByteArray());
+    assert (resp.responded);
+    final ByteArrayOutputStream readData = new ByteArrayOutputStream();
     try
     {
-      for (k = 0; k < i; k++)
+      for (int k = 0; k < i; k++)
       {
-        m = localOrcResponse.ins.readByte() & 0xFF;
-        if (m != 0) {
-          System.out.printf("Orc I2C error: code = %d\n", new Object[] { Integer.valueOf(m) });
+        final int error  = resp.ins.readByte() & 0xFF;
+        if (error != 0) {
+          System.out.printf("Orc I2C error: code = %d\n", k++);
         }
-        n = localOrcResponse.ins.readByte() & 0xFF;
-        for (int i1 = 0; i1 < n; i1++) {
-          ((ByteArrayOutputStream)localObject).write(localOrcResponse.ins.readByte());
+        int actualreadlen = resp.ins.readByte() & 0xFF;
+        for(int j =0;j < actualreadlen; j++){
+		readData.write(resp.ins.readByte());
         }
       }
-      return ((ByteArrayOutputStream)localObject).toByteArray();
+      return readData.toByteArray();
     }
-    catch (IOException localIOException) {}
-    return null;
+    catch (IOException localIOException) {return null;}
   }
   
   public int[] spiTransaction(int paramInt1, int paramInt2, int paramInt3, int paramInt4, int[] paramArrayOfInt)
@@ -298,8 +294,3 @@ public class Orc
   }
 }
 
-
-/* Location:           C:\Users\Aldebaran_\Documents\GitHub\rss-2014-team-3\src\rosjava_pkg\orc_utils\src\main\java\uORCInterface-0.0.jar
- * Qualified Name:     orc.Orc
- * JD-Core Version:    0.7.0.1
- */

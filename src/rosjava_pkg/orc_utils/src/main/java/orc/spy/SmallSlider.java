@@ -12,7 +12,7 @@
 /*  12:    */ import java.awt.event.MouseListener;
 /*  13:    */ import java.awt.event.MouseMotionListener;
 /*  14:    */ import java.awt.geom.Ellipse2D.Double;
-/*  15:    */ import java.awt.geom.RoundRectangle2D.Double;
+/*  15:    */ //import java.awt.geom.RoundRectangle2D.Double;
 /*  16:    */ import java.util.ArrayList;
 /*  17:    */ import javax.swing.JComponent;
 /*  18:    */ 
@@ -218,8 +218,3 @@
 /* 218:    */   }
 /* 219:    */ }
 
-
-/* Location:           C:\Users\Aldebaran_\Documents\GitHub\rss-2014-team-3\src\rosjava_pkg\orc_utils\src\main\java\orc-0.0.jar
- * Qualified Name:     orc.spy.SmallSlider
- * JD-Core Version:    0.7.0.1
- */

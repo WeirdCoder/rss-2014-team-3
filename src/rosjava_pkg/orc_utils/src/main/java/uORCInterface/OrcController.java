@@ -37,7 +37,7 @@ public class OrcController
       this.motorSet[i] = new Motor(this.orc, paramArrayOfInt[i], false);
       this.portSet[i] = paramArrayOfInt[i];
     }
-    for (i = 0; i < 16; i++) {
+    for (int i = 0; i < 16; i++) {
       if (DIGITAL_SETUP[i] != 0)
       {
         boolean bool = true;
@@ -104,7 +104,7 @@ public class OrcController
   
   public void digitalSet(int paramInt, boolean paramBoolean)
   {
-    if (DIGITAL_SETUP[paramInt] != 0)
+    if (DIGITAL_SETUP[paramInt] != false)
     {
       System.out.println("This port is NOT set for digital OUTPUT!!!");
       System.exit(1);
@@ -117,7 +117,7 @@ public class OrcController
   
   public boolean digitalRead(int paramInt)
   {
-    if (DIGITAL_SETUP[paramInt] == 0)
+    if (DIGITAL_SETUP[paramInt] == false)
     {
       System.out.println("This port is NOT set for digital INPUT!!!");
       System.exit(1);
@@ -143,9 +143,3 @@ public class OrcController
     }
   }
 }
-
-
-/* Location:           C:\Users\Aldebaran_\Documents\GitHub\rss-2014-team-3\src\rosjava_pkg\orc_utils\src\main\java\uORCInterface-0.0.jar
- * Qualified Name:     uORCInterface.OrcController
- * JD-Core Version:    0.7.0.1
- */

@@ -1,23 +1,20 @@
-/*  1:   */ 
-/*  2:   */ 
-/*  3:   */ java.io.PrintStream
-/*  4:   */ 
-/*  5:   */ ADIS16350
-/*  6:   */ 
-/*  7:   */   orc
-/*  8: 7 */   maxclk = 100000
-/*  9: 8 */   spo = 1
-/* 10: 9 */   sph = 1
-/* 11:10 */   nbits = 16
+package orc; 
+import  java.io.PrintStream;
+public class ADIS16350{
+/*  7:   */   Orc orc;
+/*  8: 7 */   int maxclk = 100000;
+/*  9: 8 */   int spo = 1;
+/* 10: 9 */   int sph = 1;
+/* 11:10 */   int nbits = 16;
 /* 12:   */   
-/* 13:   */   ADIS16350
+/* 13:   */   public ADIS16350(final Orc paramOrc){
 /* 14:   */   
-/* 15:14 */     orc = 
-/* 16:   */   
+/* 15:14 */   orc = paramOrc;
+/* 16:   */   }
 /* 17:   */   
-/* 18:   */   readRegister
+/* 18:   */   int readRegister(final int addr){
 /* 19:   */   
-/* 20:19 */     [] = orc.spiTransaction(this.maxclk, this.spo, this.sph, this.nbits, new int[] { addr << 8 });
+/* 20:19 */    int[] v  = orc.spiTransaction(this.maxclk, this.spo, this.sph, this.nbits, new int[] { addr << 8 });
 /* 21:20 */     v = this.orc.spiTransaction(this.maxclk, this.spo, this.sph, this.nbits, new int[] { addr << 8 });
 /* 22:   */     
 /* 23:22 */     return v[(v.length - 1)];
@@ -91,8 +88,3 @@
 /* 91:   */   }
 /* 92:   */ }
 
-
-/* Location:           C:\Users\Aldebaran_\Documents\GitHub\rss-2014-team-3\src\rosjava_pkg\orc_utils\src\main\java\orc-0.0.jar
- * Qualified Name:     orc.ADIS16350
- * JD-Core Version:    0.7.0.1
- */

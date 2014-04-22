@@ -69,8 +69,3 @@
 /*  69:    */   }
 /*  70:    */ }
 
-
-/* Location:           C:\Users\Aldebaran_\Documents\GitHub\rss-2014-team-3\src\rosjava_pkg\orc_utils\src\main\java\orc-0.0.jar
- * Qualified Name:     orc.IRRangeFinder
- * JD-Core Version:    0.7.0.1
- */
