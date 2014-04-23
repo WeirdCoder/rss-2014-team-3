@@ -1,18 +1,20 @@
 Manifest-Version: 1.0
-Export-Package: Listener.class;version="0.1.0",Motor;version="0.1.0";u
- ses:="MotorControl,org.ros.message,org.ros.namespace,org.ros.node,org
- .ros.node.topic,rss_msgs",Servo;version="0.1.0";uses:="orc,org.ros.me
- ssage,org.ros.node.topic,rss_msgs"
+Export-Package: GCListener.class;version="0.1.0",Listener.class;versio
+ n="0.1.0",Motor;version="0.1.0";uses:="MotorControl,org.ros.message,o
+ rg.ros.namespace,org.ros.node,org.ros.node.topic,rss_msgs",Servo;vers
+ ion="0.1.0";uses:="gc_msgs,orc,org.ros.message,org.ros.node.topic,rss
+ _msgs"
 Private-Package: .
 Bundle-Version: 0.1.0
 Tool: Bnd-2.1.0.20130426-122213
 Bundle-Name: uorc_listener
-Bnd-LastModified: 1398173429000
+Bnd-LastModified: 1398272470000
 Created-By: 1.6.0_30 (Sun Microsystems Inc.)
 Bundle-ManifestVersion: 2
 Bundle-SymbolicName: com.github.rosjava.rosjava_pkg.uorc_listener
 Import-Package: Motor;version="[0.1,1)",MotorControl;version="[0.1,1)"
- ,Servo;version="[0.1,1)",orc;version="[0.1,1)",org.apache.commons.log
- ging;version="[1.1,2)",org.ros.message,org.ros.namespace,org.ros.node
- ,org.ros.node.topic,rss_msgs;version="[0.1,1)"
+ ,Servo;version="[0.1,1)",gc_msgs;version="[0.1,1)",orc;version="[0.1,
+ 1)",org.apache.commons.logging;version="[1.1,2)",org.ros.message,org.
+ ros.namespace,org.ros.node,org.ros.node.topic,rss_msgs;version="[0.1,
+ 1)"
 

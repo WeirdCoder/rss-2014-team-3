@@ -1,0 +1,5 @@
+try{
+    project.catkin.tree.generateMessageArtifact(project, 'gc_msgs')
+} catch (NullPointerException e){
+    println("gc_msgs not found in ROS_PACKAGE_PATH")
+}

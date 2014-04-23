@@ -4,11 +4,12 @@ import motionplanner
 import pathplanner
 import location
 import pose
-#from gc_msgs import MotionMsg  # for sending commands to motors
-#from gc_msgs import BumpMsg    # for listening to bump sensors
-#from gc_msgs import PoseMsg    # for listening to when the kinect sees a block
+from gc_msgs import MotionMsg  # for sending commands to motors
+from gc_msgs import BumpMsg    # for listening to bump sensors
+from gc_msgs import PoseMsg    # for listening to when the kinect sees a block
 import time
 import random
+
 #
 # This node is the state machine that controls robot behavior
 #
@@ -22,9 +23,9 @@ import random
 # starts all publishers, subscribers; loads map and fills associated variables 
 def init():
     #TODO
-    #motionPub = rospy.Publisher("command/Motors", MotionMsg);
-    #bumpSub = rospy.Subscriber('bumpData', BumpMsg, handleBumpMsg);
-    #blockSeenSub = rospy.Subscriber('blockSeen', PoseMsg, handleBlockSeenMsg);
+    motionPub = rospy.Publisher("command/Motors", MotionMsg);
+    bumpSub = rospy.Subscriber('bumpData', BumpMsg, handleBumpMsg);
+    blockSeenSub = rospy.Subscriber('blockSeen', PoseMsg, handleBlockSeenMsg);
 
     # loading and processing map
     # TODO
