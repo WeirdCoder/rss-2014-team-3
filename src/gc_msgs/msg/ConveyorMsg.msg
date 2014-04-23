@@ -1,0 +1,2 @@
+float32 frontConveyorFractionOn
+float32 backConveyorFractionOn
