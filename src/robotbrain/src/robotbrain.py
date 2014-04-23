@@ -31,7 +31,7 @@ def init():
 
 
     # loading and processing map
-    [blockLocations, mapList] = mapParser.parseMap('map.txt', currentPose);
+    #[blockLocations, mapList] = mapParser.parseMap('map.txt', currentPose);
     return
 
 # params: none
