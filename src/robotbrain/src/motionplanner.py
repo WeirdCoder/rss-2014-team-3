@@ -1,6 +1,8 @@
 import rospy
 import math
 import time
+from gc_msgs import ConveyorMsg
+from gc_msgs import HamperMsg
 #
 # This class is used by the RobotBrain to send PWM messages to the HAL to control the motion of the motors. This includes both wheel motors and theconveyor belt motors. Also has methods to abstract some elements of motor control; has proportional control for the wheels
 #
@@ -18,11 +20,10 @@ class MotionPlanner(object):
         self.MAX_WHEEL_TRANS_ACCEL = .01;    # maximum translation acceleration in m/s^2  
         self.MAX_WHEEL_ROT_ACCEL = .01;      # maximum rotational  acceleration in rad/s^2  
         self.ANGULAR_ERR = .1;              # acceptable angular error in radians
-        self.BALANCED_GAIN = .5;
         self.MAX_WHEEL_ANG_VEL = 9.95;      # maximum angular velocity of wheels in rad/s
         self.WHEEL_RADIUS = 0.0625;         # wheel radius in m
         self.WHEELBASE =  .428;             # distance from origin to wheel; similar to a robot radius
-        self.MAX_PWM = 255;
+
         self.ENCODER_RESOLUTION = 2000;    # ticks/revolution, without gear ratio
         self.GEAR_RATIO = 65.5; 
         self.TICKS_PER_REVOLUTION = self.ENCODER_RESOLUTION*self.GEAR_RATIO;
@@ -30,16 +31,12 @@ class MotionPlanner(object):
         self.RIGHT_WHEEL = 1;
         self.lastEncoderMsgTime = time.clock() # time in seconds. Used for calculating current wheel velocities
 
-        # constants for conveyor motion
-        # TODO: pick appropirate values
-        self.CONVEYOR_SPEED = .1;     # speed of conveyor belts in rad/s
-        self.MOTOR_INT = {'lWheel': 0, 'rWheel': 1, 'lRampConveyor': 2, 'rRampConveyor':3, 'holdConveyor': 4};
-
         
         # intialize publishers, subscribers
-        pwmPub = rospy.Publisher("MotorCommand", MotorCommand);
-        encoderSub = rospy.Subscriber('encoderData', EncoderMsg, handleEncoderMsg);
-        motionPub = rospy.Publisher("command/Motors", MotionMsg);
+        self.conveyorPub = rospy.Publisher("conveyorCommand", ConveyorMsg);
+        self.hamperPub = rospy.Publisher("hamperCommand", HamperMsg);
+        self.encoderSub = rospy.Subscriber('encoderData', EncoderMsg, handleEncoderMsg);
+        self.motionPub = rospy.Publisher("command/Motors", MotionMsg);
 
         return;
 
@@ -255,16 +252,11 @@ def handleEncoderMsg(msg):
     # sends messages to start the conveyor belts that consume blocks at default speed
     def startEatingBelts(self):
 
-        # calculate desired pwm
-        pwmValue =  self.convertVelToPWM(self.CONVEYOR_SPEED);
-
         # tell right conveor motor to start at standard speed
-        msg = MotorCommand(pwmValue, self.MOTOR_INT('rRampConveyor'));
-        pwmPub.publish(msg)
-
-        # tell right conveor motor to start at standard speed
-        msg = MotorCommand(pwmValue, self.MOTOR_INT('lRampConveyor'));
-        pwmPub.publish(msg)
+        msg = ConveyorMsg()
+        msg.frontTrackFractionOn = 1.0
+        msg.backTrackFractionOn = 0.0
+        conveyorPub.publish(msg)
         
         return
 
@@ -273,16 +265,10 @@ def handleEncoderMsg(msg):
     # sends messages to start the conveyor belts that consume blocks at default speed
     def reverseEatingBelts(self):
 
-        # calculate desired pwm
-        pwmValue =  self.convertVelToPWM(-1*self.CONVEYOR_SPEED);
-
-        # tell right conveor motor to start at standard speed
-        msg = MotorCommand(pwmValue, self.MOTOR_INT('rRampConveyor'));
-        pwmPub.publish(msg)
-
-        # tell right conveor motor to start at standard speed
-        msg = MotorCommand(pwmValue, self.MOTOR_INT('lRampConveyor'));
-        pwmPub.publish(msg)
+        msg = ConveyorMsg()
+        msg.frontTrackFractionOn = -1.0
+        msg.backTrackFractionOn = 0.0
+        conveyorPub.publish(msg)
         
         return
 
@@ -290,19 +276,13 @@ def handleEncoderMsg(msg):
     # params: none
     # returns: none
     # sends messages to stop the conveyor belts that consume blocks
-    def stopEatingBelts(self):
+    def stopConveyorBelts(self):
         
-        # calculate desired PWM
-        pwmValue = self.convertVelToPWM(0);
+        msg = ConveyorMsg()
+        msg.frontTrackFractionOn = 0.0
+        msg.backTrackFractionOn = 0.0
+        conveyorPub.publish(msg)
 
-        # tell right conveor motor to stop at standard speed
-        msg = MotorCommand(pwmValue, self.MOTOR_INT('rRampConveyor'));
-        pwmPub.publish(msg)
-
-        # tell right conveor motor to start at standard speed
-        msg = MotorCommand(pwmValue, self.MOTOR_INT('lRampConveyor'));
-        pwmPub.publish(msg)
-        
         return
 
 
@@ -310,13 +290,10 @@ def handleEncoderMsg(msg):
     # returns: none
     # sends messages to start the conveyor belt that moves blocks within the hamper
     def startHamperBelt(self):
-        
-        # calculate desired pwm
-        pwmValue =  self.convertVelToPWM(self.CONVEYOR_SPEED);
-
-        # tell hold conveyor motor to start at standard speed
-        msg = MotorCommand(pwmValue, self.MOTOR_INT('holdConveyor'));
-        pwmPub.publish(msg)
+        msg = ConveyorMsg()
+        msg.frontTrackFractionOn = 0.0
+        msg.backTrackFractionOn = 1.0
+        conveyorPub.publish(msg)
 
         return
 
@@ -324,27 +301,11 @@ def handleEncoderMsg(msg):
     # returns: none
     # sends messages to start the conveyor belt that moves blocks within the hamper
     def reverseHamperBelt(self):
-        
-        # calculate desired pwm
-        pwmValue =  self.convertVelToPWM(-1*self.CONVEYOR_SPEED);
+        msg = ConveyorMsg()
+        msg.frontTrackFractionOn = 0.0
+        msg.backTrackFractionOn = -1.0
+        conveyorPub.publish(msg)
 
-        # tell hold conveyor motor to start at standard speed
-        msg = MotorCommand(pwmValue, self.MOTOR_INT('holdConveyor'));
-        pwmPub.publish(msg)
-
-        return
-
-    # params: none
-    # returns: none
-    # sends messages to stop the conveyor belt that moves blocks within the hamper
-    def stopHamperBelt(self):
-                # calculate desired pwm
-        pwmValue =  self.convertVelToPWM(0);
-
-        # tell hold conveyor motor to start at standard speed
-        msg = MotorCommand(pwmValue, self.MOTOR_INT('holdConveyor'));
-        pwmPub.publish(msg)
-        
         return
 
 #################
@@ -352,9 +313,14 @@ def handleEncoderMsg(msg):
 #################
     # params: angle, in radians, that hamper should be set to
     # returns: none
-    # sets hamper to desired angle. This is the angle to vertical; hamper is closed at 0 and open at 90
+    # sets hamper to desired angle. This is the angle to vertical; hamper is closed at 0 and open at pi/2
     def setHamperAngle(self, angle):
-        #TODO
+        fractionOpen = angle/(math.pi/2.0)
+        
+        msg = ConveyorMsg()
+        msg.fractionOpen = fractionOpen
+        hamperPub.publish(msg)
+
         pass
 
 

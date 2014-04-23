@@ -1,3 +1,3 @@
-float64 frontTrackOn
-float64 backTrackOn
-float64 storageAjar
+float64 frontTrackFractionOn
+float64 backTrackFractionOn
+float64 hamperFractionOpen
