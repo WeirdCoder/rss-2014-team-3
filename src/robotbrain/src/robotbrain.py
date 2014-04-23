@@ -10,6 +10,7 @@ from gc_msgs import BumpMsg    # for listening to bump sensors
 from gc_msgs import PoseMsg    # for listening to when the kinect sees a block
 import time
 import random
+
 #
 # This node is the state machine that controls robot behavior
 #
@@ -27,6 +28,7 @@ def init():
     bumpSub = rospy.Subscriber('bumpData', BumpMsg, handleBumpMsg);
     blockSeenSub = rospy.Subscriber('blockSeen', PoseMsg, handleBlockSeenMsg);
     obstacleAheadSub = rospy.Subscriber('obstacleAhead', ObstacleAheadMsg, handleObstacleAheadMsg);
+
 
     # loading and processing map
     [blockLocations, mapList] = mapParser.parseMap('map.txt', currentPose);

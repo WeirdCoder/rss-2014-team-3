@@ -25,6 +25,12 @@
       <scope>runtime</scope>
     </dependency>
     <dependency>
+      <groupId>com.github.rosjava.rosjava_msg_pkg</groupId>
+      <artifactId>gc_msgs</artifactId>
+      <version>[0.1,)</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
       <groupId>com.github.rosjava.rosjava_pkg</groupId>
       <artifactId>orc_utils</artifactId>
       <version>0.1.0</version>
