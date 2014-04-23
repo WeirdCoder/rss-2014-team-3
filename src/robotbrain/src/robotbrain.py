@@ -145,14 +145,13 @@ def digest():
     inHamperFlag = 0     # resetting flag
 
     # once block is in hamper, use hamper belts to push block into forming wall
-    motionPlanner.stopEatingBelts();
     motionPlanner.setHamperAngle(0); # fully close hamper so conveyor belts can work
     motionPlanner.startHamperBelt();
     time.sleep(5)                    # wait for blocks to be pushed into right shape
 
     
     # turn off motors 
-    motionPlanner.stopHamperBelt();
+    motionPlanner.stopConveyorBelt();
 
     # if know the locations of more blocks, set path to them and go get them
     if (len(blockLocations) > 1):
