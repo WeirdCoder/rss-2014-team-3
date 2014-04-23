@@ -1,4 +1,4 @@
-import Location
+import location
 
 class Obstacle(object):
 	def __init__(self): 
@@ -8,7 +8,7 @@ class Obstacle(object):
 		self.locationList = locationList
 
 	def addPoint(self, x, y):
-		self.locationList.append(Location(x,y))
+		self.locationList.append(location.Location(x,y))
 
 	def addPoint(self, location):
 		self.locationList.append(location)

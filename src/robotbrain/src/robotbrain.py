@@ -4,9 +4,10 @@ import motionplanner
 import pathplanner
 import location
 import pose
-#from gc_msgs import MotionMsg  # for sending commands to motors
-#from gc_msgs import BumpMsg    # for listening to bump sensors
-#from gc_msgs import PoseMsg    # for listening to when the kinect sees a block
+import mapParser
+from gc_msgs import MotionMsg  # for sending commands to motors
+from gc_msgs import BumpMsg    # for listening to bump sensors
+from gc_msgs import PoseMsg    # for listening to when the kinect sees a block
 import time
 import random
 #
@@ -21,14 +22,15 @@ import random
 # returns: void
 # starts all publishers, subscribers; loads map and fills associated variables 
 def init():
-    #TODO
-    #motionPub = rospy.Publisher("command/Motors", MotionMsg);
-    #bumpSub = rospy.Subscriber('bumpData', BumpMsg, handleBumpMsg);
-    #blockSeenSub = rospy.Subscriber('blockSeen', PoseMsg, handleBlockSeenMsg);
+    
+    motionPub = rospy.Publisher("command/Motors", MotionMsg);
+    bumpSub = rospy.Subscriber('bumpData', BumpMsg, handleBumpMsg);
+    blockSeenSub = rospy.Subscriber('blockSeen', PoseMsg, handleBlockSeenMsg);
+    obstacleAheadSub = rospy.Subscriber('obstacleAhead', ObstacleAheadMsg, handleObstacleAheadMsg);
 
     # loading and processing map
-    # TODO
-    pass
+    [blockLocations, mapList] = mapParser.parseMap('map.txt', currentPose);
+    return
 
 # params: none
 # returns: none
@@ -278,8 +280,29 @@ def handleBlockSeenMsg(msg):
 # when an obstacle is directly ahead: stop. if travelling or depositing, wait and then remake path. 
 # If wandering, turn randomly 90 deg right or left
 def handleObstacleAheadMsg(msg):
-    # TODO
-    # pass
+
+    # if robot is wandering, turn 90 deg left or right
+    if robotState == 'wandering':
+        motionPlanner.stopWheels()
+        startAngle = currentPose.getAngle()
+       
+        # decide whether to turn right or left
+        rand = random.random()
+        if rand < 0.5: 
+            goalAngle = startAngle + math.pi/2.0
+        else:
+            goalAngle = startAngle - math.pi/2.0
+        
+        # turn until turn is completed
+        while (math.abs(currentPose.getAngle() - goalAngle) > motionPlanner.ANG_ERR):
+            motionPlanner.rotateTowards(currentPose.getAngle(), goalAngle, .01, startAngle)
+
+    # if not wandering, wait for mapUpdater to update with obstacle ahead and replan path
+    else:
+        time.sleep(2)
+        waypointsList = pathPlanner.plotPath(currentPose, blockLocations[0])
+        
+    return
 
 ############
 ## Main ####
@@ -292,6 +315,7 @@ if __name__ == '__main__':
                                            #    digesting, dispensing 
     searchCount = 0                        # counter used to ensure that don't spend too long searching
     numBlocksCollected = 0                 # number of blocks that the robot has collected so far
+    mapList = []                           # list of obstacles
     blockLocations = []                    # list of locations of blocks
     waypointList = []                      # list of waypoints to current destination
     inHamperFlag = 0                       # flag used to indicate whether a block on the conveyor belt
@@ -300,10 +324,11 @@ if __name__ == '__main__':
     currentPose = pose.Pose(0.0,0.0,0.0);
     previousWaypointPose = pose.Pose(0.0, 0.0, 0.0); #used for travel
    
+
     # objects
     motionPlanner =motionplanner.MotionPlanner();
-    pathPlanner = pathplanner.PathPlanner();
-   
+    pathPlanner = pathplanner.PathPlanner();   
+
     # constants
     NUM_BLOCKS_NEEDED = 9                  # number of blocks needed to complete wall
     MAX_SEARCH_COUNT = 500                 # arbitrary value; should be tested and set
