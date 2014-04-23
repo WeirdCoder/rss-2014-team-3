@@ -1,0 +1,3 @@
+float64 frontTrackOn
+float64 backTrackOn
+float64 storageAjar

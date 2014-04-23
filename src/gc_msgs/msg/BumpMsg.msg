@@ -1,1 +1,1 @@
-int bumpNumber
+uint8 bumpNumber
