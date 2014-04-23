@@ -57,12 +57,12 @@ public class GCListener implements NodeMain {
 	    motorSub.addMessageListener(new MotorListener(robotVelocityController));
 	    log.info("motor Subscriber created");
 
-
-	    sl = new GCServoListener(orc, true);//to use safe servos set to true
+            //Servo Control surpressed, task passed to GCpython
+	    //sl = new GCServoListener(orc, true);//to use safe servos set to true
 	    //this requires modification of the ServoListener class to have the correct upper and lower bounds	    
-	    servoSub = node.newSubscriber("MotorCommand", "gc_msgs/MotorCommandMsg");
-	    servoSub.addMessageListener(sl);
-	    log.info("servo subscriber created");
+	    //servoSub = node.newSubscriber("MotorCommand", "gc_msgs/MotorCommandMsg");
+	    //servoSub.addMessageListener(sl);
+	    //log.info("servo subscriber created");
 
 	    /*
 	    subMonitorThreadBase = new SubMonitorThread();

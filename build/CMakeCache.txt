@@ -289,6 +289,12 @@ gtest_force_shared_crt:BOOL=OFF
 gtest_main_LIB_DEPENDS:STATIC=general;-lpthread;general;gtest;
 
 //Value Computed by CMake
+hal_BINARY_DIR:STATIC=/home/rss-student/rss-2014-team-3/build/hal
+
+//Value Computed by CMake
+hal_SOURCE_DIR:STATIC=/home/rss-student/rss-2014-team-3/src/hal
+
+//Value Computed by CMake
 lab5_msgs_BINARY_DIR:STATIC=/home/rss-student/rss-2014-team-3/build/lab5_msgs
 
 //The directory containing a CMake configuration file for lab5_msgs.
@@ -473,7 +479,7 @@ CMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_NM
 CMAKE_NM-ADVANCED:INTERNAL=1
 //number of local generators
-CMAKE_NUMBER_OF_LOCAL_GENERATORS:INTERNAL=10
+CMAKE_NUMBER_OF_LOCAL_GENERATORS:INTERNAL=4
 //ADVANCED property for variable: CMAKE_OBJCOPY
 CMAKE_OBJCOPY-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_OBJDUMP
