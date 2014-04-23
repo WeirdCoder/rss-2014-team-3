@@ -1,6 +1,7 @@
 #!/usr/bin/python
 
 import orc
+import math
 
 # Orcboard Hookup
 
@@ -16,6 +17,8 @@ import orc
 # 1 Right Wheel
 
 class RobotHardware:
+    METERS_PER_TICK=0.0984*math.pi/(65.5*2000)
+
     # Connect to orcboard
     def __init__(self):
         self.o=orc.OrcBoard()
@@ -46,9 +49,17 @@ class RobotHardware:
     def drive_right_wheel(self,speed):
         self.o.set_motor(1,int(-255*speed))
 
+    # Returns right robot position in meters based on right wheel encoder
+    def left_position(self,status):
+        return status['encoders'][0]['position']*self.METERS_PER_TICK
+
+    # Returns left robot position in meters based on left wheel encoder
+    def right_position(self,status):
+        return -status['encoders'][1]['position']*self.METERS_PER_TICK
+
     # Public Functions
 
-    # Command all actuators (see above functions for bounds)
+    # Command all actuators (see above functions for units / bounds)
     # Input format: dictionary where key = actuator name,
     # value = actuator command (see above private functions for units)
     def command_actuators(self,commands):
@@ -63,12 +74,18 @@ class RobotHardware:
         for (k,v) in commands.iteritems():
             command_functions[k](v)
 
-    # Returns a reading from all the sensors
+    # Returns a reading from all the sensors (see above functions for units)
     # Format: dictionary where key = sensor name, value = sensor reading
     # TODO implement this
     def read_sensors(self):
-        return {}
+    	status=self.o.get_status()
+        return {
+            'left_position':self.left_position(status),
+            'right_position':self.right_position(status)
+        }
 
 if __name__=='__main__':
     r=RobotHardware()
-    r.command_actuators({'ramp_conveyer':0,'back_conveyer':0,'hopper':0,'left_wheel':0,'right_wheel':0})
+    #r.command_actuators({'ramp_conveyer':0,'back_conveyer':0,'hopper':0,'left_wheel':0,'right_wheel':0})
+    while True:
+        print r.read_sensors()
