@@ -21,7 +21,7 @@ class MotionPlanner(object):
         self.MAX_WHEEL_ROT_ACCEL = .01;      # maximum rotational  acceleration in rad/s^2  
         self.ANGULAR_ERR = .1;              # acceptable angular error in radians
         self.MAX_WHEEL_ANG_VEL = 9.95;      # maximum angular velocity of wheels in rad/s
-        self.WHEEL_RADIUS = 0.0625;         # wheel radius in m
+        self.WHEEL_RADIUS = 0.0984;         # wheel radius in m
         self.WHEELBASE =  .428;             # distance from origin to wheel; similar to a robot radius
 
         self.ENCODER_RESOLUTION = 2000;    # ticks/revolution, without gear ratio

@@ -6,6 +6,7 @@ import location
 import convexhull
 import obstacle
 
+
 #
 # This class is used by the RobotBrain to create a list of waypoints to use as a path.
 #
@@ -33,8 +34,28 @@ class PathPlanner(object):
         self.createCSpace(startMap);
         self.createGraph();
 
-        #Todo: mapupdater subscriber - calls update
+        # creating the subscriber that listens to the mapUpdater
+        mapSub = rospy.Subscriber('mapUpdates', ObstacleMsg, self.handleObstacleMsg)
         return
+
+    # param: ObstacleMsg msg
+    # returns: none
+    # takes in a new obstacle from the mapupdater, updates CSpace and grid
+    def handleObstacleMsg(self, msg):
+        
+        #iterate through message, retrieving points
+        locationList = []
+        for i in range(len(msg.xPosList)):
+            locationList.append(Location(xPosList[i], yPosList[i]))
+
+        # create new obstacle    
+        newObstacle = Obstacle(locationList)
+
+        # call appropriate methods to update CSpace and Grid
+        self.updateCSpace(newObstacle)
+        self.updateGraph(newObstacle)
+        return
+
 
     # param: obstacleList: list of Obstacles
     # returns: CSpace object
