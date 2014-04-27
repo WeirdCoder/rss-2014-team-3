@@ -1,0 +1,6 @@
+(cl:in-package gc_msgs-msg)
+(cl:export '(TRANSLATIONALVELOCITY-VAL
+          TRANSLATIONALVELOCITY
+          ROTATIONALVELOCITY-VAL
+          ROTATIONALVELOCITY
+))

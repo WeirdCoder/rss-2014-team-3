@@ -6,6 +6,7 @@
 # testing this directory and lists subdirectories to be tested as well.
 SUBDIRS(gtest)
 SUBDIRS(gc_msgs)
+SUBDIRS(hal)
 SUBDIRS(lab5_msgs)
 SUBDIRS(lab6_msgs)
 SUBDIRS(odometry)

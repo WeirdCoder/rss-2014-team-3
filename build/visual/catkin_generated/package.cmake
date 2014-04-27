@@ -1,0 +1,7 @@
+set(_CATKIN_CURRENT_PACKAGE "visual")
+set(visual_MAINTAINER "William Kalb <wkalb@mit.edu>")
+set(visual_DEPRECATED "")
+set(visual_VERSION "0.0.0")
+set(visual_BUILD_DEPENDS "cv_bridge" "OpenCV" "rospy" "sensor_msgs" "std_msgs")
+set(visual_RUN_DEPENDS "cv_bridge" "OpenCV" "rospy" "sensor_msgs" "std_msgs")
+set(visual_BUILDTOOL_DEPENDS "catkin")

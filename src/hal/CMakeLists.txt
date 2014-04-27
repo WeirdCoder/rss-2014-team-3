@@ -7,6 +7,7 @@ project(hal)
 find_package(catkin REQUIRED COMPONENTS
   rospy
   std_msgs
+  gc_msgs
 )
 
 ## System dependencies are found with CMake's conventions
@@ -81,7 +82,7 @@ find_package(catkin REQUIRED COMPONENTS
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES hal
-#  CATKIN_DEPENDS other_catkin_pkg
+  CATKIN_DEPENDS rospy std_msgs gc_msgs
 #  DEPENDS system_lib
 )
 
@@ -159,7 +160,9 @@ include_directories(
 
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
+
+
 catkin_python_setup()
-install(PROGRAMS src/hal
+install(PROGRAMS src/RobotHardwareROS src/RobotHardware
 	DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )

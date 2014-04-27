@@ -1,6 +1,6 @@
 # generated from genmsg/cmake/pkg-genmsg.cmake.em
 
-message(STATUS "gc_msgs: 4 messages, 0 services")
+message(STATUS "gc_msgs: 10 messages, 0 services")
 
 set(MSG_I_FLAGS "-Igc_msgs:/home/rss-student/rss-2014-team-3/src/gc_msgs/msg;-Istd_msgs:/opt/ros/hydro/share/std_msgs/cmake/../msg")
 
@@ -31,6 +31,42 @@ _generate_msg_cpp(gc_msgs
 )
 _generate_msg_cpp(gc_msgs
   "/home/rss-student/rss-2014-team-3/src/gc_msgs/msg/WheelVelocityMsg.msg"
+  "${MSG_I_FLAGS}"
+  ""
+  ${CATKIN_DEVEL_PREFIX}/${gencpp_INSTALL_DIR}/gc_msgs
+)
+_generate_msg_cpp(gc_msgs
+  "/home/rss-student/rss-2014-team-3/src/gc_msgs/msg/MotionMsg.msg"
+  "${MSG_I_FLAGS}"
+  ""
+  ${CATKIN_DEVEL_PREFIX}/${gencpp_INSTALL_DIR}/gc_msgs
+)
+_generate_msg_cpp(gc_msgs
+  "/home/rss-student/rss-2014-team-3/src/gc_msgs/msg/BumpMsg.msg"
+  "${MSG_I_FLAGS}"
+  ""
+  ${CATKIN_DEVEL_PREFIX}/${gencpp_INSTALL_DIR}/gc_msgs
+)
+_generate_msg_cpp(gc_msgs
+  "/home/rss-student/rss-2014-team-3/src/gc_msgs/msg/ObstacleAheadMsg.msg"
+  "${MSG_I_FLAGS}"
+  ""
+  ${CATKIN_DEVEL_PREFIX}/${gencpp_INSTALL_DIR}/gc_msgs
+)
+_generate_msg_cpp(gc_msgs
+  "/home/rss-student/rss-2014-team-3/src/gc_msgs/msg/HamperMsg.msg"
+  "${MSG_I_FLAGS}"
+  ""
+  ${CATKIN_DEVEL_PREFIX}/${gencpp_INSTALL_DIR}/gc_msgs
+)
+_generate_msg_cpp(gc_msgs
+  "/home/rss-student/rss-2014-team-3/src/gc_msgs/msg/GCServoMsg.msg"
+  "${MSG_I_FLAGS}"
+  ""
+  ${CATKIN_DEVEL_PREFIX}/${gencpp_INSTALL_DIR}/gc_msgs
+)
+_generate_msg_cpp(gc_msgs
+  "/home/rss-student/rss-2014-team-3/src/gc_msgs/msg/ConveyorMsg.msg"
   "${MSG_I_FLAGS}"
   ""
   ${CATKIN_DEVEL_PREFIX}/${gencpp_INSTALL_DIR}/gc_msgs
@@ -83,6 +119,42 @@ _generate_msg_lisp(gc_msgs
   ${CATKIN_DEVEL_PREFIX}/${genlisp_INSTALL_DIR}/gc_msgs
 )
 _generate_msg_lisp(gc_msgs
+  "/home/rss-student/rss-2014-team-3/src/gc_msgs/msg/MotionMsg.msg"
+  "${MSG_I_FLAGS}"
+  ""
+  ${CATKIN_DEVEL_PREFIX}/${genlisp_INSTALL_DIR}/gc_msgs
+)
+_generate_msg_lisp(gc_msgs
+  "/home/rss-student/rss-2014-team-3/src/gc_msgs/msg/BumpMsg.msg"
+  "${MSG_I_FLAGS}"
+  ""
+  ${CATKIN_DEVEL_PREFIX}/${genlisp_INSTALL_DIR}/gc_msgs
+)
+_generate_msg_lisp(gc_msgs
+  "/home/rss-student/rss-2014-team-3/src/gc_msgs/msg/ObstacleAheadMsg.msg"
+  "${MSG_I_FLAGS}"
+  ""
+  ${CATKIN_DEVEL_PREFIX}/${genlisp_INSTALL_DIR}/gc_msgs
+)
+_generate_msg_lisp(gc_msgs
+  "/home/rss-student/rss-2014-team-3/src/gc_msgs/msg/HamperMsg.msg"
+  "${MSG_I_FLAGS}"
+  ""
+  ${CATKIN_DEVEL_PREFIX}/${genlisp_INSTALL_DIR}/gc_msgs
+)
+_generate_msg_lisp(gc_msgs
+  "/home/rss-student/rss-2014-team-3/src/gc_msgs/msg/GCServoMsg.msg"
+  "${MSG_I_FLAGS}"
+  ""
+  ${CATKIN_DEVEL_PREFIX}/${genlisp_INSTALL_DIR}/gc_msgs
+)
+_generate_msg_lisp(gc_msgs
+  "/home/rss-student/rss-2014-team-3/src/gc_msgs/msg/ConveyorMsg.msg"
+  "${MSG_I_FLAGS}"
+  ""
+  ${CATKIN_DEVEL_PREFIX}/${genlisp_INSTALL_DIR}/gc_msgs
+)
+_generate_msg_lisp(gc_msgs
   "/home/rss-student/rss-2014-team-3/src/gc_msgs/msg/PoseMsg.msg"
   "${MSG_I_FLAGS}"
   ""
@@ -125,6 +197,42 @@ _generate_msg_py(gc_msgs
 )
 _generate_msg_py(gc_msgs
   "/home/rss-student/rss-2014-team-3/src/gc_msgs/msg/WheelVelocityMsg.msg"
+  "${MSG_I_FLAGS}"
+  ""
+  ${CATKIN_DEVEL_PREFIX}/${genpy_INSTALL_DIR}/gc_msgs
+)
+_generate_msg_py(gc_msgs
+  "/home/rss-student/rss-2014-team-3/src/gc_msgs/msg/MotionMsg.msg"
+  "${MSG_I_FLAGS}"
+  ""
+  ${CATKIN_DEVEL_PREFIX}/${genpy_INSTALL_DIR}/gc_msgs
+)
+_generate_msg_py(gc_msgs
+  "/home/rss-student/rss-2014-team-3/src/gc_msgs/msg/BumpMsg.msg"
+  "${MSG_I_FLAGS}"
+  ""
+  ${CATKIN_DEVEL_PREFIX}/${genpy_INSTALL_DIR}/gc_msgs
+)
+_generate_msg_py(gc_msgs
+  "/home/rss-student/rss-2014-team-3/src/gc_msgs/msg/ObstacleAheadMsg.msg"
+  "${MSG_I_FLAGS}"
+  ""
+  ${CATKIN_DEVEL_PREFIX}/${genpy_INSTALL_DIR}/gc_msgs
+)
+_generate_msg_py(gc_msgs
+  "/home/rss-student/rss-2014-team-3/src/gc_msgs/msg/HamperMsg.msg"
+  "${MSG_I_FLAGS}"
+  ""
+  ${CATKIN_DEVEL_PREFIX}/${genpy_INSTALL_DIR}/gc_msgs
+)
+_generate_msg_py(gc_msgs
+  "/home/rss-student/rss-2014-team-3/src/gc_msgs/msg/GCServoMsg.msg"
+  "${MSG_I_FLAGS}"
+  ""
+  ${CATKIN_DEVEL_PREFIX}/${genpy_INSTALL_DIR}/gc_msgs
+)
+_generate_msg_py(gc_msgs
+  "/home/rss-student/rss-2014-team-3/src/gc_msgs/msg/ConveyorMsg.msg"
   "${MSG_I_FLAGS}"
   ""
   ${CATKIN_DEVEL_PREFIX}/${genpy_INSTALL_DIR}/gc_msgs
