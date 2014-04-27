@@ -5,9 +5,9 @@ import pathplanner
 import location
 import pose
 import mapParser
-from gc_msgs import MotionMsg  # for sending commands to motors
-from gc_msgs import BumpMsg    # for listening to bump sensors
-from gc_msgs import PoseMsg    # for listening to when the kinect sees a block
+from gc_msgs.msg import MotionMsg  # for sending commands to motors
+from gc_msgs.msg import BumpMsg    # for listening to bump sensors
+from gc_msgs.msg import PoseMsg    # for listening to when the kinect sees a block
 import time
 import random
 
@@ -23,7 +23,11 @@ import random
 # returns: void
 # starts all publishers, subscribers; loads map and fills associated variables 
 def init():
-    
+    # declaring global variables
+    global motionPub, bumpSub, blockSeenSub, obstacleAheadSub
+    global blockLocations, mapList
+    global pathPlanner, motionPlanner
+
     motionPub = rospy.Publisher("command/Motors", MotionMsg);
     bumpSub = rospy.Subscriber('bumpData', BumpMsg, handleBumpMsg);
     blockSeenSub = rospy.Subscriber('blockSeen', PoseMsg, handleBlockSeenMsg);
@@ -32,6 +36,14 @@ def init():
 
     # loading and processing map
     #[blockLocations, mapList] = mapParser.parseMap('map.txt', currentPose);
+    
+
+
+    # objects
+    motionPlanner =motionplanner.MotionPlanner();
+    pathPlanner = pathplanner.PathPlanner(mapList, );   
+
+
     return
 
 # params: none
@@ -40,7 +52,11 @@ def init():
 # perform ant-like motion; move forward. If hit an obstacle, turn right or left randomly
 # increment wanderCount; when it maxes out, spin around
 def wander():
-    
+    # declaring globals
+    global wanderCount
+    global MAX_WANDER_COUNT
+    global motionPlanner
+
     # if wanderCount has counted up enough, spin 360 degrees
     if (wanderCount >= MAX_WANDER_COUNT):
 
@@ -65,15 +81,17 @@ def wander():
 # Robot needs to move from it's current location to a destination
 # global waypoints contains a list of points the robot can travel to in straight-line paths
 def travel():
-     
+    global currentPose, waypointList, robotState, motionPlanner
+    global POSITION_THRESHOLD
+
     # if have reached the current waypoint, stop and move to the next waypoint. If at end of wayponts, enter seatch
-    if (getDistance(currentPose, waypointList[0]) < POSITION_THRESHOLD):
+    if (getDistance(currentPose, waypointsList[0]) < POSITION_THRESHOLD):
         motionPlanner.stopWheels();
         previousWaypointPose = currentPose;
 
         # if there are more waypoints, travel to next one
-        if len(waypointList > 1):
-            waypointList = waypointList[1:];
+        if len(waypointsList > 1):
+            waypointsList = waypointsList[1:];
 
         # if there are no more waypoints, are at expected block location. start searching.     
         else:
@@ -82,7 +100,7 @@ def travel():
     # if haven't reached the current waypoint, travel towards it
     else:
         # takes currentPose, destinationLoc, angVel, vel, startPose
-        motionPlanner.travelTowards(currentPose, waypointList[0], .01, .1, previousWaypointPose); 
+        motionPlanner.travelTowards(currentPose, waypointsList[0], .01, .1, previousWaypointPose); 
     return
 
 # params: none
@@ -91,6 +109,10 @@ def travel():
 # turn in slow circle looking for block. If time-out, reject block location and set course for a new one
 # search gets called repeatedly, so can switch states in the middle
 def search():
+    # declaring globals
+    global motionPlanner, blockLocations, waypointsList, robotState
+    global searchCount, MAX_SEARCH_COUNT, wanderCount
+
     motionPlanner.rotate(.1);  #TODO: check that this is a good speed
     
     # if haven't been searching too long, keep searching
@@ -119,6 +141,9 @@ def search():
 # Robot has a block currently in its vision. 
 # Move until block hits the bump sensors at the mouth of the conveyor belt
 def consume():
+    # declaring global variables
+    global motionPlanner
+
     # blockLocation is updatd by kinect to be accurate
     motionPlanner.travelTowards(currentPose, blockLocations[0], .01, .01, lastWaypointPose);
     return
@@ -129,6 +154,9 @@ def consume():
 # Move conveyor belts so block is added to wall
 # this is an atomic action
 def digest():
+    # declaring globals
+    global motionPlanner, inHamperFlag
+    global blockLocations, robotState, waypointsList, wanderCount, pathPlanner
     # TODO: this is a simple implementation that doesn't reverse belts if something gets stuck
 
     # stop wheel motors and start ramp motors to move block up ramp
@@ -168,18 +196,21 @@ def digest():
 # returns: void
 # Robot has finished gathering blocks; commands robot to travel to endLocation and open hatch
 def dispense():
-    
-    wayPointList = pathPlanner.plotPath(currentPose, END_LOCATION);
+    # declaring global variables
+    global waypointsList, currentPose, pathPlanner, previousWaypointPose, motionPlanner
+    global END_LOCATION
 
-    while len(wayPointList) > 0: 
+    waypointsList = pathPlanner.plotPath(currentPose, END_LOCATION);
+
+    while len(waypointsList) > 0: 
         # if have reached the current waypoint, stop and move to the next waypoint. If at end of wayponts, enter seatch
-        if (getDistance(currentPose, waypointList[0]) < POSITION_THRESHOLD):
+        if (getDistance(currentPose, waypointsList[0]) < POSITION_THRESHOLD):
             motionPlanner.stopWheels();
             previousWaypointPose = currentPose;
 
             # if there are more waypoints, travel to next one
-            if len(waypointList > 1):
-                waypointList = waypointList[1:];
+            if len(waypointsList > 1):
+                waypointsList = waypointsList[1:];
         
             # otherwise, at end location
             else: 
@@ -187,13 +218,13 @@ def dispense():
 
         # if haven't reached waypoint, keep travelling towards it
         else: 
-            motionPlanner.travelTowards(currentPose, waypointList[0], .01, .1, previousWaypointPose); 
+            motionPlanner.travelTowards(currentPose, waypointsList[0], .01, .1, previousWaypointPose); 
 
-      # have reached end location. Open hamper and drive away
-      motionPlanner.setHamperAngle(math.pi/2.0); 
-      motionPlanner.translate(.01)
-      time.sleep(.5)
-      motionPlanner.stopWheels()
+    # have reached end location. Open hamper and drive away
+    motionPlanner.setHamperAngle(math.pi/2.0); 
+    motionPlanner.translate(.01)
+    time.sleep(.5)
+    motionPlanner.stopWheels()
     return
 
 
@@ -221,6 +252,9 @@ def getDistance(loc1, loc2):
 # returns: none
 # based on which bump sensor went off, call appropriate respose
 def handleBumpMsg(msg):
+    # declaring global variables
+    global searchCount, inHamperFlag, motionPlanner
+
     # bump sensors 0 and 1 are at the mouth
     if (msg.bumpNumber <= 1):
         #if are currently searching and something hits these bump sensors, are eating the block
@@ -244,6 +278,9 @@ def handleBumpMsg(msg):
 # return: none
 # takes in message from kinect indicating that a block has been seen
 def handleBlockSeenMsg(msg):
+    # declaring global variables
+    global robotState, motionPlanner, blockLocations
+    global KINECT_ERROR
    
    newBlockLocation = location.Location(msg.xLoc, msg.yLoc)
 
@@ -281,6 +318,8 @@ def handleBlockSeenMsg(msg):
 # when an obstacle is directly ahead: stop. if travelling or depositing, wait and then remake path. 
 # If wandering, turn randomly 90 deg right or left
 def handleObstacleAheadMsg(msg):
+    # declaring global variables
+    global robotState, motionPlanner, waypointsList
 
     # if robot is wandering, turn 90 deg left or right
     if robotState == 'wandering':
@@ -318,7 +357,7 @@ if __name__ == '__main__':
     numBlocksCollected = 0                 # number of blocks that the robot has collected so far
     mapList = []                           # list of obstacles
     blockLocations = []                    # list of locations of blocks
-    waypointList = []                      # list of waypoints to current destination
+    waypointsList = []                      # list of waypoints to current destination
     inHamperFlag = 0                       # flag used to indicate whether a block on the conveyor belt
                                            #  has made it to the hamper
     wanderCount = 0                        # while wandering, count up and turn
@@ -326,9 +365,6 @@ if __name__ == '__main__':
     previousWaypointPose = pose.Pose(0.0, 0.0, 0.0); #used for travel
    
 
-    # objects
-    motionPlanner =motionplanner.MotionPlanner();
-    pathPlanner = pathplanner.PathPlanner();   
 
     # constants
     NUM_BLOCKS_NEEDED = 9                  # number of blocks needed to complete wall

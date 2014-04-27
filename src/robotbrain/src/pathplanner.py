@@ -145,11 +145,11 @@ class PathPlanner(object):
         path = networkx.astar_path(self.graph, closestStartNode, closestEndNode, self.nodeDistance)
         return path
 
-    def getDistance(self, x1, y1, x2, y2)
+    def getDistance(self, x1, y1, x2, y2):
         dist = math.sqrt((x1 - x2)*(x1 - x2) + (y1 - y2)*(y1 - y2))
         return dist
     
-    def nodeDistance(self, a, b)
+    def nodeDistance(self, a, b):
         dist = math.sqrt((a[0] - b[0])*(a[0] - b[0]) + (a[1] - b[1])*(a[1]-b[1]))
         return dist
 ###################################

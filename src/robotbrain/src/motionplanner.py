@@ -1,8 +1,10 @@
 import rospy
 import math
 import time
-from gc_msgs import ConveyorMsg
-from gc_msgs import HamperMsg
+from gc_msgs.msg import ConveyorMsg
+from gc_msgs.msg import HamperMsg
+from gc_msgs.msg import EncoderMsg
+from gc_msgs.msg import MotionMsg
 #
 # This class is used by the RobotBrain to send PWM messages to the HAL to control the motion of the motors. This includes both wheel motors and theconveyor belt motors. Also has methods to abstract some elements of motor control; has proportional control for the wheels
 #
