@@ -27,7 +27,7 @@ def parseMap(mapFileName, currentPose):
 
     for i in range(numBlocks):
         m = re.search(str(i)+' {\n [ ]*? position { ([-0-9.]+) ([-0-9.]+) }', blocktxt)    
-        blockLocations.append(location.Location(m.group(1), m.group(2)))
+        blockLocations.append(location.Location(float(m.group(1)), float(m.group(2))))
 
     # if we are sitting on top of a block, move it to the end of the list
     # because need to be approaching a block to see it and retrieve it
@@ -53,7 +53,7 @@ def parseMap(mapFileName, currentPose):
         # add each point to the obstacle
         for i in range(numPoints):
             m = re.search(str(i)+' {\n [ ]*? position { ([-0-9.]+) ([-0-9.]+) }', blocktxt)
-            locationList.append(location.Location(m.group(1), m.group(2)))
+            locationList.append(location.Location(float(m.group(1)), float(m.group(2))))
         
         # add obstacle to map
         currentObstacle = obstacle.Obstacle(locationList)

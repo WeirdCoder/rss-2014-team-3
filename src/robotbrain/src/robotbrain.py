@@ -8,12 +8,15 @@ import mapParser
 from gc_msgs.msg import MotionMsg  # for sending commands to motors
 from gc_msgs.msg import BumpMsg    # for listening to bump sensors
 from gc_msgs.msg import PoseMsg    # for listening to when the kinect sees a block
+from gc_msgs.msg import ObstacleAheadMsg    # for listening to when the kinect sees a wall
+from gc_msgs.msg import ObstacleMsg    # for listening to when the kinect sees a wall
 import time
 import random
 
 #
 # This node is the state machine that controls robot behavior
 #
+# TODO: call mapUpdater.make obstacle when 
 
 #####################
 ## state methods ####
@@ -26,7 +29,7 @@ def init():
     # declaring global variables
     global motionPub, bumpSub, blockSeenSub, obstacleAheadSub
     global blockLocations, mapList
-    global pathPlanner, motionPlanner
+    global pathPlanner, motionPlanner, ROBOT_RADIUS
 
     motionPub = rospy.Publisher("command/Motors", MotionMsg);
     bumpSub = rospy.Subscriber('bumpData', BumpMsg, handleBumpMsg);
@@ -35,13 +38,14 @@ def init():
 
 
     # loading and processing map
-    #[blockLocations, mapList] = mapParser.parseMap('map.txt', currentPose);
+    [blockLocations, mapList] = mapParser.parseMap('map.txt', currentPose);
     
-
+    # TODO for debugging in wander
+    blockLocations = []
 
     # objects
     motionPlanner =motionplanner.MotionPlanner();
-    pathPlanner = pathplanner.PathPlanner(mapList, );   
+    pathPlanner = pathplanner.PathPlanner(mapList, ROBOT_RADIUS);   
 
 
     return
@@ -271,7 +275,7 @@ def handleBumpMsg(msg):
         motionPlanner.stopWheels();
         # not sure where other bump sensors on chassis will be; 
         # should stop and back away if they are hit
-        # TODO    
+        # TODO let bump sensors handle turning in wander state when see obstacle   
     return
 
 # param: msg PoseMsg
@@ -282,36 +286,36 @@ def handleBlockSeenMsg(msg):
     global robotState, motionPlanner, blockLocations
     global KINECT_ERROR
    
-   newBlockLocation = location.Location(msg.xLoc, msg.yLoc)
-
-   if robotState == 'wandering': 
-       motionPlanner.stopWheels();
-       blockLocations.append(newBlockLocation)
-       robotState == 'searching'
-
-   elif robotState == 'travelling':
-
-       motionPlanner.stopWheels();
-
+    newBlockLocation = location.Location(msg.xLoc, msg.yLoc)
+    
+    if robotState == 'wandering': 
+        motionPlanner.stopWheels();
+        blockLocations.append(newBlockLocation)
+        robotState == 'searching'
+        
+    elif robotState == 'travelling':
+        
+        motionPlanner.stopWheels();
+        
        # if have reache the block travelling towards, just enter search
-       if (getDistance(newBlockLocation, blockLocations[0]) < KINECT_ERROR):
+        if (getDistance(newBlockLocation, blockLocations[0]) < KINECT_ERROR):
             robotState = 'searching'
 
-       # if found a new block while travelling, add it to blockLocations
-       else:
-           blockLocations = [newBlockLocation].append(blockLocations)
-           robotState = 'searching'
+        # if found a new block while travelling, add it to blockLocations
+        else:
+            blockLocations = [newBlockLocation].append(blockLocations)
+            robotState = 'searching'
 
-   # if consuming and see a new block
-   elif (robotState == 'consuming') and (getDistance(newBlockLocation, blockLocations[0]) < KINECT_ERROR):
-       # will continue consuming, but make this block the next block to get
-       blockLocations = [blockLocations[0], newBlockLocation].append(blockLocations[1:])
+    # if consuming and see a new block
+    elif (robotState == 'consuming') and (getDistance(newBlockLocation, blockLocations[0]) < KINECT_ERROR):
+        # will continue consuming, but make this block the next block to get
+        blockLocations = [blockLocations[0], newBlockLocation].append(blockLocations[1:])
 
-   elif robotState == 'digesting':
-       # continue digesting, bt make this next block to get
-       blockLocations = [blockLocations[0], newBlockLocation].append(blockLocations[1:])
+    elif robotState == 'digesting':
+        # continue digesting, bt make this next block to get
+        blockLocations = [blockLocations[0], newBlockLocation].append(blockLocations[1:])
 
-   return
+    return
 
 # param: msg
 # return: none
@@ -365,15 +369,16 @@ if __name__ == '__main__':
     previousWaypointPose = pose.Pose(0.0, 0.0, 0.0); #used for travel
    
 
-
     # constants
+    # TODO: pick values well
     NUM_BLOCKS_NEEDED = 9                  # number of blocks needed to complete wall
     MAX_SEARCH_COUNT = 500                 # arbitrary value; should be tested and set
     POSITION_THRESHOLD = .005              # acceptable error to reaching a position. In meters.    
     END_LOCATION = location.Location(0.0, 0.0);
     MAX_WANDER_COUNT = 30;
     KINECT_ERROR = .01;                    # uncertainty of the kinect in m
-
+    ROBOT_RADIUS = .6                      # radius of robot in m
+    
     try:
         init()                             # load map, initialize publishers, subscribers
 
