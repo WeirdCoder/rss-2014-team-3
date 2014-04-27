@@ -326,10 +326,10 @@ if __name__ == '__main__':
     currentPose = pose.Pose(0.0,0.0,0.0);
     previousWaypointPose = pose.Pose(0.0, 0.0, 0.0); #used for travel
    
-
     # objects
     motionPlanner =motionplanner.MotionPlanner();
-    pathPlanner = pathplanner.PathPlanner();   
+    pathPlanner
+
 
     # constants
     NUM_BLOCKS_NEEDED = 9                  # number of blocks needed to complete wall

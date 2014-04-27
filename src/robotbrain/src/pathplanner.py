@@ -21,13 +21,24 @@ class PathPlanner(object):
     #         robotRadius: maximum radius of robot, float
     # turns start Map into CSpace
     # makes graph of points
-    def __init__(self, startMap, minX, maxX, minY, maxY, robotRadius):
+    def __init__(self, startMap, robotRadius):
         
         self.gridDist = robotRadius/2; 
-        self.minX = minX;
-        self.maxX = maxX; 
-        self.minY = minY; 
-        self.maxY = maxY; 
+
+        # finding edges of map
+        xList = []
+        yList = []
+    
+        for obstacle in startMap:
+            for point in obstacle.getLocationList():
+                xList.append(point.getX())
+                yList.append(point.getY())
+
+
+        self.minX = min(xList);
+        self.maxX = max(xList); 
+        self.minY = min(yList); 
+        self.maxY = max(yList); 
         self.robotRadius = robotRadius;
         
         self.cspace = [];
