@@ -89,7 +89,7 @@ if __name__=='__main__':
     r=RobotHardware()
     r.command_actuators({'ramp_conveyer':0,'back_conveyer':0,'hopper':0,'left_wheel':0,'right_wheel':0})
     time.sleep(1)
-    r.command_actuators({'ramp_conveyer':0,'back_conveyer':1,'hopper':0,'left_wheel':0,'right_wheel':0})
+    r.command_actuators({'ramp_conveyer':0,'back_conveyer':2,'hopper':0,'left_wheel':0,'right_wheel':0})
     time.sleep(1)
     while True:
         for i in range(0,4):
