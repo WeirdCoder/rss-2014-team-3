@@ -28,14 +28,17 @@ import sys
 import cv2
 import cv2.cv as cv
 from sensor_msgs.msg import Image, CameraInfo
+from gc_msgs import PoseMsg
 from cv_bridge import CvBridge, CvBridgeError
 import numpy as np
+
 
 class kinect():
 
     centroid_x = []
     centroid_y = []
     centroids = []
+    depths = []
     blob_exists = False
     max_width = 640
     max_height = 480
@@ -65,6 +68,9 @@ class kinect():
         self.image_sub = rospy.Subscriber("/camera/rgb/image_color", Image, self.image_callback)
         #self.depth_sub = rospy.Subscriber("/camera/depth/image_raw", Image, self.depth_callback)
         self.depth_sub = rospy.Subscriber("/camera/depth/image", Image, self.depth_callback)
+        self.position_pub = rospy.Publisher("blockSeen", PoseMsg)
+        self.position_sub = rospy.Subscriber("blockSeen", PoseMsg, self.pose_callback)
+        
         rospy.loginfo("Waiting for image topics...")
 
     def image_callback(self, ros_image):
@@ -113,6 +119,20 @@ class kinect():
         # Display the result
         cv2.imshow("Depth Image", depth_display_image)
           
+    def pose_callback(self, pose):
+        for in range (0, len(centroids)):
+            x = centroids[i][0] # horizontal pixels from edge of block
+            d = depths[i] # depth of block
+            x_view = horizontalPosition(x, d) # meters from center of robot's view 
+            # dist = math.sqrt(d*d + x*x) # distance in meters from nose of robot to block
+            theta = pose.angle # angle of robot in absolute (x,y) coordinate space
+            x_displacement = d*math.cos(theta) + x_view*math.cos(3.1416/2 - theta)
+            y_displacement = d*math.sin(theta) + x_view*math.sin(3.1416/2 - theta)
+            msg = PoseMsg
+            msg.xPosition = x_displacement
+            msg.yPosition = y_displacement
+            position_pub.publish(msg)
+        
     def process_image(self, frame):
         blur = cv2.GaussianBlur(frame, (15,15), 0)
         grey = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
@@ -149,7 +169,10 @@ class kinect():
             self.centroids = []
             for idx, contour in enumerate(contours):
                 moment = cv2.moments(contour)
-                if moment["m00"] > 2000:
+                perimeter = cv2.arcLength(contour)
+                area = moment["m00"]
+                roundness = perimeter*perimeter / (4 * 3.1416 * area) # 1 for a circle, >1 for other shapes
+                if area > 2000 and roundness > 1.2:
                     x,y,w,h = cv2.boundingRect(contour)
                     cv2.rectangle(masked_image,(x,y),(x+w, y+h),(0,255,0),4)
                     temp_x = x+(w/2)
@@ -219,10 +242,12 @@ class kinect():
         #print frame.shape[1]#self.centroid_x, self.centroid_y
         #frame = cv2.cvtColor(frame,cv2.COLOR_GRAY2RGB)
         if self.blob_exists == True:
+            self.depths = []
             for coord in self.centroids:
                 centroid_x = coord[0]
                 centroid_y = coord[1]
                 depth = frame[centroid_y,centroid_x]
+                self.depths.append(depth)
  #               print centroid_x, centroid_y, depth
         #depth = frame[self.centroid_y, self.centroid_x]
             
@@ -236,10 +261,13 @@ class kinect():
                         cv2.putText(frame, depth_str, (centroid_x -10, centroid_y + 40), cv2.FONT_HERSHEY_SIMPLEX, .5, (0,0,0),1)
         return frame
     
-    def position(self, x, d):
+    def horizontalPosition(self, x, d):
         theta = math.pi/6 # Angle from horizontal of kinect mount
         distance = d*math.cos(theta)
         fov = 57 * math.pi/180
+        center_dist = x - self.max_width/2
+        x_meters = 2*x*d*math.tan(fov/2)/self.max_width
+        return x_meters
         
     
     def cleanup(self):

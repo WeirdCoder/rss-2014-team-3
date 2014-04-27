@@ -4,8 +4,9 @@ project(gc_msgs)
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
+find_package(catkin REQUIRED rosjava_build_tools)
 find_package(catkin REQUIRED COMPONENTS
-  std_msgs message_generation
+  std_msgs message_generation 
 )
 
 ## System dependencies are found with CMake's conventions
@@ -44,8 +45,14 @@ find_package(catkin REQUIRED COMPONENTS
 ## Generate messages in the 'msg' folder
  add_message_files(
    FILES
+   BumpMsg.msg
+   ConveyorMsg.msg
    EncoderMsg.msg
+   GCServoMsg.msg
+   HamperMsg.msg
+   MotionMsg.msg
    MotorCommandMsg.msg
+   ObstacleAheadMsg.msg
    PoseMsg.msg
    WheelVelocityMsg.msg
  )
@@ -67,7 +74,7 @@ find_package(catkin REQUIRED COMPONENTS
 ## Generate added messages and services with any dependencies listed here
  generate_messages(
    DEPENDENCIES
-   std_msgs  # Or other packages containing msgs
+   std_msgs# Or other packages containing msgs
  )
 
 ###################################
@@ -93,9 +100,9 @@ catkin_package(
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 # include_directories(include)
-include_directories(
-  ${catkin_INCLUDE_DIRS}
-)
+#include_directories(
+#  ${catkin_INCLUDE_DIRS}
+#)
 
 ## Declare a cpp library
 # add_library(gc_msgs

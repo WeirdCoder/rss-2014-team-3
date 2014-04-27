@@ -1,2 +1,2 @@
-int16 lWheelTicks
-int16 rWheelTicks
+float64 lWheelTicks
+float64 rWheelTicks

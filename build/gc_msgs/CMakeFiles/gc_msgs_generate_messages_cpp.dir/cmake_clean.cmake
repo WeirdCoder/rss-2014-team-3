@@ -3,6 +3,12 @@ FILE(REMOVE_RECURSE
   "/home/rss-student/rss-2014-team-3/devel/include/gc_msgs/MotorCommandMsg.h"
   "/home/rss-student/rss-2014-team-3/devel/include/gc_msgs/EncoderMsg.h"
   "/home/rss-student/rss-2014-team-3/devel/include/gc_msgs/WheelVelocityMsg.h"
+  "/home/rss-student/rss-2014-team-3/devel/include/gc_msgs/MotionMsg.h"
+  "/home/rss-student/rss-2014-team-3/devel/include/gc_msgs/BumpMsg.h"
+  "/home/rss-student/rss-2014-team-3/devel/include/gc_msgs/ObstacleAheadMsg.h"
+  "/home/rss-student/rss-2014-team-3/devel/include/gc_msgs/HamperMsg.h"
+  "/home/rss-student/rss-2014-team-3/devel/include/gc_msgs/GCServoMsg.h"
+  "/home/rss-student/rss-2014-team-3/devel/include/gc_msgs/ConveyorMsg.h"
   "/home/rss-student/rss-2014-team-3/devel/include/gc_msgs/PoseMsg.h"
 )
 

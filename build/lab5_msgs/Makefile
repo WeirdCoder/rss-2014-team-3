@@ -147,20 +147,6 @@ depend:
 .PHONY : depend
 
 # Convenience name for target.
-lab5_msgs/CMakeFiles/_catkin_empty_exported_target.dir/rule:
-	cd /home/rss-student/rss-2014-team-3/build && $(MAKE) -f CMakeFiles/Makefile2 lab5_msgs/CMakeFiles/_catkin_empty_exported_target.dir/rule
-.PHONY : lab5_msgs/CMakeFiles/_catkin_empty_exported_target.dir/rule
-
-# Convenience name for target.
-_catkin_empty_exported_target: lab5_msgs/CMakeFiles/_catkin_empty_exported_target.dir/rule
-.PHONY : _catkin_empty_exported_target
-
-# fast build rule for target.
-_catkin_empty_exported_target/fast:
-	cd /home/rss-student/rss-2014-team-3/build && $(MAKE) -f lab5_msgs/CMakeFiles/_catkin_empty_exported_target.dir/build.make lab5_msgs/CMakeFiles/_catkin_empty_exported_target.dir/build
-.PHONY : _catkin_empty_exported_target/fast
-
-# Convenience name for target.
 lab5_msgs/CMakeFiles/lab5_msgs_gencpp.dir/rule:
 	cd /home/rss-student/rss-2014-team-3/build && $(MAKE) -f CMakeFiles/Makefile2 lab5_msgs/CMakeFiles/lab5_msgs_gencpp.dir/rule
 .PHONY : lab5_msgs/CMakeFiles/lab5_msgs_gencpp.dir/rule
@@ -264,7 +250,6 @@ help:
 	@echo "... all (the default if no target is provided)"
 	@echo "... clean"
 	@echo "... depend"
-	@echo "... _catkin_empty_exported_target"
 	@echo "... edit_cache"
 	@echo "... install"
 	@echo "... install/local"
