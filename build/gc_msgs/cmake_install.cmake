@@ -42,6 +42,7 @@ IF(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspeci
     "/home/rss-student/rss-2014-team-3/src/gc_msgs/msg/MotionMsg.msg"
     "/home/rss-student/rss-2014-team-3/src/gc_msgs/msg/MotorCommandMsg.msg"
     "/home/rss-student/rss-2014-team-3/src/gc_msgs/msg/ObstacleAheadMsg.msg"
+    "/home/rss-student/rss-2014-team-3/src/gc_msgs/msg/ObstacleMsg.msg"
     "/home/rss-student/rss-2014-team-3/src/gc_msgs/msg/PoseMsg.msg"
     "/home/rss-student/rss-2014-team-3/src/gc_msgs/msg/WheelVelocityMsg.msg"
     )

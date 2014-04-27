@@ -7,9 +7,10 @@ FILE(REMOVE_RECURSE
   "/home/rss-student/rss-2014-team-3/devel/share/common-lisp/ros/gc_msgs/msg/BumpMsg.lisp"
   "/home/rss-student/rss-2014-team-3/devel/share/common-lisp/ros/gc_msgs/msg/ObstacleAheadMsg.lisp"
   "/home/rss-student/rss-2014-team-3/devel/share/common-lisp/ros/gc_msgs/msg/HamperMsg.lisp"
+  "/home/rss-student/rss-2014-team-3/devel/share/common-lisp/ros/gc_msgs/msg/PoseMsg.lisp"
   "/home/rss-student/rss-2014-team-3/devel/share/common-lisp/ros/gc_msgs/msg/GCServoMsg.lisp"
   "/home/rss-student/rss-2014-team-3/devel/share/common-lisp/ros/gc_msgs/msg/ConveyorMsg.lisp"
-  "/home/rss-student/rss-2014-team-3/devel/share/common-lisp/ros/gc_msgs/msg/PoseMsg.lisp"
+  "/home/rss-student/rss-2014-team-3/devel/share/common-lisp/ros/gc_msgs/msg/ObstacleMsg.lisp"
 )
 
 # Per-language clean rules from dependency scanning.

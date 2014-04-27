@@ -9,7 +9,7 @@ from gc_msgs.msg import MotionMsg  # for sending commands to motors
 from gc_msgs.msg import BumpMsg    # for listening to bump sensors
 from gc_msgs.msg import PoseMsg    # for listening to when the kinect sees a block
 from gc_msgs.msg import ObstacleAheadMsg    # for listening to when the kinect sees a wall
-from gc_msgs.msg import ObstacleMsg    # for listening to when the kinect sees a wall
+from gc_msgs.msg import ObstacleMsg
 import time
 import random
 
@@ -75,9 +75,10 @@ def wander():
     # travel forward, incrementing wanderCount
     # when an obstacle is seen, handleObstacleAhead will be called to cause turning
     else:
-       motionPlanner.translate(.01)
-       time.sleep(.5)
-       wanderCount +=1
+
+        motionPlanner.translate(.01)
+        time.sleep(.5)
+        wanderCount +=1
     return 
 
 # params: none
@@ -348,6 +349,13 @@ def handleObstacleAheadMsg(msg):
         
     return
 
+
+# param: none
+# return: none
+# shutdown behavior for rospy
+def onShutdown():
+    return
+
 ############
 ## Main ####
 ############
@@ -380,8 +388,10 @@ if __name__ == '__main__':
     ROBOT_RADIUS = .6                      # radius of robot in m
     
     try:
+        rospy.init_node('robotbrain')
+        rospy.on_shutdown(onShutdown)
         init()                             # load map, initialize publishers, subscribers
-
+        
         # while the robot needs more blocks to complete the wall, gather blocks
         while(numBlocksCollected < NUM_BLOCKS_NEEDED):
             if (robotState == 'wandering'):

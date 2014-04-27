@@ -7,9 +7,10 @@ FILE(REMOVE_RECURSE
   "/home/rss-student/rss-2014-team-3/devel/include/gc_msgs/BumpMsg.h"
   "/home/rss-student/rss-2014-team-3/devel/include/gc_msgs/ObstacleAheadMsg.h"
   "/home/rss-student/rss-2014-team-3/devel/include/gc_msgs/HamperMsg.h"
+  "/home/rss-student/rss-2014-team-3/devel/include/gc_msgs/PoseMsg.h"
   "/home/rss-student/rss-2014-team-3/devel/include/gc_msgs/GCServoMsg.h"
   "/home/rss-student/rss-2014-team-3/devel/include/gc_msgs/ConveyorMsg.h"
-  "/home/rss-student/rss-2014-team-3/devel/include/gc_msgs/PoseMsg.h"
+  "/home/rss-student/rss-2014-team-3/devel/include/gc_msgs/ObstacleMsg.h"
 )
 
 # Per-language clean rules from dependency scanning.

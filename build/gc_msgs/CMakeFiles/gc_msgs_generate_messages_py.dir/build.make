@@ -49,9 +49,10 @@ gc_msgs/CMakeFiles/gc_msgs_generate_messages_py: /home/rss-student/rss-2014-team
 gc_msgs/CMakeFiles/gc_msgs_generate_messages_py: /home/rss-student/rss-2014-team-3/devel/lib/python2.7/dist-packages/gc_msgs/msg/_BumpMsg.py
 gc_msgs/CMakeFiles/gc_msgs_generate_messages_py: /home/rss-student/rss-2014-team-3/devel/lib/python2.7/dist-packages/gc_msgs/msg/_ObstacleAheadMsg.py
 gc_msgs/CMakeFiles/gc_msgs_generate_messages_py: /home/rss-student/rss-2014-team-3/devel/lib/python2.7/dist-packages/gc_msgs/msg/_HamperMsg.py
+gc_msgs/CMakeFiles/gc_msgs_generate_messages_py: /home/rss-student/rss-2014-team-3/devel/lib/python2.7/dist-packages/gc_msgs/msg/_PoseMsg.py
 gc_msgs/CMakeFiles/gc_msgs_generate_messages_py: /home/rss-student/rss-2014-team-3/devel/lib/python2.7/dist-packages/gc_msgs/msg/_GCServoMsg.py
 gc_msgs/CMakeFiles/gc_msgs_generate_messages_py: /home/rss-student/rss-2014-team-3/devel/lib/python2.7/dist-packages/gc_msgs/msg/_ConveyorMsg.py
-gc_msgs/CMakeFiles/gc_msgs_generate_messages_py: /home/rss-student/rss-2014-team-3/devel/lib/python2.7/dist-packages/gc_msgs/msg/_PoseMsg.py
+gc_msgs/CMakeFiles/gc_msgs_generate_messages_py: /home/rss-student/rss-2014-team-3/devel/lib/python2.7/dist-packages/gc_msgs/msg/_ObstacleMsg.py
 gc_msgs/CMakeFiles/gc_msgs_generate_messages_py: /home/rss-student/rss-2014-team-3/devel/lib/python2.7/dist-packages/gc_msgs/msg/__init__.py
 
 /home/rss-student/rss-2014-team-3/devel/lib/python2.7/dist-packages/gc_msgs/msg/_MotorCommandMsg.py: /opt/ros/hydro/share/genpy/cmake/../../../lib/genpy/genmsg_py.py
@@ -96,23 +97,29 @@ gc_msgs/CMakeFiles/gc_msgs_generate_messages_py: /home/rss-student/rss-2014-team
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold "Generating Python from MSG gc_msgs/HamperMsg"
 	cd /home/rss-student/rss-2014-team-3/build/gc_msgs && ../catkin_generated/env_cached.sh /usr/bin/python /opt/ros/hydro/share/genpy/cmake/../../../lib/genpy/genmsg_py.py /home/rss-student/rss-2014-team-3/src/gc_msgs/msg/HamperMsg.msg -Igc_msgs:/home/rss-student/rss-2014-team-3/src/gc_msgs/msg -Istd_msgs:/opt/ros/hydro/share/std_msgs/cmake/../msg -p gc_msgs -o /home/rss-student/rss-2014-team-3/devel/lib/python2.7/dist-packages/gc_msgs/msg
 
+/home/rss-student/rss-2014-team-3/devel/lib/python2.7/dist-packages/gc_msgs/msg/_PoseMsg.py: /opt/ros/hydro/share/genpy/cmake/../../../lib/genpy/genmsg_py.py
+/home/rss-student/rss-2014-team-3/devel/lib/python2.7/dist-packages/gc_msgs/msg/_PoseMsg.py: /home/rss-student/rss-2014-team-3/src/gc_msgs/msg/PoseMsg.msg
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/rss-student/rss-2014-team-3/build/CMakeFiles $(CMAKE_PROGRESS_8)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold "Generating Python from MSG gc_msgs/PoseMsg"
+	cd /home/rss-student/rss-2014-team-3/build/gc_msgs && ../catkin_generated/env_cached.sh /usr/bin/python /opt/ros/hydro/share/genpy/cmake/../../../lib/genpy/genmsg_py.py /home/rss-student/rss-2014-team-3/src/gc_msgs/msg/PoseMsg.msg -Igc_msgs:/home/rss-student/rss-2014-team-3/src/gc_msgs/msg -Istd_msgs:/opt/ros/hydro/share/std_msgs/cmake/../msg -p gc_msgs -o /home/rss-student/rss-2014-team-3/devel/lib/python2.7/dist-packages/gc_msgs/msg
+
 /home/rss-student/rss-2014-team-3/devel/lib/python2.7/dist-packages/gc_msgs/msg/_GCServoMsg.py: /opt/ros/hydro/share/genpy/cmake/../../../lib/genpy/genmsg_py.py
 /home/rss-student/rss-2014-team-3/devel/lib/python2.7/dist-packages/gc_msgs/msg/_GCServoMsg.py: /home/rss-student/rss-2014-team-3/src/gc_msgs/msg/GCServoMsg.msg
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/rss-student/rss-2014-team-3/build/CMakeFiles $(CMAKE_PROGRESS_8)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/rss-student/rss-2014-team-3/build/CMakeFiles $(CMAKE_PROGRESS_9)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold "Generating Python from MSG gc_msgs/GCServoMsg"
 	cd /home/rss-student/rss-2014-team-3/build/gc_msgs && ../catkin_generated/env_cached.sh /usr/bin/python /opt/ros/hydro/share/genpy/cmake/../../../lib/genpy/genmsg_py.py /home/rss-student/rss-2014-team-3/src/gc_msgs/msg/GCServoMsg.msg -Igc_msgs:/home/rss-student/rss-2014-team-3/src/gc_msgs/msg -Istd_msgs:/opt/ros/hydro/share/std_msgs/cmake/../msg -p gc_msgs -o /home/rss-student/rss-2014-team-3/devel/lib/python2.7/dist-packages/gc_msgs/msg
 
 /home/rss-student/rss-2014-team-3/devel/lib/python2.7/dist-packages/gc_msgs/msg/_ConveyorMsg.py: /opt/ros/hydro/share/genpy/cmake/../../../lib/genpy/genmsg_py.py
 /home/rss-student/rss-2014-team-3/devel/lib/python2.7/dist-packages/gc_msgs/msg/_ConveyorMsg.py: /home/rss-student/rss-2014-team-3/src/gc_msgs/msg/ConveyorMsg.msg
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/rss-student/rss-2014-team-3/build/CMakeFiles $(CMAKE_PROGRESS_9)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/rss-student/rss-2014-team-3/build/CMakeFiles $(CMAKE_PROGRESS_10)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold "Generating Python from MSG gc_msgs/ConveyorMsg"
 	cd /home/rss-student/rss-2014-team-3/build/gc_msgs && ../catkin_generated/env_cached.sh /usr/bin/python /opt/ros/hydro/share/genpy/cmake/../../../lib/genpy/genmsg_py.py /home/rss-student/rss-2014-team-3/src/gc_msgs/msg/ConveyorMsg.msg -Igc_msgs:/home/rss-student/rss-2014-team-3/src/gc_msgs/msg -Istd_msgs:/opt/ros/hydro/share/std_msgs/cmake/../msg -p gc_msgs -o /home/rss-student/rss-2014-team-3/devel/lib/python2.7/dist-packages/gc_msgs/msg
 
-/home/rss-student/rss-2014-team-3/devel/lib/python2.7/dist-packages/gc_msgs/msg/_PoseMsg.py: /opt/ros/hydro/share/genpy/cmake/../../../lib/genpy/genmsg_py.py
-/home/rss-student/rss-2014-team-3/devel/lib/python2.7/dist-packages/gc_msgs/msg/_PoseMsg.py: /home/rss-student/rss-2014-team-3/src/gc_msgs/msg/PoseMsg.msg
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/rss-student/rss-2014-team-3/build/CMakeFiles $(CMAKE_PROGRESS_10)
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold "Generating Python from MSG gc_msgs/PoseMsg"
-	cd /home/rss-student/rss-2014-team-3/build/gc_msgs && ../catkin_generated/env_cached.sh /usr/bin/python /opt/ros/hydro/share/genpy/cmake/../../../lib/genpy/genmsg_py.py /home/rss-student/rss-2014-team-3/src/gc_msgs/msg/PoseMsg.msg -Igc_msgs:/home/rss-student/rss-2014-team-3/src/gc_msgs/msg -Istd_msgs:/opt/ros/hydro/share/std_msgs/cmake/../msg -p gc_msgs -o /home/rss-student/rss-2014-team-3/devel/lib/python2.7/dist-packages/gc_msgs/msg
+/home/rss-student/rss-2014-team-3/devel/lib/python2.7/dist-packages/gc_msgs/msg/_ObstacleMsg.py: /opt/ros/hydro/share/genpy/cmake/../../../lib/genpy/genmsg_py.py
+/home/rss-student/rss-2014-team-3/devel/lib/python2.7/dist-packages/gc_msgs/msg/_ObstacleMsg.py: /home/rss-student/rss-2014-team-3/src/gc_msgs/msg/ObstacleMsg.msg
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/rss-student/rss-2014-team-3/build/CMakeFiles $(CMAKE_PROGRESS_11)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold "Generating Python from MSG gc_msgs/ObstacleMsg"
+	cd /home/rss-student/rss-2014-team-3/build/gc_msgs && ../catkin_generated/env_cached.sh /usr/bin/python /opt/ros/hydro/share/genpy/cmake/../../../lib/genpy/genmsg_py.py /home/rss-student/rss-2014-team-3/src/gc_msgs/msg/ObstacleMsg.msg -Igc_msgs:/home/rss-student/rss-2014-team-3/src/gc_msgs/msg -Istd_msgs:/opt/ros/hydro/share/std_msgs/cmake/../msg -p gc_msgs -o /home/rss-student/rss-2014-team-3/devel/lib/python2.7/dist-packages/gc_msgs/msg
 
 /home/rss-student/rss-2014-team-3/devel/lib/python2.7/dist-packages/gc_msgs/msg/__init__.py: /opt/ros/hydro/share/genpy/cmake/../../../lib/genpy/genmsg_py.py
 /home/rss-student/rss-2014-team-3/devel/lib/python2.7/dist-packages/gc_msgs/msg/__init__.py: /home/rss-student/rss-2014-team-3/devel/lib/python2.7/dist-packages/gc_msgs/msg/_MotorCommandMsg.py
@@ -122,10 +129,11 @@ gc_msgs/CMakeFiles/gc_msgs_generate_messages_py: /home/rss-student/rss-2014-team
 /home/rss-student/rss-2014-team-3/devel/lib/python2.7/dist-packages/gc_msgs/msg/__init__.py: /home/rss-student/rss-2014-team-3/devel/lib/python2.7/dist-packages/gc_msgs/msg/_BumpMsg.py
 /home/rss-student/rss-2014-team-3/devel/lib/python2.7/dist-packages/gc_msgs/msg/__init__.py: /home/rss-student/rss-2014-team-3/devel/lib/python2.7/dist-packages/gc_msgs/msg/_ObstacleAheadMsg.py
 /home/rss-student/rss-2014-team-3/devel/lib/python2.7/dist-packages/gc_msgs/msg/__init__.py: /home/rss-student/rss-2014-team-3/devel/lib/python2.7/dist-packages/gc_msgs/msg/_HamperMsg.py
+/home/rss-student/rss-2014-team-3/devel/lib/python2.7/dist-packages/gc_msgs/msg/__init__.py: /home/rss-student/rss-2014-team-3/devel/lib/python2.7/dist-packages/gc_msgs/msg/_PoseMsg.py
 /home/rss-student/rss-2014-team-3/devel/lib/python2.7/dist-packages/gc_msgs/msg/__init__.py: /home/rss-student/rss-2014-team-3/devel/lib/python2.7/dist-packages/gc_msgs/msg/_GCServoMsg.py
 /home/rss-student/rss-2014-team-3/devel/lib/python2.7/dist-packages/gc_msgs/msg/__init__.py: /home/rss-student/rss-2014-team-3/devel/lib/python2.7/dist-packages/gc_msgs/msg/_ConveyorMsg.py
-/home/rss-student/rss-2014-team-3/devel/lib/python2.7/dist-packages/gc_msgs/msg/__init__.py: /home/rss-student/rss-2014-team-3/devel/lib/python2.7/dist-packages/gc_msgs/msg/_PoseMsg.py
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/rss-student/rss-2014-team-3/build/CMakeFiles $(CMAKE_PROGRESS_11)
+/home/rss-student/rss-2014-team-3/devel/lib/python2.7/dist-packages/gc_msgs/msg/__init__.py: /home/rss-student/rss-2014-team-3/devel/lib/python2.7/dist-packages/gc_msgs/msg/_ObstacleMsg.py
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/rss-student/rss-2014-team-3/build/CMakeFiles $(CMAKE_PROGRESS_12)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold "Generating Python msg __init__.py for gc_msgs"
 	cd /home/rss-student/rss-2014-team-3/build/gc_msgs && ../catkin_generated/env_cached.sh /usr/bin/python /opt/ros/hydro/share/genpy/cmake/../../../lib/genpy/genmsg_py.py -o /home/rss-student/rss-2014-team-3/devel/lib/python2.7/dist-packages/gc_msgs/msg --initpy
 
@@ -137,9 +145,10 @@ gc_msgs_generate_messages_py: /home/rss-student/rss-2014-team-3/devel/lib/python
 gc_msgs_generate_messages_py: /home/rss-student/rss-2014-team-3/devel/lib/python2.7/dist-packages/gc_msgs/msg/_BumpMsg.py
 gc_msgs_generate_messages_py: /home/rss-student/rss-2014-team-3/devel/lib/python2.7/dist-packages/gc_msgs/msg/_ObstacleAheadMsg.py
 gc_msgs_generate_messages_py: /home/rss-student/rss-2014-team-3/devel/lib/python2.7/dist-packages/gc_msgs/msg/_HamperMsg.py
+gc_msgs_generate_messages_py: /home/rss-student/rss-2014-team-3/devel/lib/python2.7/dist-packages/gc_msgs/msg/_PoseMsg.py
 gc_msgs_generate_messages_py: /home/rss-student/rss-2014-team-3/devel/lib/python2.7/dist-packages/gc_msgs/msg/_GCServoMsg.py
 gc_msgs_generate_messages_py: /home/rss-student/rss-2014-team-3/devel/lib/python2.7/dist-packages/gc_msgs/msg/_ConveyorMsg.py
-gc_msgs_generate_messages_py: /home/rss-student/rss-2014-team-3/devel/lib/python2.7/dist-packages/gc_msgs/msg/_PoseMsg.py
+gc_msgs_generate_messages_py: /home/rss-student/rss-2014-team-3/devel/lib/python2.7/dist-packages/gc_msgs/msg/_ObstacleMsg.py
 gc_msgs_generate_messages_py: /home/rss-student/rss-2014-team-3/devel/lib/python2.7/dist-packages/gc_msgs/msg/__init__.py
 gc_msgs_generate_messages_py: gc_msgs/CMakeFiles/gc_msgs_generate_messages_py.dir/build.make
 .PHONY : gc_msgs_generate_messages_py

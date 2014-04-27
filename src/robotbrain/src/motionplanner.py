@@ -8,6 +8,7 @@ from gc_msgs.msg import MotionMsg
 #
 # This class is used by the RobotBrain to send PWM messages to the HAL to control the motion of the motors. This includes both wheel motors and theconveyor belt motors. Also has methods to abstract some elements of motor control; has proportional control for the wheels
 #
+#TODO: have HAL calculate and send current wheel angular velocities?
 
 class MotionPlanner(object):
     def __init__(self):
@@ -37,51 +38,31 @@ class MotionPlanner(object):
         # intialize publishers, subscribers
         self.conveyorPub = rospy.Publisher("conveyorCommand", ConveyorMsg);
         self.hamperPub = rospy.Publisher("hamperCommand", HamperMsg);
-        self.encoderSub = rospy.Subscriber('encoderData', EncoderMsg, handleEncoderMsg);
+        self.encoderSub = rospy.Subscriber('encoderData', EncoderMsg, self.handleEncoderMsg);
         self.motionPub = rospy.Publisher("command/Motors", MotionMsg);
 
-        return;
+        return
 
 #################################
 # Publishers/Subscriber Methods #
 #################################
 
-# params: EncoderMsg msg
-# returns: none
-# calculates current rWheelVel and lWheelVel from encoder message
-# assumes encoder message fixes signs so ticks are positive when both wheels are moving forward
-def handleEncoderMsg(msg):
-    # calculating how much the wheels have moved in the past time step                                
-    newTicks = [msg.lWheelTicks, msg.rWheelTicks]; # current tick positions of the wheels             
-    deltaTicks = [newTicks[LEFT] - currentTicks[LEFT], newTicks[RIGHT]-currentTicks[RIGHT]];
-    
-    # calculating how much time has passed
-    currentTime = time.clock();
-    deltaTime = currentTime - lastEncoderMsgTime;
-    lastEncoderMsgTime = currentTime;
+    # params: EncoderMsg msg
+    # returns: none
+    # calculates current rWheelVel and lWheelVel from encoder message
+    # assumes encoder message fixes signs so ticks are positive when both wheels are moving forward
+    def handleEncoderMsg(self, msg):
+        # calculating how much the wheels have moved in the past time step                                
+        newTicks = [msg.lWheelTicks, msg.rWheelTicks]; # current tick positions of the wheels             
+        deltaTicks = [newTicks[LEFT] - currentTicks[LEFT], newTicks[RIGHT]-currentTicks[RIGHT]];
+        
+        # calculating how much time has passed
+        currentTime = time.clock();
+        deltaTime = currentTime - lastEncoderMsgTime;
+        lastEncoderMsgTime = currentTime;
 
-    # calculate and update the currentWheelAngVel parameter
-    updateWheelAngVel(deltaTicks, deltaTime);
-    return
-
-
-    # params: rWheelPWM: int (0-255) pwm value for right wheel
-    #         lWheemPWM: int (0-255) pwm value for left wheel
-    # returns: void
-    # send messages for command desired wheel PWMs
-    def setWheelPWM(self, lWheelPWM, rWheelPWM):
-        msg = MotorCommand()
-
-        # sending message for left wheel
-        msg.PWM = lWheelPWM;
-        msg.motorType = self.MOTOR_INT['lWheel'];
-        pwmPub.publish(msg);
-
-        # sending message for right wheel
-        msg.PWM = rWheelPWM;
-        msg.motorType = self.MOTOR_INT['rWheel'];
-        pwmPub.publish(msg);
-
+        # calculate and update the currentWheelAngVel parameter
+        updateWheelAngVel(deltaTicks, deltaTime);
         return
   
 
@@ -197,7 +178,7 @@ def handleEncoderMsg(msg):
         msg = MotionMsg();
         msg.translationalVelocity = velocity;
         msg.rotationalVelocity = 0;
-        motionPub.publish(msg);
+        self.motionPub.publish(msg);
         return
 
     # params: none
@@ -207,7 +188,7 @@ def handleEncoderMsg(msg):
         msg = MotionMsg();
         msg.translationalVelocity = 0;
         msg.rotationalVelocity = 0;
-        motionPub.publish(msg);
+        self.motionPub.publish(msg);
         return
     # param: angularVel: float angular velocity of robot in rad/s 
     # returns: float translational velocity for right wheel
@@ -232,7 +213,7 @@ def handleEncoderMsg(msg):
     #       deltaTime: float, time elapsed in which wheels have progressed by deltaTicks
     # returns: void
     # calculates the current anglar velocity of each wheel and updates global variable currentWheelAngVel[]
-    def updateWheelAngVel(deltaTicks, deltaTime):
+    def updateWheelAngVel(self, deltaTicks, deltaTime):
         # calculating change in distance
         leftWheelAngle = float(deltaTicks[LEFT])*(2*math.pi)/self.TICKS_PER_REVOLUTION;
         rightWheelAngle = float(deltaTicks[RIGHT])*(2*math.pi)/self.TICKS_PER_REVOLUTION;
@@ -258,7 +239,7 @@ def handleEncoderMsg(msg):
         msg = ConveyorMsg()
         msg.frontTrackFractionOn = 1.0
         msg.backTrackFractionOn = 0.0
-        conveyorPub.publish(msg)
+        self.conveyorPub.publish(msg)
         
         return
 
@@ -270,7 +251,7 @@ def handleEncoderMsg(msg):
         msg = ConveyorMsg()
         msg.frontTrackFractionOn = -1.0
         msg.backTrackFractionOn = 0.0
-        conveyorPub.publish(msg)
+        self.conveyorPub.publish(msg)
         
         return
 
@@ -283,7 +264,7 @@ def handleEncoderMsg(msg):
         msg = ConveyorMsg()
         msg.frontTrackFractionOn = 0.0
         msg.backTrackFractionOn = 0.0
-        conveyorPub.publish(msg)
+        self.conveyorPub.publish(msg)
 
         return
 
@@ -295,7 +276,7 @@ def handleEncoderMsg(msg):
         msg = ConveyorMsg()
         msg.frontTrackFractionOn = 0.0
         msg.backTrackFractionOn = 1.0
-        conveyorPub.publish(msg)
+        self.conveyorPub.publish(msg)
 
         return
 
@@ -306,7 +287,7 @@ def handleEncoderMsg(msg):
         msg = ConveyorMsg()
         msg.frontTrackFractionOn = 0.0
         msg.backTrackFractionOn = -1.0
-        conveyorPub.publish(msg)
+        self.conveyorPub.publish(msg)
 
         return
 
@@ -321,7 +302,7 @@ def handleEncoderMsg(msg):
         
         msg = ConveyorMsg()
         msg.fractionOpen = fractionOpen
-        hamperPub.publish(msg)
+        self.hamperPub.publish(msg)
 
         pass
 

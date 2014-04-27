@@ -47,7 +47,8 @@ class PathPlanner(object):
         self.createGraph();
 
         # creating the subscriber that listens to the mapUpdater
-        mapSub = rospy.Subscriber('mapUpdates', ObstacleMsg, self.handleObstacleMsg)
+        # TODO: commented out for debugging
+        #self.mapSub = rospy.Subscriber('mapUpdates', ObstacleMsg, self.handleObstacleMsg)
         return
 
     # param: ObstacleMsg msg
