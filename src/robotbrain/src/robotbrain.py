@@ -14,6 +14,7 @@ import random
 #
 # This node is the state machine that controls robot behavior
 #
+# TODO: call mapUpdater.make obstacle when 
 
 #####################
 ## state methods ####
