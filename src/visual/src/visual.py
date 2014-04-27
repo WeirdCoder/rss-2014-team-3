@@ -65,7 +65,6 @@ class kinect():
         self.image_sub = rospy.Subscriber("/camera/rgb/image_color", Image, self.image_callback)
         #self.depth_sub = rospy.Subscriber("/camera/depth/image_raw", Image, self.depth_callback)
         self.depth_sub = rospy.Subscriber("/camera/depth/image", Image, self.depth_callback)
-        
         rospy.loginfo("Waiting for image topics...")
 
     def image_callback(self, ros_image):
@@ -236,6 +235,12 @@ class kinect():
                     if textSize[0] + centroid_x - 10 < self.max_width and centroid_x - 10 >0 and textSize[1] + centroid_y + 40 < self.max_height and centroid_y >0:
                         cv2.putText(frame, depth_str, (centroid_x -10, centroid_y + 40), cv2.FONT_HERSHEY_SIMPLEX, .5, (0,0,0),1)
         return frame
+    
+    def position(self, x, d):
+        theta = math.pi/6 # Angle from horizontal of kinect mount
+        distance = d*math.cos(theta)
+        fov = 57 * math.pi/180
+        
     
     def cleanup(self):
         print "Shutting down vision node."
