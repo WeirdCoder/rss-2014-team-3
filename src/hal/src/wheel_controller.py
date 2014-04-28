@@ -23,10 +23,10 @@ class WheelController:
 
 	# Input: desired rotational velocity (radians per second) and translational velocity (meters per second) for the next step
 	# as well time of the next step
-	def velocity(self,translational_velocity,rotational_velocity,t):
+	def velocity(self,translational_velocity,rotational_velocity,dt):
 		(left,right)=self.polar_to_tank(translational_velocity,rotational_velocity)
-		self.desired_left+=left*(t-self.last_time)
-		self.desired_right+=right*(t-self.last_time)
+		self.desired_left+=left*dt
+		self.desired_right+=right*dt
 
 	# Input: desired rotational displacement (radians) and translational displacement (meters)
 	def position(self,translational_position,rotational_position,left_position,right_position):

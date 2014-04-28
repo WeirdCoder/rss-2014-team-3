@@ -11,26 +11,36 @@ import time
 import hal
 class RobotHardwareROS(RobotHardware):
     def __init__(self):
-       RobotHardware.__init__(self)
-       #Subscribers
-       self.motionSub = rospy.Subscriber("command/Motors",MotionMsg,self.handleMsg_MotionMsg)
-       self.conveyorSub = rospy.Subscriber("command/Conveyor",ConveyorMsg,self.handleMsg_ConveyorMsg)
-       self.hamperSub = rospy.Subscriber("command/Hamper",HamperMsg,self.handleMsg_HamperMsg)
-       #Publishers
-       self.encoderPub = rospy.Publisher("sensor/Encoder",EncoderMsg)
-       #Wheel Controller
-       self.wController = WheelController()
-       self.wController.reset(0,0,time.time());
-       self.wController.velocity(0,0,time.time());
-       rospy.init_node("HalRos")
+        RobotHardware.__init__(self)
+        #Subscribers
+        self.motionSub = rospy.Subscriber("command/Motors",MotionMsg,self.handleMsg_MotionMsg)
+        self.conveyorSub = rospy.Subscriber("command/Conveyor",ConveyorMsg,self.handleMsg_ConveyorMsg)
+        self.hamperSub = rospy.Subscriber("command/Hamper",HamperMsg,self.handleMsg_HamperMsg)
+        #Publishers
+        self.encoderPub = rospy.Publisher("sensor/Encoder",EncoderMsg)
+        #Wheel Controller
+        self.wController = WheelController()
+        self.wController.reset(0,0,time.time());
+        #self.wController.velocity(0,0,time.time());
+        self.lastVelocityMsgTime=None
+        rospy.init_node("HalRos")
        
 ######################
 # Subscriber Methods #
 ######################
     def handleMsg_MotionMsg(self,msg):
-       tv = msg.translationalVelocity;
-       rv = msg.rotationalVelocity;
-       self.wController.velocity(tv,rv,time.time());
+        tv = msg.translationalVelocity;
+        rv = msg.rotationalVelocity;
+
+        # Compute dt
+        t=time.time()
+        if self.lastVelocityMsgTime is None:
+            self.lastVelocityMsgTime=t
+        dt=t-self.lastVelocityMsgTime
+        self.lastVelocityMsgTime=t
+
+        self.wController.velocity(tv,rv,dt);
+
     def handleMsg_HamperMsg(self,msg):
        fo = msg.fractionOpen;
        self.command_actuators({'hopper':fo})
