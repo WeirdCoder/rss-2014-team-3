@@ -53,6 +53,7 @@ find_package(catkin REQUIRED COMPONENTS
    MotionMsg.msg
    MotorCommandMsg.msg
    ObstacleAheadMsg.msg
+   ObstacleMsg.msg
    PoseMsg.msg
    WheelVelocityMsg.msg
  )

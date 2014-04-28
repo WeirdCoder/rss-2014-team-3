@@ -24,4 +24,6 @@
     (:file "_package_MotionMsg" :depends-on ("_package"))
     (:file "WheelVelocityMsg" :depends-on ("_package_WheelVelocityMsg"))
     (:file "_package_WheelVelocityMsg" :depends-on ("_package"))
+    (:file "ObstacleMsg" :depends-on ("_package_ObstacleMsg"))
+    (:file "_package_ObstacleMsg" :depends-on ("_package"))
   ))

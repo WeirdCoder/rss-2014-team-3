@@ -7,9 +7,10 @@ FILE(REMOVE_RECURSE
   "/home/rss-student/rss-2014-team-3/devel/lib/python2.7/dist-packages/gc_msgs/msg/_BumpMsg.py"
   "/home/rss-student/rss-2014-team-3/devel/lib/python2.7/dist-packages/gc_msgs/msg/_ObstacleAheadMsg.py"
   "/home/rss-student/rss-2014-team-3/devel/lib/python2.7/dist-packages/gc_msgs/msg/_HamperMsg.py"
+  "/home/rss-student/rss-2014-team-3/devel/lib/python2.7/dist-packages/gc_msgs/msg/_PoseMsg.py"
   "/home/rss-student/rss-2014-team-3/devel/lib/python2.7/dist-packages/gc_msgs/msg/_GCServoMsg.py"
   "/home/rss-student/rss-2014-team-3/devel/lib/python2.7/dist-packages/gc_msgs/msg/_ConveyorMsg.py"
-  "/home/rss-student/rss-2014-team-3/devel/lib/python2.7/dist-packages/gc_msgs/msg/_PoseMsg.py"
+  "/home/rss-student/rss-2014-team-3/devel/lib/python2.7/dist-packages/gc_msgs/msg/_ObstacleMsg.py"
   "/home/rss-student/rss-2014-team-3/devel/lib/python2.7/dist-packages/gc_msgs/msg/__init__.py"
 )
 
