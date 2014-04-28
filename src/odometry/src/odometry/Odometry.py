@@ -4,6 +4,9 @@ import math
 import time
 from gc_msgs.msg import PoseMsg
 from gc_msgs.msg import EncoderMsg
+import location.Location as Location
+import pose.Pose as Pose
+
 #
 # This node recieves encoder messages, calculates the robot's current position, and sends out the robot's current position.
 # It also keeps track of the robot's uncertainty in position, which it updates upon recieving an uncertainty message. The uncertainty is sent out in the position message. The position includes (x position, y position, angle)
@@ -108,8 +111,10 @@ if __name__ == '__main__':
 
     #publishers and subscribers
     #TODO: uncertainty publisher and subscriber
-    posePub = rospy.Publisher('currentPose', PoseMsg)
-    encoderSub = rospy.Subscriber('encoderData', EncoderMsg, handleEncoderMsg)
+
+    posePub = rospy.Publisher('currentPose', PoseMsg);
+    encoderSub = rospy.Subscriber('sensor/Encoder', EncoderMsg, handleEncoderMsg);
+
 
     try:
         rospy.spin()                    # keep python from exiting until this node is stopped 

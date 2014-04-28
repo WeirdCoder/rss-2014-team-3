@@ -51,6 +51,8 @@ class RobotHardwareROS(RobotHardware):
         msg.rWheelTicks = sensordict['right_position']
         self.encoderPub.publish(msg);
         ##Ping Sensor#
+        # TODO: get bump sensors, sonars working 
+        
 
         ##Control##
         t= time.time()
