@@ -57,8 +57,6 @@ def init():
 # increment wanderCount; when it maxes out, spin around
 def wander():
     # declaring globals
-    global wanderCount
-    global MAX_WANDER_COUNT
     global motionPlanner
 
     # if wanderCount has counted up enough, spin 360 degrees
@@ -68,7 +66,12 @@ def wander():
        motionPlanner.stopWheels() 
 
        # wanderCount holds at the max value while turning
-       doneTurning = motionPlanner.rotate360()
+       self.previousWaypointPose = self.currentPose
+       motionPlanner.rotate(.01)
+       time.sleep(.5)
+       wanderCount = -1
+    elif wanderCount == -1:
+        #TODO we're fucking this up
        if(doneTurning):
            wanderCount = 0
 
