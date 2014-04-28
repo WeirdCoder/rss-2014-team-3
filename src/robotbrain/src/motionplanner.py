@@ -54,7 +54,7 @@ class MotionPlanner(object):
     def handleEncoderMsg(self, msg):
         # calculating how much the wheels have moved in the past time step                                
         newTicks = [msg.lWheelTicks, msg.rWheelTicks]; # current tick positions of the wheels             
-        deltaTicks = [newTicks[LEFT] - currentTicks[LEFT], newTicks[RIGHT]-currentTicks[RIGHT]];
+        deltaTicks = [newTicks[self.LEFT_WHEEL] - currentTicks[self.LEFT_WHEEL], newTicks[self.RIGHT_WHEEL]-currentTicks[self.RIGHT_WHEEL]];
         
         # calculating how much time has passed
         currentTime = time.clock();
@@ -79,10 +79,10 @@ class MotionPlanner(object):
     # using rotateTowards and translateTowards, first rotates to face destination and then translates to it
     def travelTowards(self, currentPose, destinationLoc, angVel, vel, startPose):
         
-        angleToDestination = math.artan((destinationLoc.getY()-currentPose.getY())/(destinationLoc.getX()-currentPose.getX()));
+        angleToDestination = math.atan((destinationLoc.getY()-currentPose.getY())/(destinationLoc.getX()-currentPose.getX()));
         
         # if not currently facing the destination, rotate towards it so can translate there in a straight line
-        if (math.abs(angleToDestination - currentPose.getAngle()) > self.ANG_ERROR):
+        if (abs(angleToDestination - currentPose.getAngle()) > self.ANGULAR_ERR):
             self.rotateTowards(currentPose.getAngle(), angleToDestination, angVel, startPose.getAngle());
 
         # if the robot is facing the destination, move towards it
@@ -104,7 +104,7 @@ class MotionPlanner(object):
         fractionLeft = distance/startDistance;
 
         # if have travelled more than halfway and distance < .5*acceleration^2, in slow-down region
-        rotationalVelocity = (self.currentWheelAngVel[RIGHT] - self.currentWheelAngVel[LEFT])/2.0; # rotating left is positive
+        rotationalVelocity = (self.currentWheelAngVel[self.RIGHT_WHEEL] - self.currentWheelAngVel[self.LEFT_WHEEL])/2.0; # rotating left is positive
                                                                                               # robot turns left when left wheel moves back
 
         if (distance < .5*self.MAX_WHEEL_ROT_ACCEL**2) and (abs(fractionLeft) < .5):
@@ -144,7 +144,7 @@ class MotionPlanner(object):
 
         # calculating the magnitude of the velocity
         # if within slow-down region (less than .5*a^2 from destination and at least halfway there), use velocity proportional to distance 
-        currentTransVelocity = .5*self.WHEEL_RADIUS*(self.currentWheelAngVel[LEFT] + self.currentWheelAngVel[RIGHT]);
+        currentTransVelocity = .5*self.WHEEL_RADIUS*(self.currentWheelAngVel[self.LEFT_WHEEL] + self.currentWheelAngVel[self.RIGHT_WHEEL]);
 
         if (distanceMagnitude < .5*self.MAX_WHEEL_TRANS_ACCEL**2) and (distanceMagnitude/startDistance < .5):
             desiredVelocity = velocitySign*distanceMagnitude/self.MAX_WHEEL_TRANS_ACCEL;
@@ -167,7 +167,7 @@ class MotionPlanner(object):
         msg = MotionMsg();
         msg.translationalVelocity = 0.0;
         msg.rotationalVelocity = angVelocity;
-        motionPub.publish(msg);
+        self.motionPub.publish(msg);
         return
 
     # params: velocity: float translational velocity in m/s
@@ -215,14 +215,14 @@ class MotionPlanner(object):
     # calculates the current anglar velocity of each wheel and updates global variable currentWheelAngVel[]
     def updateWheelAngVel(self, deltaTicks, deltaTime):
         # calculating change in distance
-        leftWheelAngle = float(deltaTicks[LEFT])*(2*math.pi)/self.TICKS_PER_REVOLUTION;
-        rightWheelAngle = float(deltaTicks[RIGHT])*(2*math.pi)/self.TICKS_PER_REVOLUTION;
+        leftWheelAngle = float(deltaTicks[self.LEFT_WHEEL])*(2*math.pi)/self.TICKS_PER_REVOLUTION;
+        rightWheelAngle = float(deltaTicks[self.RIGHT_WHEEL])*(2*math.pi)/self.TICKS_PER_REVOLUTION;
         
         # calculating and updating change in velocity
         leftWheelAngVel = leftWheelAngle/deltaTime;
         rightWheelAngVel = rightWheelAngle/deltaTime;
-        currentWheelAngVel[LEFT] = leftWheelAngVel;
-        currentWheelAngVel[RIGHT] = rightWheelAngVel;
+        currentWheelAngVel[self.LEFT_WHEEL] = leftWheelAngVel;
+        currentWheelAngVel[self.RIGHT_WHEEL] = rightWheelAngVel;
         
         return 
 
@@ -300,7 +300,7 @@ class MotionPlanner(object):
     def setHamperAngle(self, angle):
         fractionOpen = angle/(math.pi/2.0)
         
-        msg = ConveyorMsg()
+        msg = HamperMsg()
         msg.fractionOpen = fractionOpen
         self.hamperPub.publish(msg)
 

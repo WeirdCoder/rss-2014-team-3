@@ -59,7 +59,7 @@ class PathPlanner(object):
         #iterate through message, retrieving points
         locationList = []
         for i in range(len(msg.xPosList)):
-            locationList.append(Location(xPosList[i], yPosList[i]))
+            locationList.append(location.Location(xPosList[i], yPosList[i]))
 
         # create new obstacle    
         newObstacle = Obstacle(locationList)
@@ -176,14 +176,14 @@ class PathPlanner(object):
     # finds points in graph nearest startLocation and endLocation
     # uses graph to path between them
     # runs through, smoothing
-    def planPath(self, startLocation, endLocation):
+    def plotPath(self, startLocation, endLocation):
         # TODO
         # Make this more efficient
         startX = startLocation.getX()
         startY = startLocation.getY()
         endX = endLocation.getX()
         endY = endLocation.getY()
-        nodes = self.graph.getNodes()
+        nodes = self.graph.nodes()
         closestStartNode = nodes[0]
         closestStartX = closestStartNode[0]
         closestStartY = closestStartNode[1]
@@ -205,7 +205,10 @@ class PathPlanner(object):
         
         
         path = networkx.astar_path(self.graph, closestStartNode, closestEndNode, self.nodeDistance)
-        return path
+
+        # TODO: need to smooth out path
+        # return a list of locations
+        return [location.Location(x,y) for (x,y) in path]
 
     def getDistance(self, x1, y1, x2, y2):
         dist = math.sqrt((x1 - x2)*(x1 - x2) + (y1 - y2)*(y1 - y2))
@@ -242,8 +245,6 @@ class PathPlanner(object):
 
         csoPoints = [];
         roVertices = realObstacle.getLocationList();
-
-        print type(robotRadius)
 
         for roVertex in  roVertices:
 
