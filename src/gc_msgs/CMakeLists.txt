@@ -51,7 +51,7 @@ find_package(catkin REQUIRED COMPONENTS
    GCServoMsg.msg
    HamperMsg.msg
    MotionMsg.msg
-   MotorCommandMsg.msg
+   #MotorCommandMsg.msg
    ObstacleAheadMsg.msg
    ObstacleMsg.msg
    PoseMsg.msg

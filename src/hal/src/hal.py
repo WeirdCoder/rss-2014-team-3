@@ -85,7 +85,10 @@ class RobotHardware:
         }
 
 if __name__=='__main__':
+    import time
     r=RobotHardware()
-    #r.command_actuators({'ramp_conveyer':0,'back_conveyer':0,'hopper':0,'left_wheel':0,'right_wheel':0})
+    r.command_actuators({'ramp_conveyer':0,'back_conveyer':0,'hopper':0,'left_wheel':0,'right_wheel':0})
+    time.sleep(1)
+    r.command_actuators({'ramp_conveyer':1,'back_conveyer':1,'hopper':0,'left_wheel':0,'right_wheel':0})
     while True:
         print r.read_sensors()

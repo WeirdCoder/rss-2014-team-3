@@ -28,7 +28,7 @@ import sys
 import cv2
 import cv2.cv as cv
 from sensor_msgs.msg import Image, CameraInfo
-from gc_msgs import PoseMsg
+from gc_msgs.msg import PoseMsg
 from cv_bridge import CvBridge, CvBridgeError
 import numpy as np
 
@@ -120,7 +120,7 @@ class kinect():
         cv2.imshow("Depth Image", depth_display_image)
           
     def pose_callback(self, pose):
-        for in range (0, len(centroids)):
+        for i in range (0, len(centroids)):
             x = centroids[i][0] # horizontal pixels from edge of block
             d = depths[i] # depth of block
             x_view = horizontalPosition(x, d) # meters from center of robot's view 

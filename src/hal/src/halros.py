@@ -11,26 +11,39 @@ import time
 import hal
 class RobotHardwareROS(RobotHardware):
     def __init__(self):
-       RobotHardware.__init__(self)
-       #Subscribers
-       self.motionSub = rospy.Subscriber("command/Motors",MotionMsg,self.handleMsg_MotionMsg)
-       self.conveyorSub = rospy.Subscriber("command/Conveyor",ConveyorMsg,self.handleMsg_ConveyorMsg)
-       self.hamperSub = rospy.Subscriber("command/Hamper",HamperMsg,self.handleMsg_HamperMsg)
-       #Publishers
-       self.encoderPub = rospy.Publisher("sensor/Encoder",EncoderMsg)
-       #Wheel Controller
-       self.wController = WheelController()
-       self.wController.reset(0,0,time.time());
-       self.wController.velocity(0,0,time.time());
-       rospy.init_node("HalRos")
+        RobotHardware.__init__(self)
+        #Subscribers
+        self.motionSub = rospy.Subscriber("command/Motors",MotionMsg,self.handleMsg_MotionMsg)
+        self.conveyorSub = rospy.Subscriber("command/Conveyor",ConveyorMsg,self.handleMsg_ConveyorMsg)
+        self.hamperSub = rospy.Subscriber("command/Hamper",HamperMsg,self.handleMsg_HamperMsg)
+        #Publishers
+        self.encoderPub = rospy.Publisher("sensor/Encoder",EncoderMsg)
+        #Wheel Controller
+        self.wController = WheelController()
+	sensordict=self.read_sensors()
+        self.wController.reset(sensordict['left_position'],sensordict['right_position'],time.time());
+        #self.wController.velocity(0,0,time.time());
+        self.lastVelocityMsgTime=None
+        rospy.init_node("HalRos")
        
 ######################
 # Subscriber Methods #
 ######################
     def handleMsg_MotionMsg(self,msg):
-       tv = msg.translationalVelocity;
-       rv = msg.rotationalVelocity;
-       self.wController.velocity(tv,rv,time.time());
+
+        tv = msg.translationalVelocity;
+        rv = msg.rotationalVelocity;
+
+        # Compute dt
+        t=time.time()
+        if self.lastVelocityMsgTime is None:
+            self.lastVelocityMsgTime=t
+        dt=t-self.lastVelocityMsgTime
+        self.lastVelocityMsgTime=t
+
+        self.wController.velocity(tv,rv,dt);
+
+
     def handleMsg_HamperMsg(self,msg):
        fo = msg.fractionOpen;
        self.command_actuators({'hopper':fo})
@@ -44,7 +57,7 @@ class RobotHardwareROS(RobotHardware):
 ################
     def step(self):
         sensordict = self.read_sensors();
-        print sensordict
+        #print sensordict
         ##Encoder##
         msg = EncoderMsg()
         msg.lWheelTicks = sensordict['left_position']
@@ -56,10 +69,12 @@ class RobotHardwareROS(RobotHardware):
 
         ##Control##
         t= time.time()
-        self.wController.step(sensordict['left_position'],sensordict['right_position'],t)
+
+        motors = self.wController.step(sensordict['left_position'],sensordict['right_position'],t)
+        self.command_actuators({'left_wheel':motors[0], 'right_wheel':motors[1]})
     
 if __name__=='__main__':
     rs = RobotHardwareROS();
     while True:
-       time.sleep(1)
+       time.sleep(.01)
        rs.step()

@@ -1,6 +1,5 @@
 FILE(REMOVE_RECURSE
   "CMakeFiles/gc_msgs_generate_messages_py"
-  "/home/rss-student/rss-2014-team-3/devel/lib/python2.7/dist-packages/gc_msgs/msg/_MotorCommandMsg.py"
   "/home/rss-student/rss-2014-team-3/devel/lib/python2.7/dist-packages/gc_msgs/msg/_EncoderMsg.py"
   "/home/rss-student/rss-2014-team-3/devel/lib/python2.7/dist-packages/gc_msgs/msg/_WheelVelocityMsg.py"
   "/home/rss-student/rss-2014-team-3/devel/lib/python2.7/dist-packages/gc_msgs/msg/_MotionMsg.py"
