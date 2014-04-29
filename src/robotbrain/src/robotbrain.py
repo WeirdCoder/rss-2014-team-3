@@ -79,6 +79,10 @@ class RobotBrain(object):
         rospy.init_node('robotbrain')
         rospy.on_shutdown(self.onShutdown)
 
+        # sending initial wheel 0 message to make wheel controller happy
+        # (it freaks out if it gets a positive message after a long time step)
+        self.motionPlanner.stopWheels()
+
         return
 
     # params: none
@@ -422,6 +426,6 @@ if __name__ == '__main__':
 
         while (True):
             #robotbrain.motionPlanner.translateTowards(robotbrain.currentPose, location.Location(1.0, 0), 0.10, pose.Pose(0.,0.,0.))
-            robotbrain.motionPlanner.translate(.10);
+            robotbrain.motionPlanner.rotate(-.5);
         rospy.spin()          # keeps python from exiting until node is stopped
     except rospy.ROSInterruptException: pass
