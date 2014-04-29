@@ -112,6 +112,7 @@ if __name__ == '__main__':
     encoderSub = rospy.Subscriber('sensor/Encoder', EncoderMsg, handleEncoderMsg);
 
     try:
+        rospy.init_node('odometry')
         rospy.spin()                    # keep python from exiting until this node is stopped 
                                         # wait for odometry interrupts
     except rospy.ROSInterruptException: pass
