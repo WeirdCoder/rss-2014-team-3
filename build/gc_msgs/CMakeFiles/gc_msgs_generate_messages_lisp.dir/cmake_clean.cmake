@@ -1,6 +1,5 @@
 FILE(REMOVE_RECURSE
   "CMakeFiles/gc_msgs_generate_messages_lisp"
-  "/home/rss-student/rss-2014-team-3/devel/share/common-lisp/ros/gc_msgs/msg/MotorCommandMsg.lisp"
   "/home/rss-student/rss-2014-team-3/devel/share/common-lisp/ros/gc_msgs/msg/EncoderMsg.lisp"
   "/home/rss-student/rss-2014-team-3/devel/share/common-lisp/ros/gc_msgs/msg/WheelVelocityMsg.lisp"
   "/home/rss-student/rss-2014-team-3/devel/share/common-lisp/ros/gc_msgs/msg/MotionMsg.lisp"

@@ -122,7 +122,6 @@ if __name__=='__main__':
 		sensors=r.read_sensors()
 		motors=vc.step(sensors['left_position'],sensors['right_position'],time.time())
 		#motors=vc.step(0,0,t)
-		print motors
 		r.command_actuators({'left_wheel':motors[0],'right_wheel':motors[1]})
 		#print vc.get_error(sensors['left_position'],sensors['right_position'])
 		time.sleep(0.01)
