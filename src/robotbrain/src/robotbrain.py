@@ -426,6 +426,6 @@ if __name__ == '__main__':
 
         while (True):
             #robotbrain.motionPlanner.translateTowards(robotbrain.currentPose, location.Location(1.0, 0), 0.10, pose.Pose(0.,0.,0.))
-            robotbrain.motionPlanner.rotate(-.5);
+            robotbrain.motionPlanner.rotate(.5);
         rospy.spin()          # keeps python from exiting until node is stopped
     except rospy.ROSInterruptException: pass
