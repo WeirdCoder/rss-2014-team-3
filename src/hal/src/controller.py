@@ -65,13 +65,15 @@ while done==False:
         drive_left=-axes[1]
         drive_right=-axes[2]
 
-        r.command_actuators({
+        d={
             'ramp_conveyer':ramp,
             'back_conveyer':back,
             'left_wheel':drive_left,
             'right_wheel':drive_right,
             'hopper':hopper
-        })
+        }
+        print d
+        r.command_actuators(d)
    
     # Go ahead and update the screen with what we've drawn.
     pygame.display.flip()

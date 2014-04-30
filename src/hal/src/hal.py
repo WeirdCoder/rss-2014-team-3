@@ -122,7 +122,7 @@ class RobotHardware:
 
     def get_sonar(self,sonar):
         reading=self.pulse_sonar(sonar)
-        if reading is None or reading > 17900:
+        if reading is None or reading > 17500:
             return None
 
         return reading*self.SPEED_OF_SOUND_M_PER_US
