@@ -21,7 +21,7 @@ class MotionPlanner(object):
         self.currentTransVel = 0.
         self.currentAngVel = 0.
         self.lastEncoderMsgTime = time.clock() # time in seconds. Used for calculating current wheel velocities
-        
+
         # constants for wheel motion
         # TODO: pick appropriate vales
         self.MAX_TRANS_ACCEL = .00001;    # maximum translation acceleration in m/s^2  
@@ -72,7 +72,6 @@ class MotionPlanner(object):
 # Wheel motion ##
 ################# 
 
-
     # params: currentPose: pose containing current location of robot
     #         destinationPose: pose containing desination of robot (angle is 0)
     #         angVel: float angular velocity in rad/s
@@ -85,11 +84,12 @@ class MotionPlanner(object):
         
         # if not currently facing the destination, rotate towards it so can translate there in a straight line
         # rotateTowards will not move if close enough
+        print 'rotating'
         doneRotating = self.rotateTowards(currentPose.getAngle(), angleToDestination, angVel)
 
         if doneRotating:
             # if the robot is facing the destination, move towards it
-            print 'done rotating'
+            print 'translating'
             doneTravelling = self.translateTowards(currentPose, destinationLoc, vel); 
             print doneTravelling
             return doneTravelling;
@@ -118,6 +118,7 @@ class MotionPlanner(object):
 
         # if are close enough already, don't move and return true
         if abs(distanceLeft) < self.ANGULAR_ERR:
+
             self.rotate(0.)
             return True
 
@@ -234,7 +235,7 @@ class MotionPlanner(object):
     # returns: none
     # sends MotionMsg stopping both wheels
     def stopWheels(self):
-        print 'stopping wheels'
+
         self.previousDesiredAngVel = 0;
         self.previousDesiredTransVel = 0;
         msg = MotionMsg();

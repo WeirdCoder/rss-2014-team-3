@@ -65,7 +65,7 @@ class RobotBrain(object):
         
 
         # loading and processing map
-        [self.blockLocations, self.mapList] = mapParser.parseMap('map.txt', self.currentPose);
+        [self.blockLocations, self.mapList] = mapParser.parseMap('/home/rss-student/rss-2014-team-3/src/robotbrain/src/map.txt', self.currentPose);
         
         # TODO for debugging in wander
         self.blockLocations = []
@@ -100,7 +100,7 @@ class RobotBrain(object):
             
             # wanderCount holds at the max value while turning
             # TODO: that method no longer exists?
-            doneTurning = self.motionPlanner.rotate360()
+            doneTurning = self.rotate360()
             if(doneTurning):
                 self.wanderCount = 0
                 
@@ -270,6 +270,39 @@ class RobotBrain(object):
     def getDistance(self, pose1, loc2):
         return math.sqrt((pose1.getX()-loc2.getX())**2 + (pose1.getY()-loc2.getY())**2) 
 
+    # params: int sign
+    # returns: non3
+    # rotate 90 degrees; if sign is positive rotate right. Else rotate left
+    # this is an atomic action
+    def rotate90(self, sign):
+        # TODO
+        goalAngle = self.currentPose.getAngle() + math.copysign(math.pi/2, sign)
+        doneRotating = False
+
+        # rotate until done
+        while(not doneRotating):
+            doneRotating = self.motionPlanner.rotateTowards(self.currentPose.getAngle(), goalAngle, .5)
+        
+        return
+
+
+    # params: none
+    # returns: none
+    # rotates 360 degrees by turning 90 degrees 4 times while in wandering mode
+    def rotate360(self):
+        # make four turns
+        # want to be able to exit if see a block and state changes; hence condition on state
+        # a 90 degree turn is probably okay
+        numTurnsLeft = 4
+
+        while (self.robotState == 'wandering' and numTurnsLeft > 0):
+            self.rotate90(1);
+            numTurnsLeft -=1; 
+            print self.robotState
+            print numTurnsLeft
+        return
+
+        
 ###############################
 # Interrupt-handling methods ##
 ###############################
@@ -435,10 +468,11 @@ if __name__ == '__main__':
         
         doneMoving = False
         
+        #robotbrain.rotate360()
         while (not doneMoving):
 #            robotbrain.motionPlanner.translateTowards(robotbrain.currentPose, location.Location(1.0, 0), 0.10, pose.Pose(0.,0.,0.))
-            doneMoving =robotbrain.motionPlanner.travelTowards(robotbrain.currentPose, location.Location(1., .1), 0.5, 0.2) 
-            #keepMoving =robotbrain.motionPlanner.translateTowards(robotbrain.currentPose, location.Location(-1., 0.), 0.5) 
-           #robotbrain.motionPlanner.rotate(-.5);
+            #doneMoving =robotbrain.motionPlanner.travelTowards(robotbrain.currentPose, location.Location(1.4, .0), 0.5, 0.2) 
+            robotbrain.motionPlanner.rotateTowards(robotbrain.currentPose.getAngle(), 0., 0.5) 
+            #robotbrain.motionPlanner.rotate(-.5);
         rospy.spin()          # keeps python from exiting until node is stopped
     except rospy.ROSInterruptException: pass
