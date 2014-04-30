@@ -1,0 +1,7 @@
+set(_CATKIN_CURRENT_PACKAGE "kinect")
+set(kinect_MAINTAINER "rss-student <rss-student@todo.todo>")
+set(kinect_DEPRECATED "")
+set(kinect_VERSION "0.0.0")
+set(kinect_BUILD_DEPENDS "cv_bridge" "gc_msgs" "opencv2" "rospy" "sensor_msgs" "std_msgs")
+set(kinect_RUN_DEPENDS "cv_bridge" "gc_msgs" "opencv2" "rospy" "sensor_msgs" "std_msgs")
+set(kinect_BUILDTOOL_DEPENDS "catkin")

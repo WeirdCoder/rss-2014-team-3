@@ -6,10 +6,22 @@ class WheelController:
 	WHEEL_BASE=.372
 
 	# Proportional gain for feedback loop
-	P_GAIN=0.1
+	P_GAIN=10
+
+	# Integral gain for feedback loop
+	I_GAIN=5
+
+	# Derivative gain for the feedback loop
+	D_GAIN=10
 
 	# Bounds the motor values returned by step()
 	MAX_COMMAND=1
+
+	# Bounds the error integrator
+	MAX_INTEGRAL=10
+
+	# Bounds the acceleration
+	MAX_ACCEL=4
 
 	def __init__(self):
 		pass
@@ -21,6 +33,15 @@ class WheelController:
 		self.desired_right=right_position
 		self.last_time=t
 
+		self.left_error_integral=0
+		self.right_error_integral=0
+
+		self.last_left_error=0
+		self.last_right_error=0
+
+		self.last_left=0
+		self.last_right=0
+
 	# Input: desired rotational velocity (radians per second) and translational velocity (meters per second) for the next step
 	# as well time of the next step
 	def velocity(self,translational_velocity,rotational_velocity,dt):
@@ -29,7 +50,7 @@ class WheelController:
 		self.desired_right+=right*dt
 
 	# Input: desired rotational displacement (radians) and translational displacement (meters)
-	def position(self,translational_position,rotational_position,left_position,right_position):
+	def position(self,translational_position,rotational_position):
 		(left,right)=self.polar_to_tank(translational_position,rotational_position)
 		self.desired_left+=left
 		self.desired_right+=right
@@ -39,11 +60,30 @@ class WheelController:
 	def step(self,left_position,right_position,t):
 		(left_error,right_error)=self.get_error(left_position,right_position)
 
-		left_command=-left_error*self.P_GAIN
-		right_command=-right_error*self.P_GAIN
+		self.left_error_integral+=left_error*(t-self.last_time)
+		self.right_error_integral+=right_error*(t-self.last_time)
+
+		left_error_derivative=(left_error-self.last_left_error)/(t-self.last_time)
+		right_error_derivative=(right_error-self.last_right_error)/(t-self.last_time)
+
+		self.left_error_integral=max(min(self.left_error_integral,self.MAX_INTEGRAL),-self.MAX_INTEGRAL)
+		self.right_error_integral=max(min(self.right_error_integral,self.MAX_INTEGRAL),-self.MAX_INTEGRAL)
+
+		left_command=-left_error*self.P_GAIN-self.left_error_integral*self.I_GAIN-left_error_derivative*self.D_GAIN
+		right_command=-right_error*self.P_GAIN-self.right_error_integral*self.I_GAIN-right_error_derivative*self.D_GAIN
 
 		left_command=max(min(left_command,self.MAX_COMMAND),-self.MAX_COMMAND)
 		right_command=max(min(right_command,self.MAX_COMMAND),-self.MAX_COMMAND)
+
+		max_step=self.MAX_ACCEL*(t-self.last_time)
+		left_command=max(min(left_command,self.last_left+max_step),self.last_left-max_step)
+		right_command=max(min(right_command,self.last_right+max_step),self.last_right-max_step)
+
+		self.last_left=left_command
+		self.last_right=right_command
+		self.last_left_error=left_error
+		self.last_right_error=right_error
+		self.last_time=t
 
 		return (left_command,right_command)
 
@@ -65,20 +105,24 @@ if __name__=='__main__':
 	import time
 	import hal
 
-	#r=hal.RobotHardware()
+	r=hal.RobotHardware()
 
 	vc=WheelController()
-	#sensors=r.read_sensors()
-	#vc.reset(sensors['left_position'],sensors['right_position'],time.time())
-	vc.reset(0,0,time.time())
+	sensors=r.read_sensors()
+	vc.reset(sensors['left_position'],sensors['right_position'],time.time())
+	#vc.reset(0,0,time.time())
+	#vc.position(.3,0) # testing step response
 
+	lt=time.time()
 	while True:
 		t=time.time()
-		vc.velocity(.1,0,t)
-		#sensors=r.read_sensors()
-		#motors=vc.step(sensors['left_position'],sensors['right_position'],time.time())
-		motors=vc.step(0,0,t)
-		#r.command_actuators({'left_wheel':motors[0],'right_wheel':motors[1]})
-		print motors
+		vc.velocity(.1,0,t-lt)
+		lt=t
+
+		sensors=r.read_sensors()
+		motors=vc.step(sensors['left_position'],sensors['right_position'],time.time())
+		#motors=vc.step(0,0,t)
+		r.command_actuators({'left_wheel':motors[0],'right_wheel':motors[1]})
+		#print vc.get_error(sensors['left_position'],sensors['right_position'])
 		time.sleep(0.01)
 

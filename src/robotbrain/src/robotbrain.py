@@ -19,7 +19,6 @@ import random
 #
 # TODO: call mapUpdater.make obstacle when 
 
-
 class RobotBrain(object):
 
 #####################
@@ -58,6 +57,7 @@ class RobotBrain(object):
 
 
         # making publishers/subscribers
+        self.odometrySub = rospy.Subscriber("/sensor/currentPose", PoseMsg, self.handleCurrentPoseMsg)
         self.motionPub = rospy.Publisher("command/Motors", MotionMsg);
         self.bumpSub = rospy.Subscriber('bumpData', BumpMsg, self.handleBumpMsg);
         self.blockSeenSub = rospy.Subscriber('blockSeen', PoseMsg, self.handleBlockSeenMsg);
@@ -65,7 +65,7 @@ class RobotBrain(object):
         
 
         # loading and processing map
-        [self.blockLocations, self.mapList] = mapParser.parseMap('map.txt', self.currentPose);
+        [self.blockLocations, self.mapList] = mapParser.parseMap('/home/rss-student/rss-2014-team-3/src/robotbrain/src/map.txt', self.currentPose);
         
         # TODO for debugging in wander
         self.blockLocations = []
@@ -78,6 +78,10 @@ class RobotBrain(object):
         # ROSPY methods
         rospy.init_node('robotbrain')
         rospy.on_shutdown(self.onShutdown)
+
+        # sending initial wheel 0 message to make wheel controller happy
+        # (it freaks out if it gets a positive message after a long time step)
+        self.motionPlanner.stopWheels()
 
         return
 
@@ -96,7 +100,7 @@ class RobotBrain(object):
             
             # wanderCount holds at the max value while turning
             # TODO: that method no longer exists?
-            doneTurning = self.motionPlanner.rotate360()
+            doneTurning = self.rotate360()
             if(doneTurning):
                 self.wanderCount = 0
                 
@@ -225,7 +229,7 @@ class RobotBrain(object):
 
         while len(self.waypointsList) > 0: 
             # if have reached the current waypoint, stop and move to the next waypoint. 
-            print 'waypoints', self.waypointsList
+            
             if (self.getDistance(self.currentPose, self.waypointsList[0]) < self.POSITION_THRESHOLD):
                 self.motionPlanner.stopWheels();
                 self.previousWaypointPose = self.currentPose;
@@ -264,10 +268,41 @@ class RobotBrain(object):
     #         loc2: a Location 
     # returns: distance between them (absolute value)
     def getDistance(self, pose1, loc2):
-        print pose1
-        print loc2
         return math.sqrt((pose1.getX()-loc2.getX())**2 + (pose1.getY()-loc2.getY())**2) 
 
+    # params: int sign
+    # returns: non3
+    # rotate 90 degrees; if sign is positive rotate right. Else rotate left
+    # this is an atomic action
+    def rotate90(self, sign):
+        # TODO
+        goalAngle = self.currentPose.getAngle() + math.copysign(math.pi/2, sign)
+        doneRotating = False
+
+        # rotate until done
+        while(not doneRotating):
+            doneRotating = self.motionPlanner.rotateTowards(self.currentPose.getAngle(), goalAngle, .5)
+        
+        return
+
+
+    # params: none
+    # returns: none
+    # rotates 360 degrees by turning 90 degrees 4 times while in wandering mode
+    def rotate360(self):
+        # make four turns
+        # want to be able to exit if see a block and state changes; hence condition on state
+        # a 90 degree turn is probably okay
+        numTurnsLeft = 4
+
+        while (self.robotState == 'wandering' and numTurnsLeft > 0):
+            self.rotate90(1);
+            numTurnsLeft -=1; 
+            print self.robotState
+            print numTurnsLeft
+        return
+
+        
 ###############################
 # Interrupt-handling methods ##
 ###############################
@@ -348,6 +383,17 @@ class RobotBrain(object):
 
         return
 
+
+    # param: Pose msg
+    # returns: none
+    # takes in message with currentPose from odometry, updates currentPose
+    def handleCurrentPoseMsg(self, msg):
+        self.currentPose.setX(msg.xPosition)
+        self.currentPose.setY(msg.yPosition)
+        self.currentPose.setAngle(msg.angle)
+        return
+
+
     # param: msg
     # return: none
     # when an obstacle is directly ahead: stop. if travelling or depositing, wait and then remake path. 
@@ -418,6 +464,15 @@ if __name__ == '__main__':
     try:
         
         robotbrain = RobotBrain()
-        robotbrain.main()
+#        robotbrain.main()
+        
+        doneMoving = False
+        
+        #robotbrain.rotate360()
+        while (not doneMoving):
+#            robotbrain.motionPlanner.translateTowards(robotbrain.currentPose, location.Location(1.0, 0), 0.10, pose.Pose(0.,0.,0.))
+            #doneMoving =robotbrain.motionPlanner.travelTowards(robotbrain.currentPose, location.Location(1.4, .0), 0.5, 0.2) 
+            robotbrain.motionPlanner.rotateTowards(robotbrain.currentPose.getAngle(), 0., 0.5) 
+            #robotbrain.motionPlanner.rotate(-.5);
         rospy.spin()          # keeps python from exiting until node is stopped
     except rospy.ROSInterruptException: pass
