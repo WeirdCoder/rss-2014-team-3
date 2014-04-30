@@ -19,12 +19,12 @@ import random
 # it moves forward, spinning ocasionally, turning 90 degrees when it sees an obstacle
 # until it gets a message from kinect with block location. Then it traels to the block and eats it
 
-def simpleRobotBrain(object):
+class simpleRobotBrain(object):
     
     def __init__(self):
         # state variables 
         self.wanderCount = 0
-        self.wanderCountMax = 2*30; # two counts per second, 30 seconds before turn
+        self.wanderCountMax = 10*30; # ten counts per second, 30 seconds before turn
         self.blockLocation = None
         self.currentPose = pose.Pose(0., 0., 0.)
         self.motionPlanner = motionplanner.MotionPlanner()
@@ -36,8 +36,12 @@ def simpleRobotBrain(object):
 
         # initializing node
         rospy.init_node('simpleRobotBrain')
+        rospy.onShutdown(self.onShutdown)
         self.motionPlanner.stopWheels() # for hal
 
+        return
+
+    def onShutdown(self):
         return
 
 
@@ -45,16 +49,17 @@ def simpleRobotBrain(object):
         # if don't know where a block is, move ahead (until encounter obstacle)
         if self.blockLocation == None:
 
-            # after wandercount, rotate 360 to look for a block
+            # after wandercount time has passed, rotate 360 to look for a block
             if self.wanderCount > self.wanderCountMax:
                 self.wanderCount = 0
                 self.turn360()
 
-            # move forward
+            # if wandercount is still counting up, move forward
             else:
                 self.motionPlanner.translate(.1)
-                time.sleep(.5)
-
+                time.sleep(.1)
+                self.wanderCount += 1 
+                print 'wanderCount ', self.wanderCount
         # if know where a block is, move towards it with conveyor belts on
         else:
             self.motionPlanner.startBothBelts()
@@ -70,6 +75,8 @@ def simpleRobotBrain(object):
                 self.blockLocation = None # clear blockLocation and resume wandering behavior
 
     def handleBumpMsg(self, msg):
+
+        print 'in bump msg'
         # stop and rotate 90 degrees right or left
         self.motionPlanner.stopWheels()
 
@@ -132,7 +139,8 @@ if __name__ == '__main__':
 
         robotbrain = simpleRobotBrain()
         while(True):
-            robotbrain.main()                                                                                
+            robotbrain.main()             
+            time.sleep(.001)
         rospy.spin()
 
-    except: rospy.ROSInterruptException: pass
+    except rospy.ROSInterruptException: pass
