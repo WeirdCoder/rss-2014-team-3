@@ -72,6 +72,13 @@ def simpleRobotBrain(object):
     def handleBumpMsg(self, msg):
         # stop and rotate 90 degrees right or left
         self.motionPlanner.stopWheels()
+
+        # back up a little
+        self.motionPlanner.translate(-.05) 
+        time.sleep(1)
+        self.motionPlanner.stopWheels()
+
+        # turn 90 degrees right or left
         rand = random.random() - .5 # random number from -.5 to .5
         self.turn90(rand)
         return
