@@ -1,2 +1,2 @@
-float64 lWheelTicks
-float64 rWheelTicks
+float64 lWheelDist
+float64 rWheelDist
