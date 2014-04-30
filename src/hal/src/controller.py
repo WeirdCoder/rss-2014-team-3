@@ -39,28 +39,41 @@ while done==False:
             pass
             #print("Joystick button released.")
             
-        buttons = [joystick.get_button( i ) for i in range(4)]
+        buttons = [joystick.get_button( i ) for i in range(8)]
 
         if buttons[0]:
-            r.run_ramp_conveyer(1)
+            ramp=1
         elif buttons[1]:
-            r.run_ramp_conveyer(-1)
+            ramp=-1
         else:
-            r.run_ramp_conveyer(0)
+            ramp=0
 
-        if buttons[2]:
-            r.run_back_conveyer(1)
-        elif buttons[3]:
-            r.run_back_conveyer(-1)
+        if buttons[3]:
+            back=1
+        elif buttons[2]:
+            back=-1
         else:
-            r.run_back_conveyer(0)
+            back=0
 
-        axes = [joystick.get_axis(i) for i in range(6)]
+        if buttons[7]:
+            hopper=1
+        else:
+            hopper=0
 
-        r.set_hopper((axes[5]+1)/2)
+        axes = [joystick.get_axis(i) for i in range(3)]
 
-        r.o.set_motor(1,int(100*axes[4]))
-        r.o.set_motor(0,int(-100*axes[1]))
+        drive_left=-axes[1]
+        drive_right=-axes[2]
+
+        d={
+            'ramp_conveyer':ramp,
+            'back_conveyer':back,
+            'left_wheel':drive_left,
+            'right_wheel':drive_right,
+            'hopper':hopper
+        }
+        print d
+        r.command_actuators(d)
    
     # Go ahead and update the screen with what we've drawn.
     pygame.display.flip()
