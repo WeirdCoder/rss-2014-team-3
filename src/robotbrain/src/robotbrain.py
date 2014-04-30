@@ -19,7 +19,6 @@ import random
 #
 # TODO: call mapUpdater.make obstacle when 
 
-
 class RobotBrain(object):
 
 #####################
@@ -58,6 +57,7 @@ class RobotBrain(object):
 
 
         # making publishers/subscribers
+        self.odometrySub = rospy.Subscriber("/sensor/currentPose", PoseMsg, self.handleCurrentPoseMsg)
         self.motionPub = rospy.Publisher("command/Motors", MotionMsg);
         self.bumpSub = rospy.Subscriber('bumpData', BumpMsg, self.handleBumpMsg);
         self.blockSeenSub = rospy.Subscriber('blockSeen', PoseMsg, self.handleBlockSeenMsg);
@@ -229,7 +229,7 @@ class RobotBrain(object):
 
         while len(self.waypointsList) > 0: 
             # if have reached the current waypoint, stop and move to the next waypoint. 
-            print 'waypoints', self.waypointsList
+            
             if (self.getDistance(self.currentPose, self.waypointsList[0]) < self.POSITION_THRESHOLD):
                 self.motionPlanner.stopWheels();
                 self.previousWaypointPose = self.currentPose;
@@ -268,8 +268,6 @@ class RobotBrain(object):
     #         loc2: a Location 
     # returns: distance between them (absolute value)
     def getDistance(self, pose1, loc2):
-        print pose1
-        print loc2
         return math.sqrt((pose1.getX()-loc2.getX())**2 + (pose1.getY()-loc2.getY())**2) 
 
 ###############################
@@ -352,6 +350,17 @@ class RobotBrain(object):
 
         return
 
+
+    # param: Pose msg
+    # returns: none
+    # takes in message with currentPose from odometry, updates currentPose
+    def handleCurrentPoseMsg(self, msg):
+        self.currentPose.setX(msg.xPosition)
+        self.currentPose.setY(msg.yPosition)
+        self.currentPose.setAngle(msg.angle)
+        return
+
+
     # param: msg
     # return: none
     # when an obstacle is directly ahead: stop. if travelling or depositing, wait and then remake path. 
@@ -423,9 +432,11 @@ if __name__ == '__main__':
         
         robotbrain = RobotBrain()
 #        robotbrain.main()
-
+        
+        startAngle = robotbrain.currentPose.getAngle()
         while (True):
-            #robotbrain.motionPlanner.translateTowards(robotbrain.currentPose, location.Location(1.0, 0), 0.10, pose.Pose(0.,0.,0.))
-            robotbrain.motionPlanner.rotate(-.5);
+#            robotbrain.motionPlanner.translateTowards(robotbrain.currentPose, location.Location(1.0, 0), 0.10, pose.Pose(0.,0.,0.))
+            robotbrain.motionPlanner.rotateTowards(robotbrain.currentPose.getAngle(), 2.0, 0.5) 
+           #robotbrain.motionPlanner.rotate(-.5);
         rospy.spin()          # keeps python from exiting until node is stopped
     except rospy.ROSInterruptException: pass

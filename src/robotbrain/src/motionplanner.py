@@ -12,34 +12,37 @@ from gc_msgs.msg import MotionMsg
 
 class MotionPlanner(object):
     def __init__(self):
-
+        print 'initialzing'
         # kept updated to reflect robot status
-        self.currentWheelAngVel = [0.0,0.0];   # float[],set by listening to encoder messages
-        self.currentTicks = [0,0];          # int ticks in encoders
-        self.desiredAngleDiff = 0;          # desired difference in encoder position between the two wheels
+        self.currentWheelVel = [0.,0.];     # has current velocities of each wheel in m/s
+        self.currentWheelDist = [0., 0.];   # used for calculating velocity of each wheel
+        self.previousDesiredAngVel = 0.
+        self.previousDesiredTransVel = 0.
+        self.currentTransVel = 0.
+        self.currentAngVel = 0.
+        self.lastEncoderMsgTime = time.clock() # time in seconds. Used for calculating current wheel velocities
         
         # constants for wheel motion
         # TODO: pick appropriate vales
-        self.MAX_WHEEL_TRANS_ACCEL = .01;    # maximum translation acceleration in m/s^2  
-        self.MAX_WHEEL_ROT_ACCEL = .01;      # maximum rotational  acceleration in rad/s^2  
-        self.ANGULAR_ERR = .1;              # acceptable angular error in radians
-        self.MAX_WHEEL_ANG_VEL = 9.95;      # maximum angular velocity of wheels in rad/s
-        self.WHEEL_RADIUS = 0.0984;         # wheel radius in m
-        self.WHEELBASE =  .428;             # distance from origin to wheel; similar to a robot radius
+        self.MAX_WHEEL_TRANS_ACCEL = .001;    # maximum translation acceleration in m/s^2  
+        self.MAX_ANG_ACCEL = .0001;      # maximum rotational  acceleration in rad/s^2  
+        self.ANGULAR_ERR = .02;              # acceptable angular error in radians
+        self.MAX_WHEEL_ANG_VEL = 1.0;      # maximum angular velocity of wheels in rad/s
+        self.WHEELBASE =  .375;             # distance from origin to wheel; similar to a robot radius
 
         self.ENCODER_RESOLUTION = 2000;    # ticks/revolution, without gear ratio
         self.GEAR_RATIO = 65.5; 
         self.TICKS_PER_REVOLUTION = self.ENCODER_RESOLUTION*self.GEAR_RATIO;
         self.LEFT_WHEEL = 0;                # for indexing into leftWheel, rightWheel tuples
         self.RIGHT_WHEEL = 1;
-        self.lastEncoderMsgTime = time.clock() # time in seconds. Used for calculating current wheel velocities
+
 
         
         # intialize publishers, subscribers
         self.conveyorPub = rospy.Publisher("conveyorCommand", ConveyorMsg);
         self.hamperPub = rospy.Publisher("hamperCommand", HamperMsg);
-        self.encoderSub = rospy.Subscriber('encoderData', EncoderMsg, self.handleEncoderMsg);
-        self.motionPub = rospy.Publisher("command/Motors", MotionMsg);
+        self.encoderSub = rospy.Subscriber('/sensor/Encoder', EncoderMsg, self.handleEncoderMsg);
+        self.motionPub = rospy.Publisher("/command/Motors", MotionMsg);
 
         return
 
@@ -50,21 +53,23 @@ class MotionPlanner(object):
     # params: EncoderMsg msg
     # returns: none
     # calculates current rWheelVel and lWheelVel from encoder message
-    # assumes encoder message fixes signs so ticks are positive when both wheels are moving forward
+    # assumes encoder message fixes signs so dist is positive when both wheels are moving forward
     def handleEncoderMsg(self, msg):
-        # calculating how much the wheels have moved in the past time step                                
-        newTicks = [msg.lWheelTicks, msg.rWheelTicks]; # current tick positions of the wheels             
-        deltaTicks = [newTicks[self.LEFT_WHEEL] - currentTicks[self.LEFT_WHEEL], newTicks[self.RIGHT_WHEEL]-currentTicks[self.RIGHT_WHEEL]];
+        # calculating how much the wheels have moved in the past time step, updating
+        newDist = [msg.lWheelDist, msg.rWheelDist]; # current tick positions of the wheels             
+        deltaDist = [newDist[self.LEFT_WHEEL] - self.currentWheelDist[self.LEFT_WHEEL], newDist[self.RIGHT_WHEEL]-self.currentWheelDist[self.RIGHT_WHEEL]];
+        self.currentWheelDist = newDist
         
-        # calculating how much time has passed
+        # calculating how much time has passed, updating time
         currentTime = time.clock();
-        deltaTime = currentTime - lastEncoderMsgTime;
-        lastEncoderMsgTime = currentTime;
+        deltaTime = currentTime - self.lastEncoderMsgTime;
+        self.lastEncoderMsgTime = currentTime;
 
         # calculate and update the currentWheelAngVel parameter
-        updateWheelAngVel(deltaTicks, deltaTime);
+        if (deltaTime > 0.):
+            self.updateCurrentVel(deltaDist, deltaTime);
         return
-  
+        
 
 #################
 # Wheel motion ##
@@ -75,52 +80,64 @@ class MotionPlanner(object):
     #         destinationPose: pose containing desination of robot (angle is 0)
     #         angVel: float angular velocity in rad/s
     #         vel; float velocity in m/s
-    # returns: void
+    # returns: boolean: true when motion is complete
     # using rotateTowards and translateTowards, first rotates to face destination and then translates to it
     def travelTowards(self, currentPose, destinationLoc, angVel, vel, startPose):
         
-        angleToDestination = math.atan((destinationLoc.getY()-currentPose.getY())/(destinationLoc.getX()-currentPose.getX()));
+        angleToDestination = math.atan2((destinationLoc.getY()-currentPose.getY())/(destinationLoc.getX()-currentPose.getX()));
         
         # if not currently facing the destination, rotate towards it so can translate there in a straight line
-        if (abs(angleToDestination - currentPose.getAngle()) > self.ANGULAR_ERR):
-            self.rotateTowards(currentPose.getAngle(), angleToDestination, angVel, startPose.getAngle());
+        # rotateTowards will not move if close enough
+        doneRotating = self.rotateTowards(currentPose.getAngle(), angleToDestination, angVel, startPose.getAngle()))
 
-        # if the robot is facing the destination, move towards it
-        else:
-            self.translateTowards(currentPose, destinationLoc, vel, startPose); 
+        if doneRotating:
+            # if the robot is facing the destination, move towards it
+            doneTravelling = self.translateTowards(currentPose, destinationLoc, vel, startPose); 
 
-        return;
+        return doneTravelling;
 
     # params: currentAngle: float currentAngle in radians
     #         destAngle: float destination angle in radians 
     #         angSpeed: float angular speed in rad/s 
-    #         startAngle: float angle of robot when motion was started in rad/s
-    # returns: void
+    # returns: boolean: true when motion is complete
     # Calculates appropriate rotational speed using proportional control (accelerates and deacellerates
     #   based on distance to currentLoc. Calls rotate.
-    def rotateTowards(self, currentAngle, destAngle, angSpeed, startAngle):
-        distance = destAngle - currentAngle; 
-        startDistance = destAngle-startAngle;
-        fractionLeft = distance/startDistance;
+    def rotateTowards(self, currentAngle, destAngle, angSpeed):
+        # calculating distance left to rotate; from [-pi, pi]
+        distanceLeft = destAngle - currentAngle; 
 
-        # if have travelled more than halfway and distance < .5*acceleration^2, in slow-down region
-        rotationalVelocity = (self.currentWheelAngVel[self.RIGHT_WHEEL] - self.currentWheelAngVel[self.LEFT_WHEEL])/2.0; # rotating left is positive
-                                                                                              # robot turns left when left wheel moves back
+        # want distance left [-pi, pi]
+        if distanceLeft > math.pi:
+            distanceLeft = distanceLeft - 2*math.pi
 
-        if (distance < .5*self.MAX_WHEEL_ROT_ACCEL**2) and (abs(fractionLeft) < .5):
-            desiredAngVel = distance/self.MAX_WHEEL_ROT_ACCEL;
+        elif distanceLeft < -math.pi:
+            distanceLeft = distanceLeft + 2*math.pi
 
-        # if not in slow-down region and haven't reached speed yet, accelerate    
-        elif (abs(rotationalVelocity) < angSpeed):
-            desiredAngVel = rotationalVelocity + math.copysign(self.MAX_WHEEL_ROT_ACCEL, distance);
+        # if are close enough already, don't move and return true
+        if abs(distanceLeft) < self.ANGULAR_ERR:
+            self.stopWheels()
+            return True
 
-        # if not slowing down or speeding up, then at the desired speed, and contiue at it    
-        else:
-            desiredAngVel = math.copysign(angSpeed, distance);
 
+        # maximum current velocity is related to distanceLeft and acceleration
+        # Want to deaccelerate to 0 when distanceLeft = 0. Hence the cap
+        # v(t) = a*t
+        # d(t) = .5a**2
+        # t = sqrt(dist/.5a**2)
+        # vmax = a*t = a*sqrt(distLeft/.5a**2)
+
+        # speed is minimum of maxSpeed(distance), speed given, speed from accelerating
+        currentMaxSpeed = self.MAX_ANG_ACCEL*math.sqrt(abs(distanceLeft)/(.5*self.MAX_ANG_ACCEL**2))
+        acceleratedSpeed = abs(self.previousDesiredAngVel + math.copysign(self.MAX_ANG_ACCEL, distanceLeft))
+        desiredSpeed = min(currentMaxSpeed, angSpeed, acceleratedSpeed)
+
+         # moving in direction of distanceLeft
+        desiredAngVel = math.copysign(desiredSpeed, distanceLeft)
+        self.previousDesiredAngVel = desiredAngVel                    
         self.rotate(desiredAngVel);
-
-        return
+        
+        # still have more rotating to do
+        return False
         
     # params: currentPose: Pose currentLocation
     #         destination: Pose destination
@@ -185,6 +202,9 @@ class MotionPlanner(object):
     # returns: none
     # sends MotionMsg stopping both wheels
     def stopWheels(self):
+        print 'stopping wheels'
+        self.previousDesiredAngVel = 0;
+        self.previousDesiredTransVel = 0;
         msg = MotionMsg();
         msg.translationalVelocity = 0;
         msg.rotationalVelocity = 0;
@@ -196,11 +216,6 @@ class MotionPlanner(object):
     def convertAngVelToVel(self, angularVel):
         return angularVel*self.WHEELBASE;
 
-    # param: velocity: float velocity of wheel in m/s
-    # returns: float angular velocity
-    # converts wheel velocity to angular velocity of wheel based on wheel radius
-    def convertVelToAngVel(self, velocity):
-        return velocity/self.WHEEL_RADIUS;
 
     # param: angVel: angluar velocity of wheel in rad/s
     # returns: PWM (0-255) to achieve velocity
@@ -209,21 +224,23 @@ class MotionPlanner(object):
         return angVel/self.MAX_WHEEL_ANG_VEL * self.MAX_PWM;
 
 
-    # params: deltaTicks: int[] [new ticks on left wheel, new ticks on right wheel] 
-    #       deltaTime: float, time elapsed in which wheels have progressed by deltaTicks
+    # params: deltaDists: int[] [new distance on left wheel, new distance on right wheel] in m 
+    #       deltaTime: float, time elapsed in which wheels have progressed by deltaDist
     # returns: void
     # calculates the current anglar velocity of each wheel and updates global variable currentWheelAngVel[]
-    def updateWheelAngVel(self, deltaTicks, deltaTime):
-        # calculating change in distance
-        leftWheelAngle = float(deltaTicks[self.LEFT_WHEEL])*(2*math.pi)/self.TICKS_PER_REVOLUTION;
-        rightWheelAngle = float(deltaTicks[self.RIGHT_WHEEL])*(2*math.pi)/self.TICKS_PER_REVOLUTION;
+    def updateCurrentVel(self, deltaDist, deltaTime):
+        # calculating velocity of each wheel
+        self.currentWheelVel[self.LEFT_WHEEL] = deltaDist[self.LEFT_WHEEL]/deltaTime
+        self.currentWheelVel[self.RIGHT_WHEEL] = deltaDist[self.RIGHT_WHEEL]/deltaTime
+
+        # calculating translational velocity by averaging
+        self.currentTransVel = .5*(self.currentWheelVel[self.LEFT_WHEEL] + self.currentWheelVel[self.RIGHT_WHEEL]) # average 
         
-        # calculating and updating change in velocity
-        leftWheelAngVel = leftWheelAngle/deltaTime;
-        rightWheelAngVel = rightWheelAngle/deltaTime;
-        currentWheelAngVel[self.LEFT_WHEEL] = leftWheelAngVel;
-        currentWheelAngVel[self.RIGHT_WHEEL] = rightWheelAngVel;
-        
+        # calculating rotational velocity by taking the difference and dividing by wheel base
+        # turning to the left is positive angle - when left wheel is moving backwards
+        self.currentAngVel = .5*(self.currentWheelVel[self.RIGHT_WHEEL] - self.currentWheelVel[self.LEFT_WHEEL])/self.WHEELBASE
+
+                
         return 
 
 ##########################
