@@ -433,10 +433,12 @@ if __name__ == '__main__':
         robotbrain = RobotBrain()
 #        robotbrain.main()
         
-        startAngle = robotbrain.currentPose.getAngle()
-        while (True):
+        doneMoving = False
+        
+        while (not doneMoving):
 #            robotbrain.motionPlanner.translateTowards(robotbrain.currentPose, location.Location(1.0, 0), 0.10, pose.Pose(0.,0.,0.))
-            robotbrain.motionPlanner.rotateTowards(robotbrain.currentPose.getAngle(), 2.0, 0.5) 
+            doneMoving =robotbrain.motionPlanner.travelTowards(robotbrain.currentPose, location.Location(1., .1), 0.5, 0.2) 
+            #keepMoving =robotbrain.motionPlanner.translateTowards(robotbrain.currentPose, location.Location(-1., 0.), 0.5) 
            #robotbrain.motionPlanner.rotate(-.5);
         rospy.spin()          # keeps python from exiting until node is stopped
     except rospy.ROSInterruptException: pass
