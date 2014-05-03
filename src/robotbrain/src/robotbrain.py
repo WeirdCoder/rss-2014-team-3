@@ -51,7 +51,7 @@ class RobotBrain(object):
         self.NUM_BLOCKS_NEEDED = 9                  # number of blocks needed to complete wall
         self.MAX_SEARCH_COUNT = 500                 # arbitrary value; should be tested and set
         self.POSITION_THRESHOLD = .005              # acceptable error to reaching a position. In meters.    
-        self.END_LOCATION = location.Location(0.0, 0.0);
+        self.END_LOCATION = location.Location(0.0, 0.0);#TODO might have vision pass a goal point near a wall marker
         self.MAX_WANDER_COUNT = 30;
         self.KINECT_ERROR = .01;                    # uncertainty of the kinect in m
         self.ROBOT_RADIUS = .6                      # radius of robot in m

@@ -14,6 +14,7 @@ from hal import RobotHardware
 from wheel_controller import WheelController
 import time
 import hal
+import threading
 class RobotHardwareROS(RobotHardware):
     def __init__(self):
         RobotHardware.__init__(self)
@@ -168,15 +169,18 @@ class RobotHardwareROS(RobotHardware):
 # Main #
 ########
 
+def sensorThread(rs):
+    while True:
+        rs.get_Sonar()
+        time.sleep(0.05)
+
 if __name__=='__main__':
     rs = RobotHardwareROS();
-    i = 0
+    #Spawn SensorThread
+    t = threading.Thread(target=sensorThread, args = (rs))
+    t.start()
     while True:
-       if i % 5 == 0:
-           pass
-           #rs.get_Sonar()
-       #time.sleep(.005)
        time.sleep(.01)
        rs.step()
        rs.get_Bump()
-       i += 1
+
