@@ -157,8 +157,8 @@ class RobotHardwareROS(RobotHardware):
         sensordict = self.read_touches()
         for i in range(len(self.bumpId)):
             if self.bumpId[i] in sensordict:
-                if sensordict[self.bumpId[i]]:
-                    print "bump", i 
+                #if sensordict[self.bumpId[i]]:
+                #    print "bump", i
                 if (not self.bumpState[i]) and sensordict[self.bumpId[i]]:
                     #Bump is triggered
                     msg = BumpMsg()
@@ -169,7 +169,7 @@ class RobotHardwareROS(RobotHardware):
 # Main #
 ########
 
-def sensorThread(rs):
+def sensorThread(rs,wtv):
     while True:
         rs.get_Sonar()
         time.sleep(0.05)
@@ -177,7 +177,7 @@ def sensorThread(rs):
 if __name__=='__main__':
     rs = RobotHardwareROS();
     #Spawn SensorThread
-    t = threading.Thread(target=sensorThread, args = (rs))
+    t = threading.Thread(target=sensorThread, args = (rs,1))
     t.start()
     while True:
        time.sleep(.01)
