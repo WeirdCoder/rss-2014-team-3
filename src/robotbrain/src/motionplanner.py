@@ -30,7 +30,7 @@ class MotionPlanner(object):
         self.MAX_TRANS_ACCEL = .00001;    # maximum translation acceleration in m/s^2  
         self.MAX_ANG_ACCEL = .0001;      # maximum rotational  acceleration in rad/s^2  
         self.ANGULAR_ERR = .1;              # acceptable angular error in radians
-        self.TRANS_ERR = 0.01;            # acceptable translation error in m
+        self.TRANS_ERR = 0.005;            # acceptable translation error in m
         self.MAX_WHEEL_ANG_VEL = 1.0;      # maximum angular velocity of wheels in rad/s
         self.WHEELBASE =  .375;             # distance from origin to wheel; similar to a robot radius
         self.LEFT_WHEEL = 0;                # for indexing into leftWheel, rightWheel tuples
@@ -39,8 +39,8 @@ class MotionPlanner(object):
 
         
         # intialize publishers, subscribers
-        self.conveyorPub = rospy.Publisher("conveyorCommand", ConveyorMsg);
-        self.hamperPub = rospy.Publisher("hamperCommand", HamperMsg);
+        self.conveyorPub = rospy.Publisher("/command/Conveyor", ConveyorMsg);
+        self.hamperPub = rospy.Publisher("/command/Hamper", HamperMsg);
         self.encoderSub = rospy.Subscriber('/sensor/Encoder', EncoderMsg, self.handleEncoderMsg);
         self.motionPub = rospy.Publisher("/command/Motors", MotionMsg);
         self.positionPub = rospy.Publisher("/command/MotorsDist", MotionDistMsg);
@@ -56,7 +56,6 @@ class MotionPlanner(object):
     # updates self.wheelError from message contents - how far wheels have left to travel
     def handleWheelErrMsg(self, msg):
         self.wheelError = .5*(abs(msg.leftWheelError) + abs(msg.rightWheelError))
-        print 'setting wheel error', self.wheelError
         return
 
 
@@ -130,7 +129,6 @@ class MotionPlanner(object):
         elif distanceLeft < -math.pi:
             distanceLeft = distanceLeft + 2*math.pi
 
-        print 'distanceLeft', distanceLeft
         # if are close enough already, don't move and return true
         if abs(distanceLeft) < self.ANGULAR_ERR:
 
@@ -316,18 +314,18 @@ class MotionPlanner(object):
         # wait for wheel error message to get sent
         time.sleep(.01)
         while (self.wheelError > self.ANGULAR_ERR):
-            print 'waiting', self.wheelError
             # do nothing and wait for wheels to turn
             pass
 
+        print 'done turning'
         time.sleep(1) # wait because there is overshoot
         # once done turning, translate to destination
         self.translateTo(distanceMagnitude)
         time.sleep(.01) # wait for wheel error message to get sent
         while(self.wheelError > self.TRANS_ERR):
-            print 'waiting'
             # do nothing and wait for wheels to turn
             pass
+        print 'done translating'
         return
 
     # params: angle to turn to
@@ -366,7 +364,7 @@ class MotionPlanner(object):
 
         # tell right conveor motor to start at standard speed
         msg = ConveyorMsg()
-        msg.frontConveyorFractionOn = 1.0
+        msg.frontConveyorFractionOn = .1
         msg.backConveyorFractionOn = 0.0
         self.conveyorPub.publish(msg)
         
@@ -379,8 +377,8 @@ class MotionPlanner(object):
 
         # tell right conveor motor to start at standard speed
         msg = ConveyorMsg()
-        msg.frontConveyorFractionOn = 1.0
-        msg.backConveyorFractionOn = 1.0
+        msg.frontConveyorFractionOn = .1
+        msg.backConveyorFractionOn = .1
         self.conveyorPub.publish(msg)
         
         return
@@ -391,7 +389,7 @@ class MotionPlanner(object):
     def reverseEatingBelts(self):
 
         msg = ConveyorMsg()
-        msg.frontConveyorFractionOn = -1.0
+        msg.frontConveyorFractionOn = -.1
         msg.backConveyorFractionOn = 0.0
         self.conveyorPub.publish(msg)
         
@@ -417,7 +415,7 @@ class MotionPlanner(object):
     def startHamperBelt(self):
         msg = ConveyorMsg()
         msg.frontConveyorFractionOn = 0.0
-        msg.backConveyorFractionOn = 1.0
+        msg.backConveyorFractionOn = .1
         self.conveyorPub.publish(msg)
 
         return
@@ -428,7 +426,7 @@ class MotionPlanner(object):
     def reverseHamperBelt(self):
         msg = ConveyorMsg()
         msg.frontConveyorFractionOn = 0.0
-        msg.backConveyorFractionOn = -1.0
+        msg.backConveyorFractionOn = -.1
         self.conveyorPub.publish(msg)
 
         return

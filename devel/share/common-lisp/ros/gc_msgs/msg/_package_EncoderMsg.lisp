@@ -1,6 +1,6 @@
 (cl:in-package gc_msgs-msg)
-(cl:export '(LWHEELTICKS-VAL
-          LWHEELTICKS
-          RWHEELTICKS-VAL
-          RWHEELTICKS
+(cl:export '(LWHEELDIST-VAL
+          LWHEELDIST
+          RWHEELDIST-VAL
+          RWHEELDIST
 ))

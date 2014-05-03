@@ -1,7 +1,12 @@
 from ._WheelVelocityMsg import *
+from ._WheelErrorMsg import *
+from ._GUIPointMsg import *
+from ._ColorMsg import *
 from ._EncoderMsg import *
+from ._MotionDistMsg import *
 from ._ObstacleAheadMsg import *
 from ._MotorCommandMsg import *
+from ._GUIPolyMsg import *
 from ._MotionMsg import *
 from ._ConveyorMsg import *
 from ._ObstacleMsg import *
@@ -9,3 +14,4 @@ from ._BumpMsg import *
 from ._PoseMsg import *
 from ._GCServoMsg import *
 from ._HamperMsg import *
+from ._StateMsg import *

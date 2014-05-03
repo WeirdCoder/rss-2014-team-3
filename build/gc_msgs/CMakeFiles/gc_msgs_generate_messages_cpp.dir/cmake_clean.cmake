@@ -2,14 +2,20 @@ FILE(REMOVE_RECURSE
   "CMakeFiles/gc_msgs_generate_messages_cpp"
   "/home/rss-student/rss-2014-team-3/devel/include/gc_msgs/EncoderMsg.h"
   "/home/rss-student/rss-2014-team-3/devel/include/gc_msgs/WheelVelocityMsg.h"
-  "/home/rss-student/rss-2014-team-3/devel/include/gc_msgs/MotionMsg.h"
+  "/home/rss-student/rss-2014-team-3/devel/include/gc_msgs/GUIPolyMsg.h"
   "/home/rss-student/rss-2014-team-3/devel/include/gc_msgs/BumpMsg.h"
   "/home/rss-student/rss-2014-team-3/devel/include/gc_msgs/ObstacleAheadMsg.h"
+  "/home/rss-student/rss-2014-team-3/devel/include/gc_msgs/ColorMsg.h"
   "/home/rss-student/rss-2014-team-3/devel/include/gc_msgs/HamperMsg.h"
   "/home/rss-student/rss-2014-team-3/devel/include/gc_msgs/PoseMsg.h"
+  "/home/rss-student/rss-2014-team-3/devel/include/gc_msgs/MotionDistMsg.h"
+  "/home/rss-student/rss-2014-team-3/devel/include/gc_msgs/MotionMsg.h"
   "/home/rss-student/rss-2014-team-3/devel/include/gc_msgs/GCServoMsg.h"
   "/home/rss-student/rss-2014-team-3/devel/include/gc_msgs/ConveyorMsg.h"
+  "/home/rss-student/rss-2014-team-3/devel/include/gc_msgs/GUIPointMsg.h"
+  "/home/rss-student/rss-2014-team-3/devel/include/gc_msgs/WheelErrorMsg.h"
   "/home/rss-student/rss-2014-team-3/devel/include/gc_msgs/ObstacleMsg.h"
+  "/home/rss-student/rss-2014-team-3/devel/include/gc_msgs/StateMsg.h"
 )
 
 # Per-language clean rules from dependency scanning.

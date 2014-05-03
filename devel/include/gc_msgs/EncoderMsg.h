@@ -57,21 +57,21 @@ struct EncoderMsg_
   typedef EncoderMsg_<ContainerAllocator> Type;
 
   EncoderMsg_()
-    : lWheelTicks(0.0)
-    , rWheelTicks(0.0)  {
+    : lWheelDist(0.0)
+    , rWheelDist(0.0)  {
     }
   EncoderMsg_(const ContainerAllocator& _alloc)
-    : lWheelTicks(0.0)
-    , rWheelTicks(0.0)  {
+    : lWheelDist(0.0)
+    , rWheelDist(0.0)  {
     }
 
 
 
-   typedef double _lWheelTicks_type;
-  _lWheelTicks_type lWheelTicks;
+   typedef double _lWheelDist_type;
+  _lWheelDist_type lWheelDist;
 
-   typedef double _rWheelTicks_type;
-  _rWheelTicks_type rWheelTicks;
+   typedef double _rWheelDist_type;
+  _rWheelDist_type rWheelDist;
 
 
 
@@ -108,7 +108,7 @@ namespace message_traits
 
 
 // BOOLTRAITS {'IsFixedSize': True, 'IsMessage': True, 'HasHeader': False}
-// {'std_msgs': ['/opt/ros/hydro/share/std_msgs/cmake/../msg'], 'gc_msgs': ['/home/rss-student/rss-2014-team-3/src/gc_msgs/msg']}
+// {'std_msgs': ['/opt/ros/hydro/share/std_msgs/cmake/../msg'], 'gc_msgs': ['/home/rss-student/rss-2014-team-3/src/gc_msgs/msg'], 'lab5_msgs': ['/home/rss-student/rss-2014-team-3/src/lab5_msgs/msg'], 'lab6_msgs': ['/home/rss-student/rss-2014-team-3/src/lab6_msgs/msg']}
 
 // !!!!!!!!!!! ['__class__', '__delattr__', '__dict__', '__doc__', '__eq__', '__format__', '__getattribute__', '__hash__', '__init__', '__module__', '__ne__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__str__', '__subclasshook__', '__weakref__', '_parsed_fields', 'constants', 'fields', 'full_name', 'has_header', 'header_present', 'names', 'package', 'parsed_fields', 'short_name', 'text', 'types']
 
@@ -151,12 +151,12 @@ struct MD5Sum< ::gc_msgs::EncoderMsg_<ContainerAllocator> >
 {
   static const char* value()
   {
-    return "51043f7f97dbfa1cae24509b7b3d4210";
+    return "399c9051a81b8f84f6e69a8b8eaa8666";
   }
 
   static const char* value(const ::gc_msgs::EncoderMsg_<ContainerAllocator>&) { return value(); }
-  static const uint64_t static_value1 = 0x51043f7f97dbfa1cULL;
-  static const uint64_t static_value2 = 0xae24509b7b3d4210ULL;
+  static const uint64_t static_value1 = 0x399c9051a81b8f84ULL;
+  static const uint64_t static_value2 = 0xf6e69a8b8eaa8666ULL;
 };
 
 template<class ContainerAllocator>
@@ -175,8 +175,8 @@ struct Definition< ::gc_msgs::EncoderMsg_<ContainerAllocator> >
 {
   static const char* value()
   {
-    return "float64 lWheelTicks\n\
-float64 rWheelTicks\n\
+    return "float64 lWheelDist\n\
+float64 rWheelDist\n\
 ";
   }
 
@@ -195,8 +195,8 @@ namespace serialization
   {
     template<typename Stream, typename T> inline static void allInOne(Stream& stream, T m)
     {
-      stream.next(m.lWheelTicks);
-      stream.next(m.rWheelTicks);
+      stream.next(m.lWheelDist);
+      stream.next(m.rWheelDist);
     }
 
     ROS_DECLARE_ALLINONE_SERIALIZER;
@@ -215,10 +215,10 @@ struct Printer< ::gc_msgs::EncoderMsg_<ContainerAllocator> >
 {
   template<typename Stream> static void stream(Stream& s, const std::string& indent, const ::gc_msgs::EncoderMsg_<ContainerAllocator>& v)
   {
-    s << indent << "lWheelTicks: ";
-    Printer<double>::stream(s, indent + "  ", v.lWheelTicks);
-    s << indent << "rWheelTicks: ";
-    Printer<double>::stream(s, indent + "  ", v.rWheelTicks);
+    s << indent << "lWheelDist: ";
+    Printer<double>::stream(s, indent + "  ", v.lWheelDist);
+    s << indent << "rWheelDist: ";
+    Printer<double>::stream(s, indent + "  ", v.rWheelDist);
   }
 };
 

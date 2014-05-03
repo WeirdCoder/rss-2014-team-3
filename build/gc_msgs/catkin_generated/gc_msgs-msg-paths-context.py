@@ -5,4 +5,4 @@ INSTALLSPACE = 'FALSE' == 'TRUE'
 
 PROJECT_NAME = 'gc_msgs'
 PKG_MSG_INCLUDE_DIRS = '/home/rss-student/rss-2014-team-3/src/gc_msgs/msg'
-ARG_DEPENDENCIES = 'std_msgs'
+ARG_DEPENDENCIES = 'std_msgs;lab6_msgs'

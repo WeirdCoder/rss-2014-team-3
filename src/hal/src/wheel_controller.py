@@ -6,13 +6,13 @@ class WheelController:
 	WHEEL_BASE=.372
 
 	# Proportional gain for feedback loop
-	P_GAIN=15
+	P_GAIN=10
 
 	# Integral gain for feedback loop
-	I_GAIN=0
+	I_GAIN=.8
 
 	# Derivative gain for the feedback loop
-	D_GAIN=0
+	D_GAIN=5
 
 	# Bounds the motor values returned by step()
 	MAX_COMMAND=1

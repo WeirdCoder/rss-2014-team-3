@@ -58,10 +58,13 @@ class simpleRobotBrain(object):
         return
 
     def onShutdown(self):
+        self.motionPlanner.stopWheels()
+        self.motionPlanner.stopConveyorBelts()
         return
 
 
     def main(self):
+
 
         # if bumpFlag is on, have just bumped into an obstacle; need to back up and turn
         if self.bumpFlag != 0:
@@ -69,45 +72,21 @@ class simpleRobotBrain(object):
 
         # if don't know where a block is, move ahead (until encounter obstacle)
         if self.blockLocation == None:
-
-            # after wandercount time has passed, rotate 360 to look for a block
-            if self.wanderCount > self.wanderCountMax:
-                self.wanderCount = 0
-                print 'rotating 360'
-                self.turn360()
-
-
-            # if wandercount is still counting up, move forward
-            else:
-                print 'moving forward'
-                self.motionPlanner.translate(.1)
-                time.sleep(.001)
-                self.wanderCount += 1
-
+            #self.wander()
+            pass
         # if know where a block is, move towards it with conveyor belts on
         else:
-            print 'moving to block'
-            self.motionPlanner.startBothBelts()
-            self.motionPlanner.setHamperAngle(.15) # open slightly so blocks can fall
-            atblock = self.motionPlanner.travelTowards(self.currentPose, self.blockLocation, 0.2, 0.5)
-
-            # if have arrived at block location, presumably have eaten it; stand still and wait to consume. 
-            if atblock:
-                print 'at block'
-                self.motionPlanner.stopWheels()
-                time.sleep(15) # wait for block to fall in chute, then close chute
-                self.motionPlanner.setHamperAngle(0) # cloes hamper
-                time.sleep(10) # wait for block to get pushed into place
-                self.blockLocation = None # clear blockLocation and resume wandering behavior
+            self.consumeBlock()
 
             return
 
+    # when hit a wall, back up and turn a little
     def backupAndTurn(self):
             
         # stop and rotate 90 degrees right or left
         self.motionPlanner.stopWheels()
         
-        print 'backing up'
+
         # back up a little
         for count in range(100): 
             self.motionPlanner.translate(-.1) 
@@ -116,17 +95,53 @@ class simpleRobotBrain(object):
         # stop backing up
         self.motionPlanner.stopWheels()
 
-        print 'turning'
+
         # turn 90 degrees right or left
         #rand = random.random() - .5 # random number from -.5 to .5
         #self.turn90(rand)
         self.turn30(1)
-        print 'done handling bump'
+
             
         # done with bump behavior
         self.bumpFlag = 0
 
         return 
+
+    # moves to blockLocation, eats block
+    def consumeBlock(self):
+        print 'consuming block'
+        self.motionPlanner.startBothBelts()
+        self.motionPlanner.setHamperAngle(.15) # open slightly so blocks can fall
+        self.motionPlanner.travelTo(self.currentPose, self.blockLocation)
+
+        # should be at block location
+        print 'at block'
+        self.motionPlanner.stopWheels()
+        time.sleep(15) # wait for block to fall in chute, then close chute
+        self.motionPlanner.setHamperAngle(0) # cloes hamper
+        time.sleep(10) # wait for block to get pushed into place
+        self.blockLocation = None # clear blockLocation and resume wandering behavior
+        return
+
+    # when don't know where a block is and haven't just hit a wall, move forward
+    # rotate 360 every so often to look for a block
+    def wander(self):
+
+        # after wandercount time has passed, rotate 360 to look for a block
+        if self.wanderCount > self.wanderCountMax:
+            self.wanderCount = 0
+            print 'rotating 360'
+            self.turn360()
+
+
+        # if wandercount is still counting up, move forward
+        else:
+            self.motionPlanner.translate(.01)
+            time.sleep(.001)
+            self.wanderCount += 1
+
+        return
+
     # prints map to guiMAP to display
     def displayMap(self):
         for obstacle in self.mapList:
@@ -168,8 +183,11 @@ class simpleRobotBrain(object):
     def handleKinectMsg(self, msg):
         # save blockLocation to blockLocation 
         newBlockLocation = location.Location(msg.xPosition, msg.yPosition)
-        self.blockLocation = newBlockLocation
-        
+
+        if self.blockLocation == None:
+            self.blockLocation = newBlockLocation            
+            print 'setting blockLocation', self.blockLocation.getX(), self.blockLocation.getY()
+
         return
 
     # updates currentPose based on odometry's message
@@ -223,15 +241,16 @@ if __name__ == '__main__':
     try:
 
         robotbrain = simpleRobotBrain()
-#        while(True):
+        while(True):
             #robotbrain.main()             
             #robotbrain.motionPlanner.travelTowards(robotbrain.currentPose, location.Location(0., 0.), .8, .5)
-        print 'calling travelTo'
-        #robotbrain.motionPlanner.rotateTo(math.pi/2)
+        #print 'calling travelTo'
+#        robotbrain.motionPlanner.rotateTo(math.pi/6)
         #robotbrain.motionPlanner.translateTo(.1)
-        robotbrain.motionPlanner.travelTo(robotbrain.currentPose, 
-                                         location.Location(.25, .25))
-            #time.sleep(.001)
+        #robotbrain.motionPlanner.travelTo(robotbrain.currentPose, 
+        #                                  location.Location(0, 0))
+            robotbrain.motionPlanner.startBothBelts()
+            time.sleep(.001)
         rospy.spin()
 
     except rospy.ROSInterruptException: pass
