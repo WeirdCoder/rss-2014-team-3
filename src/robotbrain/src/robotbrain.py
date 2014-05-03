@@ -117,7 +117,7 @@ class RobotBrain(object):
         else:
 
             self.motionPlanner.translate(.01)
-            time.sleep(.5)
+            time.sleep(.5)#TODO reduce timer sleep count.
             self.wanderCount +=1
         return 
 
