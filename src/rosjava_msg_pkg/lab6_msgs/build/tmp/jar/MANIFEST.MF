@@ -5,7 +5,7 @@ Bundle-Version: 0.1.0
 Tool: Bnd-2.1.0.20130426-122213
 Bundle-Name: lab6_msgs
 Bnd-LastModified: 1397102751000
-Created-By: 1.6.0_30 (Sun Microsystems Inc.)
+Created-By: 1.6.0_31 (Sun Microsystems Inc.)
 Bundle-ManifestVersion: 2
 Bundle-SymbolicName: com.github.rosjava.rosjava_msg_pkg.lab6_msgs
 Import-Package: lab5_msgs;version="[0.1,1)",org.ros.internal.message

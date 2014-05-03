@@ -10,7 +10,10 @@ from gc_msgs.msg import MotionMsg  # for sending commands to motors
 from gc_msgs.msg import BumpMsg    # for listening to bump sensors              
 from gc_msgs.msg import PoseMsg    # for listening to when the kinect sees a block                      
 from gc_msgs.msg import ObstacleAheadMsg    # for listening to when the kinect sees a wall                                     
+from gc_msgs.msg import StateMsg
 from gc_msgs.msg import ObstacleMsg
+from gc_msgs.msg import GUIPointMsg
+from gc_msgs.msg import GUIPolyMsg
 import time
 import random
 
@@ -37,12 +40,20 @@ class simpleRobotBrain(object):
         
         self.guiPointPub = rospy.Publisher('/gui/Point', GUIPointMsg);
         self.guiPolyPub = rospy.Publisher('/gui/Poly', GUIPolyMsg);
+        self.statePub = rospy.Publisher('command/State', StateMsg);
+
         # initializing node
         rospy.init_node('simpleRobotBrain')
+        msg = StateMsg()
+        msg.state = "init"
+        self.statePub.publish(msg)
         self.motionPlanner.stopWheels() # for hal
 
         # loading map
-        [blockLocations, mapList] = mapParser.parseMap('/home/rss-student/rss-2014-team-3/src/robotbrain/src/map.txt', self.currentPose)
+        [blockLocations, self.mapList] = mapParser.parseMap('/home/rss-student/rss-2014-team-3/src/robotbrain/src/map.txt', self.currentPose)
+        self.displayMap()
+
+        
 
         return
 
@@ -54,28 +65,7 @@ class simpleRobotBrain(object):
 
         # if bumpFlag is on, have just bumped into an obstacle; need to back up and turn
         if self.bumpFlag != 0:
-            
-            # stop and rotate 90 degrees right or left
-            self.motionPlanner.stopWheels()
-
-            print 'backing up'
-            # back up a little
-            for count in range(100): 
-                self.motionPlanner.translate(-.1) 
-                time.sleep(.01)
-
-            # stop backing up
-            self.motionPlanner.stopWheels()
-
-            print 'turning'
-            # turn 90 degrees right or left
-            #rand = random.random() - .5 # random number from -.5 to .5
-            #self.turn90(rand)
-            self.turn30(1)
-            print 'done handling bump'
-            
-            # done with bump behavior
-            self.bumpFlag = 0
+            self.backupAndTurn()
 
         # if don't know where a block is, move ahead (until encounter obstacle)
         if self.blockLocation == None:
@@ -99,7 +89,7 @@ class simpleRobotBrain(object):
             print 'moving to block'
             self.motionPlanner.startBothBelts()
             self.motionPlanner.setHamperAngle(.15) # open slightly so blocks can fall
-            atblock = self.motionPlanner.travelTowards(currentPose, blockLocation, 0.2, 0.5)
+            atblock = self.motionPlanner.travelTowards(self.currentPose, self.blockLocation, 0.2, 0.5)
 
             # if have arrived at block location, presumably have eaten it; stand still and wait to consume. 
             if atblock:
@@ -112,18 +102,43 @@ class simpleRobotBrain(object):
 
             return
 
+    def backupAndTurn(self):
+            
+        # stop and rotate 90 degrees right or left
+        self.motionPlanner.stopWheels()
+        
+        print 'backing up'
+        # back up a little
+        for count in range(100): 
+            self.motionPlanner.translate(-.1) 
+            time.sleep(.01)
+
+        # stop backing up
+        self.motionPlanner.stopWheels()
+
+        print 'turning'
+        # turn 90 degrees right or left
+        #rand = random.random() - .5 # random number from -.5 to .5
+        #self.turn90(rand)
+        self.turn30(1)
+        print 'done handling bump'
+            
+        # done with bump behavior
+        self.bumpFlag = 0
+
+        return 
     # prints map to guiMAP to display
     def displayMap(self):
         for obstacle in self.mapList:
             # filling up metadata
             msg = GUIPolyMsg()
-            msg.setFilled(0)
-            msg.setClosed(1)
+            msg.filled = 0
+            msg.closed= 1
 
             # filling up color black
-            msg.getC().seR(0)
-            msg.getC().setB(0)
-            msg.getC().setG(0)
+            msg.c.r = 0
+            msg.c.g = 0
+            msg.c.b = 0
 
             # opening up object to get points
             xList = []
@@ -133,9 +148,9 @@ class simpleRobotBrain(object):
                 xList.append(point.getX())
                 yList.append(point.getY())
 
-            msg.setX(xList)
-            msg.setY(yList)
-            guiPolyPub.publish(msg)
+            msg.x = xList
+            msg.y = yList 
+            self.guiPolyPub.publish(msg)
 
         # return after sending all obstacles
         return
@@ -152,7 +167,7 @@ class simpleRobotBrain(object):
 
     def handleKinectMsg(self, msg):
         # save blockLocation to blockLocation 
-        newBlockLocation = location.Location(msg.xLoc, msg.yLoc)
+        newBlockLocation = location.Location(msg.xPosition, msg.yPosition)
         self.blockLocation = newBlockLocation
         
         return
@@ -208,9 +223,15 @@ if __name__ == '__main__':
     try:
 
         robotbrain = simpleRobotBrain()
-        while(True):
-            robotbrain.main()             
-            time.sleep(.001)
+#        while(True):
+            #robotbrain.main()             
+            #robotbrain.motionPlanner.travelTowards(robotbrain.currentPose, location.Location(0., 0.), .8, .5)
+        print 'calling travelTo'
+        #robotbrain.motionPlanner.rotateTo(math.pi/2)
+        #robotbrain.motionPlanner.translateTo(.1)
+        robotbrain.motionPlanner.travelTo(robotbrain.currentPose, 
+                                         location.Location(.25, .25))
+            #time.sleep(.001)
         rospy.spin()
 
     except rospy.ROSInterruptException: pass

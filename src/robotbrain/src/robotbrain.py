@@ -11,6 +11,7 @@ from gc_msgs.msg import BumpMsg    # for listening to bump sensors
 from gc_msgs.msg import PoseMsg    # for listening to when the kinect sees a block
 from gc_msgs.msg import ObstacleAheadMsg    # for listening to when the kinect sees a wall
 from gc_msgs.msg import ObstacleMsg
+from gc_msgs.msg import StateMsg
 import time
 import random
 
@@ -62,6 +63,13 @@ class RobotBrain(object):
         self.bumpSub = rospy.Subscriber('bumpData', BumpMsg, self.handleBumpMsg);
         self.blockSeenSub = rospy.Subscriber('blockSeen', PoseMsg, self.handleBlockSeenMsg);
         self.obstacleAheadSub = rospy.Subscriber('obstacleAhead', ObstacleAheadMsg, self.handleObstacleAheadMsg);
+        self.statePub = rospy.Publisher("command/State", StateMsg)
+        
+        ##Initialization broadcast
+        msg = StateMsg()
+        msg.source = "robotbrain"
+        msg.state = "init"
+        self.statePub.publish(msg)
         
 
         # loading and processing map
@@ -473,7 +481,7 @@ if __name__ == '__main__':
         while (not doneMoving):
 #            robotbrain.motionPlanner.translateTowards(robotbrain.currentPose, location.Location(1.0, 0), 0.10, pose.Pose(0.,0.,0.))
             #doneMoving =robotbrain.motionPlanner.travelTowards(robotbrain.currentPose, location.Location(1.4, .0), 0.5, 0.2) 
-            robotbrain.motionPlanner.rotateTowards(robotbrain.currentPose.getAngle(), 0., 0.5) 
+            doneMoving = robotbrain.motionPlanner.rotateTowards(robotbrain.currentPose.getAngle(), math.pi/2., 0.5) 
             #robotbrain.motionPlanner.rotate(-.5);
 
         rospy.spin()          # keeps python from exiting until node is stopped

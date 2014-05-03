@@ -6,13 +6,13 @@ class WheelController:
 	WHEEL_BASE=.372
 
 	# Proportional gain for feedback loop
-	P_GAIN=10
+	P_GAIN=15
 
 	# Integral gain for feedback loop
-	I_GAIN=5
+	I_GAIN=0
 
 	# Derivative gain for the feedback loop
-	D_GAIN=10
+	D_GAIN=0
 
 	# Bounds the motor values returned by step()
 	MAX_COMMAND=1
@@ -21,10 +21,13 @@ class WheelController:
 	MAX_INTEGRAL=10
 
 	# Bounds the acceleration
-	MAX_ACCEL=4
+	MAX_ACCEL=2
 
 	def __init__(self):
-		pass
+		# code Ami added because getting errors from line 49
+		self.desired_left = 0
+		self.desired_right = 0
+		return
 
 	# Sets current values as "zero" and resets state of the control loop
 	# Input: Left and right wheel position values in meters and current time
@@ -97,8 +100,8 @@ class WheelController:
 	# Input: polar coordinates (translation and rotation)
 	# Output: tank-drive coordinates (left and right wheel)
 	def polar_to_tank(self,translation,rotation):
-		left=translation-rotation*self.WHEEL_BASE/4
-		right=translation+rotation*self.WHEEL_BASE/4
+		left=translation-rotation*self.WHEEL_BASE/2
+		right=translation+rotation*self.WHEEL_BASE/2
 		return (left,right)
 
 if __name__=='__main__':

@@ -7,8 +7,8 @@ Private-Package: .
 Bundle-Version: 0.1.0
 Tool: Bnd-2.1.0.20130426-122213
 Bundle-Name: uorc_publisher
-Bnd-LastModified: 1398176021000
-Created-By: 1.6.0_30 (Sun Microsystems Inc.)
+Bnd-LastModified: 1399062098000
+Created-By: 1.6.0_31 (Sun Microsystems Inc.)
 Bundle-ManifestVersion: 2
 Bundle-SymbolicName: com.github.rosjava.rosjava_pkg.uorc_publisher
 Import-Package: analogIO;version="[0.1,1)",digitalIO;version="[0.1,1)"

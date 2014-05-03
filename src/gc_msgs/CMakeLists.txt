@@ -47,14 +47,20 @@ find_package(catkin REQUIRED COMPONENTS
    FILES
    BumpMsg.msg
    ConveyorMsg.msg
+   ColorMsg.msg
    EncoderMsg.msg
    GCServoMsg.msg
+   GUIPointMsg.msg
+   GUIPolyMsg.msg
    HamperMsg.msg
    MotionMsg.msg
+   MotionDistMsg.msg
    #MotorCommandMsg.msg
    ObstacleAheadMsg.msg
    ObstacleMsg.msg
    PoseMsg.msg
+   StateMsg.msg
+   WheelErrorMsg.msg
    WheelVelocityMsg.msg
  )
 
@@ -76,6 +82,7 @@ find_package(catkin REQUIRED COMPONENTS
  generate_messages(
    DEPENDENCIES
    std_msgs# Or other packages containing msgs
+   lab6_msgs
  )
 
 ###################################
