@@ -47,7 +47,7 @@ class RobotHardwareROS(RobotHardware):
     def handleMsg_StateMsg(self,msg):
         #if msg.source == "robotbrain":
             if msg.state == "init":                
-                self.wController = WheelController()
+                #self.wController = WheelController()
 	        sensordict=self.read_wheels()
                 self.wController.reset(sensordict['left_position'],sensordict['right_position'],time.time())
 
