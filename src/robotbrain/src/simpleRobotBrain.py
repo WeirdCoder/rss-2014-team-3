@@ -91,6 +91,11 @@ class simpleRobotBrain(object):
 
     # open hamper and drive away
     def releaseBlocks(self):
+        # send message to reset hal, so it won't try to complete a previous motion
+        msg = StateMsg()
+        msg.state = "init"
+        self.statePub.publish(msg)
+        
         # open hamper
         self.motionPlanner.setHamperAngle(math.pi/2)
 
