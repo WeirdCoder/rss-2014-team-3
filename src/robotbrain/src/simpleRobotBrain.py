@@ -242,14 +242,14 @@ if __name__ == '__main__':
 
         robotbrain = simpleRobotBrain()
         while(True):
-            #robotbrain.main()             
+            robotbrain.main()             
             #robotbrain.motionPlanner.travelTowards(robotbrain.currentPose, location.Location(0., 0.), .8, .5)
         #print 'calling travelTo'
 #        robotbrain.motionPlanner.rotateTo(math.pi/6)
         #robotbrain.motionPlanner.translateTo(.1)
         #robotbrain.motionPlanner.travelTo(robotbrain.currentPose, 
         #                                  location.Location(0, 0))
-            robotbrain.motionPlanner.startBothBelts()
+#        robotbrain.motionPlanner.startBothBelts()
             time.sleep(.001)
         rospy.spin()
 

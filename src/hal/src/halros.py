@@ -172,7 +172,8 @@ class RobotHardwareROS(RobotHardware):
 def sensorThread(rs,wtv):
     while True:
         rs.get_Sonar()
-        time.sleep(0.05)
+        rs.get_Bump()
+        time.sleep(0.3)
 
 if __name__=='__main__':
     rs = RobotHardwareROS();
@@ -182,5 +183,4 @@ if __name__=='__main__':
     while True:
        time.sleep(.01)
        rs.step()
-       rs.get_Bump()
 

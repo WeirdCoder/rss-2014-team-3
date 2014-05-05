@@ -9,19 +9,19 @@ class WheelController:
 	P_GAIN=10
 
 	# Integral gain for feedback loop
-	I_GAIN=.8
+	I_GAIN=.08
 
 	# Derivative gain for the feedback loop
 	D_GAIN=5
 
 	# Bounds the motor values returned by step()
-	MAX_COMMAND=1
+	MAX_COMMAND=0.03
 
 	# Bounds the error integrator
 	MAX_INTEGRAL=10
 
 	# Bounds the acceleration
-	MAX_ACCEL=2
+	MAX_ACCEL=1.1
 
 	def __init__(self):
 		# code Ami added because getting errors from line 49
