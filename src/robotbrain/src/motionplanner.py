@@ -376,8 +376,8 @@ class MotionPlanner(object):
 
         # tell right conveor motor to start at standard speed
         msg = ConveyorMsg()
-        msg.frontConveyorFractionOn = .1
-        msg.backConveyorFractionOn = 0.0
+        msg.frontConveyorFractionOn = .2
+        msg.backConveyorFractionOn = 0.2
         self.conveyorPub.publish(msg)
         
         return

@@ -9,13 +9,13 @@ class WheelController:
 	P_GAIN=10
 
 	# Integral gain for feedback loop
-	I_GAIN=.08
+	I_GAIN=1
 
 	# Derivative gain for the feedback loop
-	D_GAIN=5
+	D_GAIN=10
 
 	# Bounds the motor values returned by step()
-	MAX_COMMAND=0.03
+	MAX_COMMAND=1
 
 	# Bounds the error integrator
 	MAX_INTEGRAL=10
@@ -111,19 +111,20 @@ if __name__=='__main__':
 	r=hal.RobotHardware()
 
 	vc=WheelController()
-	sensors=r.read_sensors()
+	sensors=r.read_wheels()
 	vc.reset(sensors['left_position'],sensors['right_position'],time.time())
 	#vc.reset(0,0,time.time())
-	#vc.position(.3,0) # testing step response
+	vc.position(-.5,0) # testing step response
 
 	lt=time.time()
 	while True:
 		t=time.time()
-		vc.velocity(.1,0,t-lt)
+		#vc.velocity(.1,0,t-lt)
 		lt=t
 
-		sensors=r.read_sensors()
+		sensors=r.read_wheels()
 		motors=vc.step(sensors['left_position'],sensors['right_position'],time.time())
+		print motors
 		#motors=vc.step(0,0,t)
 		r.command_actuators({'left_wheel':motors[0],'right_wheel':motors[1]})
 		#print vc.get_error(sensors['left_position'],sensors['right_position'])

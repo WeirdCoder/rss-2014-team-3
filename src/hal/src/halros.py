@@ -185,4 +185,5 @@ if __name__=='__main__':
     while rs.startTime - time.time() < 600:
        time.sleep(.01)
        rs.step()
+    self.command_actuators({'left_wheel':0.0, 'right_wheel':0.0})
     rs.signal_shutdown("Game Time Over")
