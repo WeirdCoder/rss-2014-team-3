@@ -10,6 +10,10 @@ def bump():
 	ts=r.read_touches()
 	return (ts['front_left_touch'],ts['front_right_touch'])
 
+def enter_dispense():
+	timer=1
+	state='dispense1'
+
 try:
 	while True:
 		print state
@@ -18,8 +22,9 @@ try:
 			#r.command_actuators({'ramp_conveyer':1,'back_conveyer':1,'hopper':0,'left_wheel':0,'right_wheel':0})
 			state='wander'
 			bumps=0
+			gametimer=time.time()+60
 		elif state=='wander':
-			r.command_actuators({'left_wheel':.4,'right_wheel':.4})
+			r.command_actuators({'left_wheel':.5,'right_wheel':.5})
 			b=bump()
 			if b==(1,0):
 				state='hit_left'
@@ -28,8 +33,10 @@ try:
 			elif b==(1,1):
 				state='hit_both'
 			elif bumps>10:
-				spintime=time.time()+5
+				timer=time.time()+5
 				state='spin'
+			elif time.timer()>gametimer:
+				enter_dispense()
 		elif state=='hit_left':
 			r.command_actuators({'left_wheel':-.3,'right_wheel':-.4})
 			b=bump()
@@ -70,8 +77,24 @@ try:
 				state='hit_right'
 			elif b==(1,1):
 				state='hit_both'
-			elif time.time()>spintime:
+			elif time.time()>timer:
 				state='wander'
+		elif state=='dispense1':
+			r.command_actuators({'ramp_conveyer':0,'back_conveyer':0,'hopper':0,'left_wheel':0,'right_wheel':0})
+			if time.time()>timer:
+				timer=1
+				state='dispense2'
+		elif state=='dispense2':
+			r.command_actuators({'hopper':1})
+			if time.time()>timer:
+				timer=5
+				state='dispense3'
+		elif state=='dispense3':
+			r.command_actuators({'left_wheel':.3,'right_wheel':.3})
+			if time.time()>timer:
+				state='done'
+		elif state=='done':
+			r.command_actuators({'hopper':0,'left_wheel':0,'right_wheel':0})
 
 except KeyboardInterrupt:
 	print "Got keyboard interrupt"
