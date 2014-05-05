@@ -295,7 +295,20 @@ class MotionPlanner(object):
 
     # params: none
     # returns: none
-    # sends messages to start the conveyor belts that consume blocks at default speed
+    # sends messages to start both conveyor belts 
+    def startBothBelts(self):
+
+        # tell right conveor motor to start at standard speed
+        msg = ConveyorMsg()
+        msg.frontTrackFractionOn = 1.0
+        msg.backTrackFractionOn = 1.0
+        self.conveyorPub.publish(msg)
+        
+        return
+
+    # params: none
+    # returns: none
+    # sends messages to reverse conveyor belts that consumes blocks 
     def reverseEatingBelts(self):
 
         msg = ConveyorMsg()
