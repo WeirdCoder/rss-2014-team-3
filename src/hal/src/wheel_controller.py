@@ -24,10 +24,7 @@ class WheelController:
 	MAX_ACCEL=1.1
 
 	def __init__(self):
-		# code Ami added because getting errors from line 49
-		self.desired_left = 0
-		self.desired_right = 0
-		return
+		pass
 
 	# Sets current values as "zero" and resets state of the control loop
 	# Input: Left and right wheel position values in meters and current time
