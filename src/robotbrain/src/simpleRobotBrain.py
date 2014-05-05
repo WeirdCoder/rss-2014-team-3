@@ -99,8 +99,8 @@ class simpleRobotBrain(object):
         # open hamper
         self.motionPlanner.setHamperAngle(math.pi/2)
 
-        # drive forward slowly
-        self.motionPlanner.translate(.01)
+        # drive forward .1 meters
+        self.motionPlanner.translateTo(.01)
 
         return
 
