@@ -173,6 +173,7 @@ def sensorThread(rs,wtv):
     while True:
         rs.get_Sonar()
         rs.get_Bump()
+        time.sleep(0.3)
 
 if __name__=='__main__':
     
@@ -185,5 +186,3 @@ if __name__=='__main__':
        time.sleep(.01)
        rs.step()
     rs.signal_shutdown("Game Time Over")
-       
-

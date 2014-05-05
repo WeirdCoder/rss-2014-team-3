@@ -31,7 +31,7 @@ class MotionPlanner(object):
         self.MAX_ANG_ACCEL = .0001;      # maximum rotational  acceleration in rad/s^2  
         self.ANGULAR_ERR = .1;              # acceptable angular error in radians
         self.TRANS_ERR = 0.005;            # acceptable translation error in m
-        self.MAX_WHEEL_ANG_VEL = 1.0;      # maximum angular velocity of wheels in rad/s
+        self.MAX_WHEEL_ANG_VEL = 0.2;#was 1      # maximum angular velocity of wheels in rad/s
         self.WHEELBASE =  .375;             # distance from origin to wheel; similar to a robot radius
         self.LEFT_WHEEL = 0;                # for indexing into leftWheel, rightWheel tuples
         self.RIGHT_WHEEL = 1;
@@ -302,7 +302,15 @@ class MotionPlanner(object):
         print 'inside travelTo'
         currentDistanceVector = (destination.getX() - currentPose.getX(), destination.getY() - currentPose.getY());
         angleToDestination = math.atan2((destination.getY()-currentPose.getY()),(destination.getX()-currentPose.getX())) - currentPose.getAngle();
-         
+        print 'angle to dest', angleToDestination
+        
+        # want angleToDestination [-pi, pi]
+        if angleToDestination > math.pi:
+            angleToDestination = angleToDestination - 2*math.pi
+
+        elif angleToDestination < -math.pi:
+            angleToDestination = angleToDestination + 2*math.pi
+
         distanceMagnitude = math.sqrt(currentDistanceVector[0]**2 + currentDistanceVector[1]**2);
         print 'angle', angleToDestination
         print 'distance', distanceMagnitude
@@ -318,11 +326,15 @@ class MotionPlanner(object):
             pass
 
         print 'done turning'
-        time.sleep(1) # wait because there is overshoot
+        time.sleep(5) # wait because there is overshoot
         # once done turning, translate to destination
+        print 'start travel'
         self.translateTo(distanceMagnitude)
+        self.translate(0.01)
         time.sleep(.01) # wait for wheel error message to get sent
         while(self.wheelError > self.TRANS_ERR):
+            self.translate(0.01)
+            time.sleep(.02)
             # do nothing and wait for wheels to turn
             pass
         print 'done translating'
