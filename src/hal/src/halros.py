@@ -27,7 +27,7 @@ class RobotHardwareROS(RobotHardware):
         #Publishers
         self.encoderPub = rospy.Publisher("sensor/Encoder",EncoderMsg)
         self.bumpPub = rospy.Publisher("sensor/Bump",BumpMsg)
-        self.sonarPub = rospy.Publisher("sensor/Echo", PoseMsg)
+        self.sonarPub = rospy.Publisher("sensor/Sonar", PoseMsg)
         self.wheelErrPub = rospy.Publisher("sensor/WheelErr", WheelErrorMsg)
 
         self.sonarId = ["front_left_sonar","front_right_sonar","back_left_sonar","back_right_sonar"]
@@ -172,15 +172,18 @@ class RobotHardwareROS(RobotHardware):
 def sensorThread(rs,wtv):
     while True:
         rs.get_Sonar()
-        time.sleep(0.05)
+        rs.get_Bump()
 
 if __name__=='__main__':
+    
     rs = RobotHardwareROS();
+    rs.startTime = time.time()
     #Spawn SensorThread
     t = threading.Thread(target=sensorThread, args = (rs,1))
     t.start()
-    while True:
+    while rs.startTime - time.time() < 600:
        time.sleep(.01)
        rs.step()
-       rs.get_Bump()
+    rs.signal_shutdown("Game Time Over")
+       
 
