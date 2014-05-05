@@ -5,6 +5,7 @@ import math
 import eci
 from stm32f1xx import *
 import time
+import threading
 
 # Orcboard Hookup
 
@@ -29,6 +30,8 @@ class RobotHardware:
         self.o.check_connectivity()
         self.e=eci.ECI()
         self.eci_init()
+        self.lock=threading.Lock()
+        self.wlock=threading.Lock()
 
     def eci_init(self):
         self.e.configure_timer(TIM1_BASE,period=30000,prescaler=72) # SONAR
@@ -94,25 +97,35 @@ class RobotHardware:
 
     # Speed from 1 (forward) to -1 (backwards)
     def run_ramp_conveyer(self,speed):
+	self.lock.acquire()
         self.e.pwm_out('D6',int(1500+speed*500))
         self.e.pwm_out('D7',int(1500-speed*500))
+        self.lock.release()
 
     # Speed from 1 (towards edge) to -1 (towards center)
     def run_back_conveyer(self,speed):
+	self.lock.acquire()
         self.e.pwm_out('D3',int(1500+speed*500))
+	self.lock.release()
 
     # Angle from 0 (fully closed) to 1 (fully open)
     def set_hopper(self,angle):
+	self.lock.acquire()
         self.e.pwm_out('D8',int(1600-angle*950))
         self.e.pwm_out('D9',int(950+angle*1000))
+	self.lock.release()
 
     # Run left motor (1 forward -1 backwards)
     def drive_left_wheel(self,speed):
+	self.wlock.acquire()
         self.o.set_motor(0,int(255*speed))
+	self.wlock.release()
 
     # Run right motor (1 forward -1 backwards)
     def drive_right_wheel(self,speed):
+	self.wlock.acquire()
         self.o.set_motor(1,int(-255*speed))
+	self.wlock.release()
 
     # Returns right robot position in meters based on right wheel encoder
     def left_position(self,status):
@@ -147,33 +160,44 @@ class RobotHardware:
             command_functions[k](v)
 
     def read_wheels(self):
+        self.wlock.acquire()
         status=self.o.get_status()
-        return {
+        d={
             'left_position':self.left_position(status),
             'right_position':self.right_position(status)
         }
+        self.wlock.release()
+        return d
 
     def read_sonars(self):
+        self.lock.acquire()
         sonars=[self.get_sonar(i) for i in [1,2,3,4]]
-        return {
+        d={
             'front_left_sonar':sonars[0],
             'back_left_sonar':sonars[1],
             'front_right_sonar':sonars[2],
             'back_right_sonar':sonars[3]
         }
+        self.lock.release()
+        return d
 
     def read_touches(self):
+        self.lock.acquire()
         touches=[self.get_touch_sensor(t) for t in ['A0','A1','A2','A3']]
-        return {
+        d={
             'front_left_touch':touches[0],
             'front_right_touch':touches[1],
             'block_front_touch':touches[2],
             'block_back_touch':touches[3]
         }
+        self.lock.release()
+        return d
 
 if __name__=='__main__':
     import time
     r=RobotHardware()
+    r.command_actuators({'ramp_conveyer':1,'back_conveyer':1,'hopper':0,'left_wheel':0,'right_wheel':0})
+    time.sleep(2)
     r.command_actuators({'ramp_conveyer':0,'back_conveyer':0,'hopper':0,'left_wheel':0,'right_wheel':0})
     while True:
         print r.read_wheels()

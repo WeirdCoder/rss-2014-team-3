@@ -32,7 +32,7 @@ class simpleRobotBrain(object):
 
         # state variables 
         self.wanderCount = 0
-        self.wanderCountMax = 400*30; # ten counts per second, 30 seconds before turn
+        self.wanderCountMax = 200*30; # ten counts per second, 30 seconds before turn
         self.blockLocation = None
         self.currentPose = pose.Pose(0., 0., 0.)
         self.motionPlanner = motionplanner.MotionPlanner(self.startTime, self.dumpTime)
@@ -55,10 +55,10 @@ class simpleRobotBrain(object):
         self.motionPlanner.stopWheels() # for hal
 
         # loading map
-        [blockLocations, self.mapList] = mapParser.parseMap('/home/rss-student/rss-2014-team-3/src/robotbrain/src/map.txt', self.currentPose)
-        self.displayMap()
+#        [blockLocations, self.mapList] = mapParser.parseMap('/home/rss-student/rss-2014-team-3/src/robotbrain/src/map.txt', self.currentPose)
+#        self.displayMap()
 
-        
+        print 'start pose', self.currentPose
 
         return
 
@@ -81,7 +81,7 @@ class simpleRobotBrain(object):
         # if don't know where a block is, move ahead (until encounter obstacle)
         if self.blockLocation == None:
             #self.wander()
-            pass
+            
         # if know where a block is, move towards it with conveyor belts on
         else:
             self.consumeBlock()
@@ -138,7 +138,7 @@ class simpleRobotBrain(object):
     def consumeBlock(self):
         print 'consuming block'
         self.motionPlanner.startBothBelts()
-        self.motionPlanner.setHamperAngle(.15) # open slightly so blocks can fall
+        self.motionPlanner.setHamperAngle(.01) # open slightly so blocks can fall
         self.motionPlanner.travelTo(self.currentPose, self.blockLocation)
 
         # should be at block location
@@ -147,17 +147,18 @@ class simpleRobotBrain(object):
 
         # wait for 15 seconds for block to fall in chute, then close chute
         waitTimeStart = time.time()
-        while ((time.time() - watiTimeStart < 15) and (time.time() < self.dumpTime)):
+        while ((time.time() - waitTimeStart < 15) and (time.time() - self.startTime < self.dumpTime)):
             pass
         
-        self.motionPlanner.setHamperAngle(0) # cloes hamper
+        self.motionPlanner.setHamperAngle(-.04) # cloes hamper
 
         # wait for 10 seconds for block to get pushed into place
         waitTimeStart = time.time()
-        while ((time.time() - watiTimeStart < 10) and (time.time() < self.dumpTime)):
+        while ((time.time() - waitTimeStart < 10) and (time.time() - self.startTime < self.dumpTime)):
             pass
 
         # clear blockLocation to resume wandering behavior
+        self.motionPlanner.stopConveyorBelts()
         self.blockLocation = None 
         return
 
@@ -175,7 +176,7 @@ class simpleRobotBrain(object):
 
         # if wandercount is still counting up, move forward
         else:
-            self.motionPlanner.translate(.01)
+            self.motionPlanner.translate(.05)
             time.sleep(.001)
             self.wanderCount += 1
 
@@ -212,6 +213,9 @@ class simpleRobotBrain(object):
     def handleBumpMsg(self, msg):
         # used as flag to set state
         self.bumpFlag = 1
+        #TODO remove hack.
+        self.motionPlanner.restartHAL()
+        self.blockLocation = None
         return
 
 
@@ -241,19 +245,19 @@ class simpleRobotBrain(object):
         doneRotating = False
 
         # rotate until done, or until is time to dump blocks                                                                      
-        while ((not doneRotating) and (time.time() < self.dumpTime)):
-            doneRotating = self.motionPlanner.rotateTowards(self.currentPose.getAngle(), goalAngle, .8)
+        while ((not doneRotating) and (time.time()- self.startTime < self.dumpTime)):
+            doneRotating = self.motionPlanner.rotateTowards(self.currentPose.getAngle(), goalAngle, .05)
 
         return
 
     # turn 30 degrees, direction indicated by sign of sign
     def turn30(self, sign):
-        print 'turning 90'
+        print 'turning 30'
         goalAngle = self.currentPose.getAngle() + math.copysign(math.pi/6, sign)
         doneRotating = False
 
         # rotate until done                                          
-        while ((not doneRotating) and (time.time() < self.dumpTime)):                                     
+        while ((not doneRotating) and (time.time()-self.startTime < self.dumpTime)):                                     
             doneRotating = self.motionPlanner.rotateTowards(self.currentPose.getAngle(), goalAngle, .8)
 
         return
@@ -264,11 +268,13 @@ class simpleRobotBrain(object):
         # make four turns                                                                                 
         # want to be able to exit if see a block and state changes; hence condition on state              
         # a 90 degree turn is probably okay                                                               
-        numTurnsLeft = 4
+        numTurnsLeft = 12
 
         while (self.blockLocation == None and numTurnsLeft > 0):
-            self.turn90(1);
+            self.turn30(1);
+            time.sleep(.01)
             numTurnsLeft -=1;
+            print 'checking'
         return
 
 

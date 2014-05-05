@@ -6,19 +6,19 @@ class WheelController:
 	WHEEL_BASE=.372
 
 	# Proportional gain for feedback loop
-	P_GAIN=10
+	P_GAIN=15
 
 	# Integral gain for feedback loop
-	I_GAIN=1
+	I_GAIN=0.5
 
 	# Derivative gain for the feedback loop
-	D_GAIN=10
+	D_GAIN=20
 
 	# Bounds the motor values returned by step()
 	MAX_COMMAND=1
 
 	# Bounds the error integrator
-	MAX_INTEGRAL=10
+	MAX_INTEGRAL=0.3
 
 	# Bounds the acceleration
 	MAX_ACCEL=1.1
@@ -29,7 +29,9 @@ class WheelController:
 	# Sets current values as "zero" and resets state of the control loop
 	# Input: Left and right wheel position values in meters and current time
 	def reset(self,left_position,right_position,t):
+		print "reset called"
 		self.desired_left=left_position
+		print "r desired_left:",self.desired_left
 		self.desired_right=right_position
 		self.last_time=t
 
@@ -45,12 +47,16 @@ class WheelController:
 	# Input: desired rotational velocity (radians per second) and translational velocity (meters per second) for the next step
 	# as well time of the next step
 	def velocity(self,translational_velocity,rotational_velocity,dt):
+		print "velocity called"
+		print "v desired_left:",self.desired_left
 		(left,right)=self.polar_to_tank(translational_velocity,rotational_velocity)
 		self.desired_left+=left*dt
 		self.desired_right+=right*dt
 
 	# Input: desired rotational displacement (radians) and translational displacement (meters)
 	def position(self,translational_position,rotational_position):
+		print "position called"
+		print "p desired_left:",self.desired_left
 		(left,right)=self.polar_to_tank(translational_position,rotational_position)
 		self.desired_left+=left
 		self.desired_right+=right
@@ -104,6 +110,7 @@ class WheelController:
 if __name__=='__main__':
 	import time
 	import hal
+	import math
 
 	r=hal.RobotHardware()
 
@@ -111,19 +118,37 @@ if __name__=='__main__':
 	sensors=r.read_wheels()
 	vc.reset(sensors['left_position'],sensors['right_position'],time.time())
 	#vc.reset(0,0,time.time())
-	vc.position(-.5,0) # testing step response
+	vc.position(0,math.pi/2) # testing step response
 
 	lt=time.time()
-	while True:
+	for i in range(1000):
 		t=time.time()
 		#vc.velocity(.1,0,t-lt)
 		lt=t
 
 		sensors=r.read_wheels()
 		motors=vc.step(sensors['left_position'],sensors['right_position'],time.time())
-		print motors
+		#print motors
+		print vc.get_error(sensors['left_position'],sensors['right_position'])
 		#motors=vc.step(0,0,t)
 		r.command_actuators({'left_wheel':motors[0],'right_wheel':motors[1]})
 		#print vc.get_error(sensors['left_position'],sensors['right_position'])
 		time.sleep(0.01)
+
+	vc.position(.4,0)
+
+	for i in range(10000):
+		t=time.time()
+		#vc.velocity(.1,0,t-lt)
+		lt=t
+
+		sensors=r.read_wheels()
+		motors=vc.step(sensors['left_position'],sensors['right_position'],time.time())
+		#print motors
+		print vc.get_error(sensors['left_position'],sensors['right_position'])
+		#motors=vc.step(0,0,t)
+		r.command_actuators({'left_wheel':motors[0],'right_wheel':motors[1]})
+		#print vc.get_error(sensors['left_position'],sensors['right_position'])
+		time.sleep(0.01)
+
 

@@ -333,7 +333,6 @@ class MotionPlanner(object):
 
         # turn to face destination point
         print 'calling rotateTo'
-        self.restartHAL()
         self.rotateTo(angleToDestination)
         print 'wheelErr', self.wheelError
 
@@ -342,6 +341,7 @@ class MotionPlanner(object):
         time.sleep(0.01)
         print 'wheelErrPostTime', self.wheelError
         while (self.wheelError > self.ANGULAR_ERR):
+            print 'u' 
             # do nothing and wait for wheels to turn
             # unless time is greater than dumpTime, in which case, return.
             if (time.time() - self.startTime >= self.dumpTime):
@@ -353,6 +353,7 @@ class MotionPlanner(object):
         whileStartTime = time.time()
         while ((time.time()-whileStartTime < 5.0) and (time.time()-self.startTime < self.dumpTime)):
             pass
+
 
         print 'start travel'
         self.translateTo(distanceMagnitude)
