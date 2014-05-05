@@ -25,19 +25,24 @@ import random
 class simpleRobotBrain(object):
     
     def __init__(self):
+
+        # variables to ensure that when time is almost out, robot dumps blocks
+        self.startTime = time.time() # in seconds
+        self.dumpTime = 9.5*60       # with 30 seconds left, stop whatever doing and dump blocks. Time in seconds.
+
         # state variables 
         self.wanderCount = 0
         self.wanderCountMax = 400*30; # ten counts per second, 30 seconds before turn
         self.blockLocation = None
         self.currentPose = pose.Pose(0., 0., 0.)
-        self.motionPlanner = motionplanner.MotionPlanner()
+        self.motionPlanner = motionplanner.MotionPlanner(self.startTime, self.dumpTime)
         self.bumpFlag = 0
+
         
         # making subscribers and publishers
         self.odometrySub = rospy.Subscriber("/sensor/currentPose", PoseMsg, self.handleOdometryMsg)
         self.bumpSub = rospy.Subscriber('/sensor/Bump', BumpMsg, self.handleBumpMsg);
-        self.blockSeenSub = rospy.Subscriber('/sensor/blockSeen', PoseMsg, self.handleKinectMsg);
-        
+        self.blockSeenSub = rospy.Subscriber('/sensor/blockSeen', PoseMsg, self.handleKinectMsg);    
         self.guiPointPub = rospy.Publisher('/gui/Point', GUIPointMsg);
         self.guiPolyPub = rospy.Publisher('/gui/Poly', GUIPolyMsg);
         self.statePub = rospy.Publisher('command/State', StateMsg);
@@ -65,6 +70,9 @@ class simpleRobotBrain(object):
 
     def main(self):
 
+        # if time is almost running out, open hamper and move away
+        if (time.time() - self.startTime >= self.dumpTime): 
+            self.releaseBlocks()
 
         # if bumpFlag is on, have just bumped into an obstacle; need to back up and turn
         if self.bumpFlag != 0:
@@ -80,6 +88,24 @@ class simpleRobotBrain(object):
 
             return
 
+
+    # open hamper and drive away
+    def releaseBlocks(self):
+        # send message to reset hal, so it won't try to complete a previous motion
+        msg = StateMsg()
+        msg.state = "init"
+        self.statePub.publish(msg)
+        
+        # open hamper
+        self.motionPlanner.setHamperAngle(math.pi/2)
+
+        # drive forward .1 meters
+        self.motionPlanner.translateTo(.01)
+
+        return
+
+
+
     # when hit a wall, back up and turn a little
     def backupAndTurn(self):
             
@@ -91,6 +117,7 @@ class simpleRobotBrain(object):
         for count in range(100): 
             self.motionPlanner.translate(-.1) 
             time.sleep(.01)
+
 
         # stop backing up
         self.motionPlanner.stopWheels()
@@ -117,11 +144,23 @@ class simpleRobotBrain(object):
         # should be at block location
         print 'at block'
         self.motionPlanner.stopWheels()
-        time.sleep(15) # wait for block to fall in chute, then close chute
+
+        # wait for 15 seconds for block to fall in chute, then close chute
+        waitTimeStart = time.time()
+        while ((time.time() - watiTimeStart < 15) and (time.time() < self.dumpTime)):
+            pass
+        
         self.motionPlanner.setHamperAngle(0) # cloes hamper
-        time.sleep(10) # wait for block to get pushed into place
-        self.blockLocation = None # clear blockLocation and resume wandering behavior
+
+        # wait for 10 seconds for block to get pushed into place
+        waitTimeStart = time.time()
+        while ((time.time() - watiTimeStart < 10) and (time.time() < self.dumpTime)):
+            pass
+
+        # clear blockLocation to resume wandering behavior
+        self.blockLocation = None 
         return
+
 
     # when don't know where a block is and haven't just hit a wall, move forward
     # rotate 360 every so often to look for a block
@@ -171,15 +210,13 @@ class simpleRobotBrain(object):
         return
 
     def handleBumpMsg(self, msg):
-
-        print 'in bump msg'
-        if msg.bumpNumber == 2:
-            self.bumpFlag = -1
-        elif msg.bumpNumber ==3:
-            self.bumpFlag = 1
+        # used as flag to set state
+        self.bumpFlag = 1
         return
 
 
+    # handles message from kinect with block location
+    # if no block is currently being consumed, sets location of a block that should be consumed
     def handleKinectMsg(self, msg):
         # save blockLocation to blockLocation 
         newBlockLocation = location.Location(msg.xPosition, msg.yPosition)
@@ -203,9 +240,9 @@ class simpleRobotBrain(object):
         goalAngle = self.currentPose.getAngle() + math.copysign(math.pi/2, sign)
         doneRotating = False
 
-        # rotate until done                                                                               
-        while(not doneRotating):
-                doneRotating = self.motionPlanner.rotateTowards(self.currentPose.getAngle(), goalAngle, .8)
+        # rotate until done, or until is time to dump blocks                                                                      
+        while ((not doneRotating) and (time.time() < self.dumpTime)):
+            doneRotating = self.motionPlanner.rotateTowards(self.currentPose.getAngle(), goalAngle, .8)
 
         return
 
@@ -215,9 +252,9 @@ class simpleRobotBrain(object):
         goalAngle = self.currentPose.getAngle() + math.copysign(math.pi/6, sign)
         doneRotating = False
 
-        # rotate until done                                                                               
-        while(not doneRotating):
-                doneRotating = self.motionPlanner.rotateTowards(self.currentPose.getAngle(), goalAngle, .8)
+        # rotate until done                                          
+        while ((not doneRotating) and (time.time() < self.dumpTime)):                                     
+            doneRotating = self.motionPlanner.rotateTowards(self.currentPose.getAngle(), goalAngle, .8)
 
         return
 

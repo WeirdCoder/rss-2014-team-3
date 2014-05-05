@@ -13,7 +13,7 @@ from gc_msgs.msg import MotionDistMsg
 #TODO: have HAL calculate and send current wheel angular velocities?
 
 class MotionPlanner(object):
-    def __init__(self):
+    def __init__(self, startTime, dumpTime):
 
         # kept updated to reflect robot status
         self.currentWheelVel = [0.,0.];     # has current velocities of each wheel in m/s
@@ -25,6 +25,11 @@ class MotionPlanner(object):
         self.lastEncoderMsgTime = time.clock() # time in seconds. Used for calculating current wheel velocities
         self.wheelError = 0.
 
+
+        # timing constants used to ensure that robot stops everything near end of run and dumps current blocks
+        self.startTime = startTime
+        self.dumpTime = dumpTime
+        
         # constants for wheel motion
         # TODO: pick appropriate vales
         self.MAX_TRANS_ACCEL = .00001;    # maximum translation acceleration in m/s^2  
@@ -319,24 +324,35 @@ class MotionPlanner(object):
         print 'calling rotateTo'
         self.rotateTo(angleToDestination)
         print 'wheelErr', self.wheelError
+
         # wait for wheel error message to get sent
+        # and then wait until done rotating
         time.sleep(.01)
         while (self.wheelError > self.ANGULAR_ERR):
+
             # do nothing and wait for wheels to turn
-            pass
+            # unless time is greater than dumpTime, in which case, return.
+            if (time.time() - self.startTime >= self.dumpTime):
+                return
 
         print 'done turning'
-        time.sleep(5) # wait because there is overshoot
-        # once done turning, translate to destination
+
+        # wait between turning and translating, for i term i wheel control to catch up, so don't turn and translate
+        whileStartTime = time.time()
+        while ((time.time()-whileStartTime < 1) and (time.time()-self.startTime < self.dumpTime)):
+            pass
+
         print 'start travel'
         self.translateTo(distanceMagnitude)
-        self.translate(0.01)
         time.sleep(.01) # wait for wheel error message to get sent
+
         while(self.wheelError > self.TRANS_ERR):
             self.translate(0.01)
-            time.sleep(.02)
             # do nothing and wait for wheels to turn
-            pass
+            # unless time is greater than dumpTime, in which case, return.
+            if (time.time() - self.startTime >= self.dumpTime):
+                return
+
         print 'done translating'
         return
 
@@ -397,7 +413,20 @@ class MotionPlanner(object):
 
     # params: none
     # returns: none
-    # sends messages to start the conveyor belts that consume blocks at default speed
+    # sends messages to start both conveyor belts 
+    def startBothBelts(self):
+
+        # tell right conveor motor to start at standard speed
+        msg = ConveyorMsg()
+        msg.frontTrackFractionOn = 1.0
+        msg.backTrackFractionOn = 1.0
+        self.conveyorPub.publish(msg)
+        
+        return
+
+    # params: none
+    # returns: none
+    # sends messages to reverse conveyor belts that consumes blocks 
     def reverseEatingBelts(self):
 
         msg = ConveyorMsg()
