@@ -5,6 +5,8 @@ from gc_msgs.msg import ConveyorMsg
 from gc_msgs.msg import HamperMsg
 from gc_msgs.msg import EncoderMsg
 from gc_msgs.msg import MotionMsg
+from gc_msgs.msg import WheelErrorMsg
+from gc_msgs.msg import MotionDistMsg
 #
 # This class is used by the RobotBrain to send PWM messages to the HAL to control the motion of the motors. This includes both wheel motors and theconveyor belt motors. Also has methods to abstract some elements of motor control; has proportional control for the wheels
 #
@@ -21,14 +23,15 @@ class MotionPlanner(object):
         self.currentTransVel = 0.
         self.currentAngVel = 0.
         self.lastEncoderMsgTime = time.clock() # time in seconds. Used for calculating current wheel velocities
+        self.wheelError = 0.
 
         # constants for wheel motion
         # TODO: pick appropriate vales
         self.MAX_TRANS_ACCEL = .00001;    # maximum translation acceleration in m/s^2  
         self.MAX_ANG_ACCEL = .0001;      # maximum rotational  acceleration in rad/s^2  
-        self.ANGULAR_ERR = .05;              # acceptable angular error in radians
-        self.TRANS_ERR = 0.01;            # acceptable translation error in m
-        self.MAX_WHEEL_ANG_VEL = 1.0;      # maximum angular velocity of wheels in rad/s
+        self.ANGULAR_ERR = .1;              # acceptable angular error in radians
+        self.TRANS_ERR = 0.005;            # acceptable translation error in m
+        self.MAX_WHEEL_ANG_VEL = 0.2;#was 1      # maximum angular velocity of wheels in rad/s
         self.WHEELBASE =  .375;             # distance from origin to wheel; similar to a robot radius
         self.LEFT_WHEEL = 0;                # for indexing into leftWheel, rightWheel tuples
         self.RIGHT_WHEEL = 1;
@@ -36,16 +39,25 @@ class MotionPlanner(object):
 
         
         # intialize publishers, subscribers
-        self.conveyorPub = rospy.Publisher("conveyorCommand", ConveyorMsg);
-        self.hamperPub = rospy.Publisher("hamperCommand", HamperMsg);
+        self.conveyorPub = rospy.Publisher("/command/Conveyor", ConveyorMsg);
+        self.hamperPub = rospy.Publisher("/command/Hamper", HamperMsg);
         self.encoderSub = rospy.Subscriber('/sensor/Encoder', EncoderMsg, self.handleEncoderMsg);
         self.motionPub = rospy.Publisher("/command/Motors", MotionMsg);
-
+        self.positionPub = rospy.Publisher("/command/MotorsDist", MotionDistMsg);
+        self.errorSub = rospy.Subscriber("/sensor/WheelErr", WheelErrorMsg, self.handleWheelErrMsg);
         return
 
 #################################
 # Publishers/Subscriber Methods #
 #################################
+
+    # params: wheel error msg
+    # returns: none
+    # updates self.wheelError from message contents - how far wheels have left to travel
+    def handleWheelErrMsg(self, msg):
+        self.wheelError = .5*(abs(msg.leftWheelError) + abs(msg.rightWheelError))
+        return
+
 
     # params: EncoderMsg msg
     # returns: none
@@ -84,14 +96,14 @@ class MotionPlanner(object):
         
         # if not currently facing the destination, rotate towards it so can translate there in a straight line
         # rotateTowards will not move if close enough
-        print 'rotating'
+
         doneRotating = self.rotateTowards(currentPose.getAngle(), angleToDestination, angVel)
 
         if doneRotating:
             # if the robot is facing the destination, move towards it
-            print 'translating'
+
             doneTravelling = self.translateTowards(currentPose, destinationLoc, vel); 
-            print doneTravelling
+
             return doneTravelling;
 
 
@@ -107,8 +119,9 @@ class MotionPlanner(object):
     #   based on distance to currentLoc. Calls rotate.
     def rotateTowards(self, currentAngle, destAngle, angSpeed):
         # calculating distance left to rotate; from [-pi, pi]
-        distanceLeft = destAngle - currentAngle; 
 
+        distanceLeft = destAngle - currentAngle; 
+        
         # want distance left [-pi, pi]
         if distanceLeft > math.pi:
             distanceLeft = distanceLeft - 2*math.pi
@@ -209,7 +222,6 @@ class MotionPlanner(object):
         
         #return
 
-
     # params: angVelocity: float angular velocity in rad/s
     # returns: void
     # sends MotionControl message to rotate
@@ -273,8 +285,85 @@ class MotionPlanner(object):
         # turning to the left is positive angle - when left wheel is moving backwards
         self.currentAngVel = .5*(self.currentWheelVel[self.RIGHT_WHEEL] - self.currentWheelVel[self.LEFT_WHEEL])/self.WHEELBASE
 
-                
+
         return 
+
+
+##########################
+# Wheel position methods #
+##########################
+# These methods use the positional controller in the HAL code
+    
+    #params: Pose currentPose current pose of robot
+    #        Location location destination
+    # returns: none
+    # travels to given point. 
+    def travelTo(self, currentPose, destination):
+        print 'inside travelTo'
+        currentDistanceVector = (destination.getX() - currentPose.getX(), destination.getY() - currentPose.getY());
+        angleToDestination = math.atan2((destination.getY()-currentPose.getY()),(destination.getX()-currentPose.getX())) - currentPose.getAngle();
+        print 'angle to dest', angleToDestination
+        
+        # want angleToDestination [-pi, pi]
+        if angleToDestination > math.pi:
+            angleToDestination = angleToDestination - 2*math.pi
+
+        elif angleToDestination < -math.pi:
+            angleToDestination = angleToDestination + 2*math.pi
+
+        distanceMagnitude = math.sqrt(currentDistanceVector[0]**2 + currentDistanceVector[1]**2);
+        print 'angle', angleToDestination
+        print 'distance', distanceMagnitude
+
+        # turn to face destination point
+        print 'calling rotateTo'
+        self.rotateTo(angleToDestination)
+        print 'wheelErr', self.wheelError
+        # wait for wheel error message to get sent
+        time.sleep(.01)
+        while (self.wheelError > self.ANGULAR_ERR):
+            # do nothing and wait for wheels to turn
+            pass
+
+        print 'done turning'
+        time.sleep(5) # wait because there is overshoot
+        # once done turning, translate to destination
+        print 'start travel'
+        self.translateTo(distanceMagnitude)
+        self.translate(0.01)
+        time.sleep(.01) # wait for wheel error message to get sent
+        while(self.wheelError > self.TRANS_ERR):
+            self.translate(0.01)
+            time.sleep(.02)
+            # do nothing and wait for wheels to turn
+            pass
+        print 'done translating'
+        return
+
+    # params: angle to turn to
+    # returns: none
+    # send message to wheel controller to turn
+    def rotateTo(self, angle):
+        print 'sending message'
+        print 'angle', angle
+        msg = MotionDistMsg()
+        msg.translationalDist = 0
+        msg.rotationalDist = angle
+        print msg.rotationalDist
+        self.positionPub.publish(msg)
+        print 'message sent'
+        return
+
+    # params: distance to travel
+    # returns: none
+    # send message to wheel controller to translate distance
+    def translateTo(self, distance):
+        msg = MotionDistMsg()
+        msg.translationalDist = distance
+        msg.rotationalDist = 0
+        self.positionPub.publish(msg)
+        return
+
 
 ##########################
 ## Conveyor Belt Motion ##
@@ -287,8 +376,21 @@ class MotionPlanner(object):
 
         # tell right conveor motor to start at standard speed
         msg = ConveyorMsg()
-        msg.frontTrackFractionOn = 1.0
-        msg.backTrackFractionOn = 0.0
+        msg.frontConveyorFractionOn = .1
+        msg.backConveyorFractionOn = 0.0
+        self.conveyorPub.publish(msg)
+        
+        return
+
+    # params: none
+    # returns: none
+    # sends messages to start both conveyor belts 
+    def startBothBelts(self):
+
+        # tell right conveor motor to start at standard speed
+        msg = ConveyorMsg()
+        msg.frontConveyorFractionOn = .1
+        msg.backConveyorFractionOn = .1
         self.conveyorPub.publish(msg)
         
         return
@@ -312,8 +414,8 @@ class MotionPlanner(object):
     def reverseEatingBelts(self):
 
         msg = ConveyorMsg()
-        msg.frontTrackFractionOn = -1.0
-        msg.backTrackFractionOn = 0.0
+        msg.frontConveyorFractionOn = -.1
+        msg.backConveyorFractionOn = 0.0
         self.conveyorPub.publish(msg)
         
         return
@@ -325,8 +427,8 @@ class MotionPlanner(object):
     def stopConveyorBelts(self):
         
         msg = ConveyorMsg()
-        msg.frontTrackFractionOn = 0.0
-        msg.backTrackFractionOn = 0.0
+        msg.frontConveyorFractionOn = 0.0
+        msg.backConveyorFractionOn = 0.0
         self.conveyorPub.publish(msg)
 
         return
@@ -337,8 +439,8 @@ class MotionPlanner(object):
     # sends messages to start the conveyor belt that moves blocks within the hamper
     def startHamperBelt(self):
         msg = ConveyorMsg()
-        msg.frontTrackFractionOn = 0.0
-        msg.backTrackFractionOn = 1.0
+        msg.frontConveyorFractionOn = 0.0
+        msg.backConveyorFractionOn = .1
         self.conveyorPub.publish(msg)
 
         return
@@ -348,8 +450,8 @@ class MotionPlanner(object):
     # sends messages to start the conveyor belt that moves blocks within the hamper
     def reverseHamperBelt(self):
         msg = ConveyorMsg()
-        msg.frontTrackFractionOn = 0.0
-        msg.backTrackFractionOn = -1.0
+        msg.frontConveyorFractionOn = 0.0
+        msg.backConveyorFractionOn = -.1
         self.conveyorPub.publish(msg)
 
         return

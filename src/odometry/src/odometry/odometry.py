@@ -4,6 +4,7 @@ import math
 import time
 from gc_msgs.msg import PoseMsg
 from gc_msgs.msg import EncoderMsg
+from gc_msgs.msg import StateMsg
 import location 
 import pose
 
@@ -25,11 +26,11 @@ class Odometry(object):
         #rospy.onShutdown(self.onShutdown)
 
         # initial values
-        START_POSE = pose.Pose(0.0, 0.0, 0.0)
+        self.START_POSE = pose.Pose(0.0, 0.0, 0.0)
 
         # global variables
         self.currentDist = [0.0,0.0]        # left, right values of ticks from last update
-        self.currentPose = START_POSE    # xPosition of robot origin, yPosiiton of robot origin
+        self.currentPose = self.START_POSE    # xPosition of robot origin, yPosiiton of robot origin
                                     #   angle of robot axis of symmetry with respect to x axis.
                                     #   All pose fields are floats
 
@@ -46,7 +47,7 @@ class Odometry(object):
 
         self.posePub = rospy.Publisher('sensor/currentPose', PoseMsg);
         self.encoderSub = rospy.Subscriber('sensor/Encoder', EncoderMsg, self.handleEncoderMsg);
-
+        self.stateSub = rospy.Subscriber('command/State', StateMsg, self.handleStateMsg)
 
 
         return
@@ -91,6 +92,15 @@ class Odometry(object):
 ################################
 # recieving, sending messages  #
 ################################
+
+    # param: State Msg
+    # returns: none
+    # resets currentPose to StartPose if get 'init' msg
+    def handleStateMsg(self, msg):
+        if msg.state == 'init':
+            self.currentPose = self.START_POSE
+            return
+        return
 
 
     # params: EncoderMsg msg

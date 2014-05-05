@@ -3,6 +3,7 @@ import rospy
 import math
 from location import Location
 from gc_msgs import ObstacleMsg
+from gc_msgs import PoseMsg
 #
 # This class takes in messages from the sonar (and maybe kinect?) containing the locations of 'hits', It converts those points 
 # into obstacles, and sends those obstacles out in ObstacleMsgs to the robot brain to update the map. 
@@ -17,8 +18,10 @@ class mapUpdater(object):
         # creating subscribers and publishers
         self.obstaclePub = rospy.Publisher("mapUpdates", ObstacleMsg);
         self.sonarSub = rospy.Subscriber("sensors/Sonar", PoseMsg, self.handleSonarMsg)
+        self.currPoseSub = rospy.Subscriber("sensor/CurrentPose", PoseMsg, self.handleCurrPoseMsg)
 
         # keep track of state
+        self.currentPose = PoseMsg()
         self.mapList = mapList
         self.pointList = []
 
@@ -36,13 +39,21 @@ class mapUpdater(object):
 # Handlers #
 ############
 
+    # params: msg: CurrentPose
+    # returns: none
+    # update the currentpose of the robot from odometry
+    def handleCurrPoseMsg(self, msg): 
+        self.currentPose = msg
+
     # params: msg: SonarMsg
     # returns: none
     # adds point from sonar message to point list
     # on certain conditions, turn points in list into an obstacle and send out obstacle message
     def handleSonarMsg(self, msg):
-        
-        newPoint = Location(msg.xLoc, msg.yLoc)
+        #Coordinate shift from robot frame to world frame
+        pointX = self.currentPose.xPosition + math.sin(self.currentPose.angle)*msg.yPosition - math.cos(self.currentPose.angle)*msg.xPosition
+        pointY = self.currentPose.yPosition + math.cos(self.currentPose.angle)*msg.xPosition + math.sin(self.currentPose.angle)*msg.yPosition
+        newPoint = Location(pointX, pointY)
 
         # check if the point is part of a new obstacle
         if (self.checkIfNewObstacle(newPoint)):

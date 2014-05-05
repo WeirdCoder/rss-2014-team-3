@@ -1,8 +1,8 @@
 # generated from genmsg/cmake/pkg-genmsg.cmake.em
 
-message(STATUS "gc_msgs: 10 messages, 0 services")
+message(STATUS "gc_msgs: 16 messages, 0 services")
 
-set(MSG_I_FLAGS "-Igc_msgs:/home/rss-student/rss-2014-team-3/src/gc_msgs/msg;-Istd_msgs:/opt/ros/hydro/share/std_msgs/cmake/../msg")
+set(MSG_I_FLAGS "-Igc_msgs:/home/rss-student/rss-2014-team-3/src/gc_msgs/msg;-Istd_msgs:/opt/ros/hydro/share/std_msgs/cmake/../msg;-Ilab6_msgs:/home/rss-student/rss-2014-team-3/src/lab6_msgs/msg;-Ilab5_msgs:/home/rss-student/rss-2014-team-3/src/lab5_msgs/msg")
 
 # Find all generators
 find_package(gencpp REQUIRED)
@@ -30,9 +30,9 @@ _generate_msg_cpp(gc_msgs
   ${CATKIN_DEVEL_PREFIX}/${gencpp_INSTALL_DIR}/gc_msgs
 )
 _generate_msg_cpp(gc_msgs
-  "/home/rss-student/rss-2014-team-3/src/gc_msgs/msg/MotionMsg.msg"
+  "/home/rss-student/rss-2014-team-3/src/gc_msgs/msg/GUIPolyMsg.msg"
   "${MSG_I_FLAGS}"
-  ""
+  "/home/rss-student/rss-2014-team-3/src/lab5_msgs/msg/ColorMsg.msg"
   ${CATKIN_DEVEL_PREFIX}/${gencpp_INSTALL_DIR}/gc_msgs
 )
 _generate_msg_cpp(gc_msgs
@@ -43,6 +43,12 @@ _generate_msg_cpp(gc_msgs
 )
 _generate_msg_cpp(gc_msgs
   "/home/rss-student/rss-2014-team-3/src/gc_msgs/msg/ObstacleAheadMsg.msg"
+  "${MSG_I_FLAGS}"
+  ""
+  ${CATKIN_DEVEL_PREFIX}/${gencpp_INSTALL_DIR}/gc_msgs
+)
+_generate_msg_cpp(gc_msgs
+  "/home/rss-student/rss-2014-team-3/src/gc_msgs/msg/ColorMsg.msg"
   "${MSG_I_FLAGS}"
   ""
   ${CATKIN_DEVEL_PREFIX}/${gencpp_INSTALL_DIR}/gc_msgs
@@ -60,6 +66,18 @@ _generate_msg_cpp(gc_msgs
   ${CATKIN_DEVEL_PREFIX}/${gencpp_INSTALL_DIR}/gc_msgs
 )
 _generate_msg_cpp(gc_msgs
+  "/home/rss-student/rss-2014-team-3/src/gc_msgs/msg/MotionDistMsg.msg"
+  "${MSG_I_FLAGS}"
+  ""
+  ${CATKIN_DEVEL_PREFIX}/${gencpp_INSTALL_DIR}/gc_msgs
+)
+_generate_msg_cpp(gc_msgs
+  "/home/rss-student/rss-2014-team-3/src/gc_msgs/msg/MotionMsg.msg"
+  "${MSG_I_FLAGS}"
+  ""
+  ${CATKIN_DEVEL_PREFIX}/${gencpp_INSTALL_DIR}/gc_msgs
+)
+_generate_msg_cpp(gc_msgs
   "/home/rss-student/rss-2014-team-3/src/gc_msgs/msg/GCServoMsg.msg"
   "${MSG_I_FLAGS}"
   ""
@@ -72,7 +90,25 @@ _generate_msg_cpp(gc_msgs
   ${CATKIN_DEVEL_PREFIX}/${gencpp_INSTALL_DIR}/gc_msgs
 )
 _generate_msg_cpp(gc_msgs
+  "/home/rss-student/rss-2014-team-3/src/gc_msgs/msg/GUIPointMsg.msg"
+  "${MSG_I_FLAGS}"
+  "/home/rss-student/rss-2014-team-3/src/gc_msgs/msg/ColorMsg.msg"
+  ${CATKIN_DEVEL_PREFIX}/${gencpp_INSTALL_DIR}/gc_msgs
+)
+_generate_msg_cpp(gc_msgs
+  "/home/rss-student/rss-2014-team-3/src/gc_msgs/msg/WheelErrorMsg.msg"
+  "${MSG_I_FLAGS}"
+  ""
+  ${CATKIN_DEVEL_PREFIX}/${gencpp_INSTALL_DIR}/gc_msgs
+)
+_generate_msg_cpp(gc_msgs
   "/home/rss-student/rss-2014-team-3/src/gc_msgs/msg/ObstacleMsg.msg"
+  "${MSG_I_FLAGS}"
+  ""
+  ${CATKIN_DEVEL_PREFIX}/${gencpp_INSTALL_DIR}/gc_msgs
+)
+_generate_msg_cpp(gc_msgs
+  "/home/rss-student/rss-2014-team-3/src/gc_msgs/msg/StateMsg.msg"
   "${MSG_I_FLAGS}"
   ""
   ${CATKIN_DEVEL_PREFIX}/${gencpp_INSTALL_DIR}/gc_msgs
@@ -113,9 +149,9 @@ _generate_msg_lisp(gc_msgs
   ${CATKIN_DEVEL_PREFIX}/${genlisp_INSTALL_DIR}/gc_msgs
 )
 _generate_msg_lisp(gc_msgs
-  "/home/rss-student/rss-2014-team-3/src/gc_msgs/msg/MotionMsg.msg"
+  "/home/rss-student/rss-2014-team-3/src/gc_msgs/msg/GUIPolyMsg.msg"
   "${MSG_I_FLAGS}"
-  ""
+  "/home/rss-student/rss-2014-team-3/src/lab5_msgs/msg/ColorMsg.msg"
   ${CATKIN_DEVEL_PREFIX}/${genlisp_INSTALL_DIR}/gc_msgs
 )
 _generate_msg_lisp(gc_msgs
@@ -126,6 +162,12 @@ _generate_msg_lisp(gc_msgs
 )
 _generate_msg_lisp(gc_msgs
   "/home/rss-student/rss-2014-team-3/src/gc_msgs/msg/ObstacleAheadMsg.msg"
+  "${MSG_I_FLAGS}"
+  ""
+  ${CATKIN_DEVEL_PREFIX}/${genlisp_INSTALL_DIR}/gc_msgs
+)
+_generate_msg_lisp(gc_msgs
+  "/home/rss-student/rss-2014-team-3/src/gc_msgs/msg/ColorMsg.msg"
   "${MSG_I_FLAGS}"
   ""
   ${CATKIN_DEVEL_PREFIX}/${genlisp_INSTALL_DIR}/gc_msgs
@@ -143,6 +185,18 @@ _generate_msg_lisp(gc_msgs
   ${CATKIN_DEVEL_PREFIX}/${genlisp_INSTALL_DIR}/gc_msgs
 )
 _generate_msg_lisp(gc_msgs
+  "/home/rss-student/rss-2014-team-3/src/gc_msgs/msg/MotionDistMsg.msg"
+  "${MSG_I_FLAGS}"
+  ""
+  ${CATKIN_DEVEL_PREFIX}/${genlisp_INSTALL_DIR}/gc_msgs
+)
+_generate_msg_lisp(gc_msgs
+  "/home/rss-student/rss-2014-team-3/src/gc_msgs/msg/MotionMsg.msg"
+  "${MSG_I_FLAGS}"
+  ""
+  ${CATKIN_DEVEL_PREFIX}/${genlisp_INSTALL_DIR}/gc_msgs
+)
+_generate_msg_lisp(gc_msgs
   "/home/rss-student/rss-2014-team-3/src/gc_msgs/msg/GCServoMsg.msg"
   "${MSG_I_FLAGS}"
   ""
@@ -155,7 +209,25 @@ _generate_msg_lisp(gc_msgs
   ${CATKIN_DEVEL_PREFIX}/${genlisp_INSTALL_DIR}/gc_msgs
 )
 _generate_msg_lisp(gc_msgs
+  "/home/rss-student/rss-2014-team-3/src/gc_msgs/msg/GUIPointMsg.msg"
+  "${MSG_I_FLAGS}"
+  "/home/rss-student/rss-2014-team-3/src/gc_msgs/msg/ColorMsg.msg"
+  ${CATKIN_DEVEL_PREFIX}/${genlisp_INSTALL_DIR}/gc_msgs
+)
+_generate_msg_lisp(gc_msgs
+  "/home/rss-student/rss-2014-team-3/src/gc_msgs/msg/WheelErrorMsg.msg"
+  "${MSG_I_FLAGS}"
+  ""
+  ${CATKIN_DEVEL_PREFIX}/${genlisp_INSTALL_DIR}/gc_msgs
+)
+_generate_msg_lisp(gc_msgs
   "/home/rss-student/rss-2014-team-3/src/gc_msgs/msg/ObstacleMsg.msg"
+  "${MSG_I_FLAGS}"
+  ""
+  ${CATKIN_DEVEL_PREFIX}/${genlisp_INSTALL_DIR}/gc_msgs
+)
+_generate_msg_lisp(gc_msgs
+  "/home/rss-student/rss-2014-team-3/src/gc_msgs/msg/StateMsg.msg"
   "${MSG_I_FLAGS}"
   ""
   ${CATKIN_DEVEL_PREFIX}/${genlisp_INSTALL_DIR}/gc_msgs
@@ -196,9 +268,9 @@ _generate_msg_py(gc_msgs
   ${CATKIN_DEVEL_PREFIX}/${genpy_INSTALL_DIR}/gc_msgs
 )
 _generate_msg_py(gc_msgs
-  "/home/rss-student/rss-2014-team-3/src/gc_msgs/msg/MotionMsg.msg"
+  "/home/rss-student/rss-2014-team-3/src/gc_msgs/msg/GUIPolyMsg.msg"
   "${MSG_I_FLAGS}"
-  ""
+  "/home/rss-student/rss-2014-team-3/src/lab5_msgs/msg/ColorMsg.msg"
   ${CATKIN_DEVEL_PREFIX}/${genpy_INSTALL_DIR}/gc_msgs
 )
 _generate_msg_py(gc_msgs
@@ -209,6 +281,12 @@ _generate_msg_py(gc_msgs
 )
 _generate_msg_py(gc_msgs
   "/home/rss-student/rss-2014-team-3/src/gc_msgs/msg/ObstacleAheadMsg.msg"
+  "${MSG_I_FLAGS}"
+  ""
+  ${CATKIN_DEVEL_PREFIX}/${genpy_INSTALL_DIR}/gc_msgs
+)
+_generate_msg_py(gc_msgs
+  "/home/rss-student/rss-2014-team-3/src/gc_msgs/msg/ColorMsg.msg"
   "${MSG_I_FLAGS}"
   ""
   ${CATKIN_DEVEL_PREFIX}/${genpy_INSTALL_DIR}/gc_msgs
@@ -226,6 +304,18 @@ _generate_msg_py(gc_msgs
   ${CATKIN_DEVEL_PREFIX}/${genpy_INSTALL_DIR}/gc_msgs
 )
 _generate_msg_py(gc_msgs
+  "/home/rss-student/rss-2014-team-3/src/gc_msgs/msg/MotionDistMsg.msg"
+  "${MSG_I_FLAGS}"
+  ""
+  ${CATKIN_DEVEL_PREFIX}/${genpy_INSTALL_DIR}/gc_msgs
+)
+_generate_msg_py(gc_msgs
+  "/home/rss-student/rss-2014-team-3/src/gc_msgs/msg/MotionMsg.msg"
+  "${MSG_I_FLAGS}"
+  ""
+  ${CATKIN_DEVEL_PREFIX}/${genpy_INSTALL_DIR}/gc_msgs
+)
+_generate_msg_py(gc_msgs
   "/home/rss-student/rss-2014-team-3/src/gc_msgs/msg/GCServoMsg.msg"
   "${MSG_I_FLAGS}"
   ""
@@ -238,7 +328,25 @@ _generate_msg_py(gc_msgs
   ${CATKIN_DEVEL_PREFIX}/${genpy_INSTALL_DIR}/gc_msgs
 )
 _generate_msg_py(gc_msgs
+  "/home/rss-student/rss-2014-team-3/src/gc_msgs/msg/GUIPointMsg.msg"
+  "${MSG_I_FLAGS}"
+  "/home/rss-student/rss-2014-team-3/src/gc_msgs/msg/ColorMsg.msg"
+  ${CATKIN_DEVEL_PREFIX}/${genpy_INSTALL_DIR}/gc_msgs
+)
+_generate_msg_py(gc_msgs
+  "/home/rss-student/rss-2014-team-3/src/gc_msgs/msg/WheelErrorMsg.msg"
+  "${MSG_I_FLAGS}"
+  ""
+  ${CATKIN_DEVEL_PREFIX}/${genpy_INSTALL_DIR}/gc_msgs
+)
+_generate_msg_py(gc_msgs
   "/home/rss-student/rss-2014-team-3/src/gc_msgs/msg/ObstacleMsg.msg"
+  "${MSG_I_FLAGS}"
+  ""
+  ${CATKIN_DEVEL_PREFIX}/${genpy_INSTALL_DIR}/gc_msgs
+)
+_generate_msg_py(gc_msgs
+  "/home/rss-student/rss-2014-team-3/src/gc_msgs/msg/StateMsg.msg"
   "${MSG_I_FLAGS}"
   ""
   ${CATKIN_DEVEL_PREFIX}/${genpy_INSTALL_DIR}/gc_msgs
@@ -274,6 +382,7 @@ if(gencpp_INSTALL_DIR AND EXISTS ${CATKIN_DEVEL_PREFIX}/${gencpp_INSTALL_DIR}/gc
   )
 endif()
 add_dependencies(gc_msgs_generate_messages_cpp std_msgs_generate_messages_cpp)
+add_dependencies(gc_msgs_generate_messages_cpp lab6_msgs_generate_messages_cpp)
 
 if(genlisp_INSTALL_DIR AND EXISTS ${CATKIN_DEVEL_PREFIX}/${genlisp_INSTALL_DIR}/gc_msgs)
   # install generated code
@@ -283,6 +392,7 @@ if(genlisp_INSTALL_DIR AND EXISTS ${CATKIN_DEVEL_PREFIX}/${genlisp_INSTALL_DIR}/
   )
 endif()
 add_dependencies(gc_msgs_generate_messages_lisp std_msgs_generate_messages_lisp)
+add_dependencies(gc_msgs_generate_messages_lisp lab6_msgs_generate_messages_lisp)
 
 if(genpy_INSTALL_DIR AND EXISTS ${CATKIN_DEVEL_PREFIX}/${genpy_INSTALL_DIR}/gc_msgs)
   install(CODE "execute_process(COMMAND \"/usr/bin/python\" -m compileall \"${CATKIN_DEVEL_PREFIX}/${genpy_INSTALL_DIR}/gc_msgs\")")
@@ -293,3 +403,4 @@ if(genpy_INSTALL_DIR AND EXISTS ${CATKIN_DEVEL_PREFIX}/${genpy_INSTALL_DIR}/gc_m
   )
 endif()
 add_dependencies(gc_msgs_generate_messages_py std_msgs_generate_messages_py)
+add_dependencies(gc_msgs_generate_messages_py lab6_msgs_generate_messages_py)

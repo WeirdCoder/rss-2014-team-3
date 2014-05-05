@@ -37,6 +37,8 @@ class RobotHardware:
         self.e.configure_timer(TIM4_BASE,period=10000,prescaler=72,preload=TIM_PRELOAD_ENABLE) # PWM
         self.e.set_in('A0','pupd',1)
         self.e.set_in('A1','pupd',1)
+        self.e.set_in('A2','pupd',1)
+        self.e.set_in('A3','pupd',1)
         
 
     def get_touch_sensor(self,pin):
@@ -144,22 +146,29 @@ class RobotHardware:
         for (k,v) in commands.iteritems():
             command_functions[k](v)
 
-    # Returns a reading from all the sensors (see above functions for units)
-    # Format: dictionary where key = sensor name, value = sensor reading
-    # TODO implement this
-    def read_sensors(self):
+    def read_wheels(self):
         status=self.o.get_status()
-        sonars=[self.get_sonar(i) for i in [1,2,3,4]]
-        touches=[self.get_touch_sensor(t) for t in ['A0','A1']]
         return {
             'left_position':self.left_position(status),
-            'right_position':self.right_position(status),
+            'right_position':self.right_position(status)
+        }
+
+    def read_sonars(self):
+        sonars=[self.get_sonar(i) for i in [1,2,3,4]]
+        return {
             'front_left_sonar':sonars[0],
             'back_left_sonar':sonars[1],
             'front_right_sonar':sonars[2],
-            'back_right_sonar':sonars[3],
+            'back_right_sonar':sonars[3]
+        }
+
+    def read_touches(self):
+        touches=[self.get_touch_sensor(t) for t in ['A0','A1','A2','A3']]
+        return {
             'front_left_touch':touches[0],
             'front_right_touch':touches[1],
+            'block_front_touch':touches[2],
+            'block_back_touch':touches[3]
         }
 
 if __name__=='__main__':
@@ -167,4 +176,6 @@ if __name__=='__main__':
     r=RobotHardware()
     r.command_actuators({'ramp_conveyer':0,'back_conveyer':0,'hopper':0,'left_wheel':0,'right_wheel':0})
     while True:
-        print r.read_sensors()
+        print r.read_wheels()
+        print r.read_sonars()
+        print r.read_touches()

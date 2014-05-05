@@ -1,0 +1,17 @@
+<launch>
+	<machine name ="willPC" address="willPC">
+		 <env name="ROS_MASTER_URI" value="http://netbook:1131"/>
+		 <env name="ROS_HOSTNAME" value="willPC"/>
+	</machine>
+
+
+	<machine name="netbook" address="netbook" user="rss-student" password="robotlove"
+	ros-root="$(env ROS_ROOT)"
+	ros-package-path="$(env ROS_PACKAGE_PATH)"
+	timeout="30">
+	<env name="ROS_MASTER_URI" value="http://netbook1131"/>
+	<env name="ROS_HOSTNAME" value="netbook"/>
+	<env name="DISPLAY" value=":0" />
+	</machine>
+	<node name="kinect" pkg="kinect" type="run.py" args="kinect kinect.py" output="screen" machine="willPC"/>
+</launch>

@@ -324,6 +324,9 @@ lab5_msgs_SOURCE_DIR:STATIC=/home/rss-student/rss-2014-team-3/src/lab5_msgs
 //Value Computed by CMake
 lab6_msgs_BINARY_DIR:STATIC=/home/rss-student/rss-2014-team-3/build/lab6_msgs
 
+//The directory containing a CMake configuration file for lab6_msgs.
+lab6_msgs_DIR:PATH=/home/rss-student/rss-2014-team-3/devel/share/lab6_msgs/cmake
+
 //Value Computed by CMake
 lab6_msgs_SOURCE_DIR:STATIC=/home/rss-student/rss-2014-team-3/src/lab6_msgs
 

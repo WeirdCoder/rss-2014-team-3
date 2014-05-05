@@ -6,14 +6,14 @@ import struct
 
 
 class EncoderMsg(genpy.Message):
-  _md5sum = "51043f7f97dbfa1cae24509b7b3d4210"
+  _md5sum = "399c9051a81b8f84f6e69a8b8eaa8666"
   _type = "gc_msgs/EncoderMsg"
   _has_header = False #flag to mark the presence of a Header object
-  _full_text = """float64 lWheelTicks
-float64 rWheelTicks
+  _full_text = """float64 lWheelDist
+float64 rWheelDist
 
 """
-  __slots__ = ['lWheelTicks','rWheelTicks']
+  __slots__ = ['lWheelDist','rWheelDist']
   _slot_types = ['float64','float64']
 
   def __init__(self, *args, **kwds):
@@ -24,7 +24,7 @@ float64 rWheelTicks
     changes.  You cannot mix in-order arguments and keyword arguments.
 
     The available fields are:
-       lWheelTicks,rWheelTicks
+       lWheelDist,rWheelDist
 
     :param args: complete set of field values, in .msg order
     :param kwds: use keyword arguments corresponding to message field names
@@ -33,13 +33,13 @@ float64 rWheelTicks
     if args or kwds:
       super(EncoderMsg, self).__init__(*args, **kwds)
       #message fields cannot be None, assign default values for those that are
-      if self.lWheelTicks is None:
-        self.lWheelTicks = 0.
-      if self.rWheelTicks is None:
-        self.rWheelTicks = 0.
+      if self.lWheelDist is None:
+        self.lWheelDist = 0.
+      if self.rWheelDist is None:
+        self.rWheelDist = 0.
     else:
-      self.lWheelTicks = 0.
-      self.rWheelTicks = 0.
+      self.lWheelDist = 0.
+      self.rWheelDist = 0.
 
   def _get_types(self):
     """
@@ -54,7 +54,7 @@ float64 rWheelTicks
     """
     try:
       _x = self
-      buff.write(_struct_2d.pack(_x.lWheelTicks, _x.rWheelTicks))
+      buff.write(_struct_2d.pack(_x.lWheelDist, _x.rWheelDist))
     except struct.error as se: self._check_types(struct.error("%s: '%s' when writing '%s'" % (type(se), str(se), str(_x))))
     except TypeError as te: self._check_types(ValueError("%s: '%s' when writing '%s'" % (type(te), str(te), str(_x))))
 
@@ -68,7 +68,7 @@ float64 rWheelTicks
       _x = self
       start = end
       end += 16
-      (_x.lWheelTicks, _x.rWheelTicks,) = _struct_2d.unpack(str[start:end])
+      (_x.lWheelDist, _x.rWheelDist,) = _struct_2d.unpack(str[start:end])
       return self
     except struct.error as e:
       raise genpy.DeserializationError(e) #most likely buffer underfill
@@ -82,7 +82,7 @@ float64 rWheelTicks
     """
     try:
       _x = self
-      buff.write(_struct_2d.pack(_x.lWheelTicks, _x.rWheelTicks))
+      buff.write(_struct_2d.pack(_x.lWheelDist, _x.rWheelDist))
     except struct.error as se: self._check_types(struct.error("%s: '%s' when writing '%s'" % (type(se), str(se), str(_x))))
     except TypeError as te: self._check_types(ValueError("%s: '%s' when writing '%s'" % (type(te), str(te), str(_x))))
 
@@ -97,7 +97,7 @@ float64 rWheelTicks
       _x = self
       start = end
       end += 16
-      (_x.lWheelTicks, _x.rWheelTicks,) = _struct_2d.unpack(str[start:end])
+      (_x.lWheelDist, _x.rWheelDist,) = _struct_2d.unpack(str[start:end])
       return self
     except struct.error as e:
       raise genpy.DeserializationError(e) #most likely buffer underfill

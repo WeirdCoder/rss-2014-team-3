@@ -1,0 +1,2 @@
+float64 translationalDist
+float64 rotationalDist

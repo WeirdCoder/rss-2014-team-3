@@ -36,13 +36,19 @@ IF(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspeci
   FILE(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/gc_msgs/msg" TYPE FILE FILES
     "/home/rss-student/rss-2014-team-3/src/gc_msgs/msg/BumpMsg.msg"
     "/home/rss-student/rss-2014-team-3/src/gc_msgs/msg/ConveyorMsg.msg"
+    "/home/rss-student/rss-2014-team-3/src/gc_msgs/msg/ColorMsg.msg"
     "/home/rss-student/rss-2014-team-3/src/gc_msgs/msg/EncoderMsg.msg"
     "/home/rss-student/rss-2014-team-3/src/gc_msgs/msg/GCServoMsg.msg"
+    "/home/rss-student/rss-2014-team-3/src/gc_msgs/msg/GUIPointMsg.msg"
+    "/home/rss-student/rss-2014-team-3/src/gc_msgs/msg/GUIPolyMsg.msg"
     "/home/rss-student/rss-2014-team-3/src/gc_msgs/msg/HamperMsg.msg"
     "/home/rss-student/rss-2014-team-3/src/gc_msgs/msg/MotionMsg.msg"
+    "/home/rss-student/rss-2014-team-3/src/gc_msgs/msg/MotionDistMsg.msg"
     "/home/rss-student/rss-2014-team-3/src/gc_msgs/msg/ObstacleAheadMsg.msg"
     "/home/rss-student/rss-2014-team-3/src/gc_msgs/msg/ObstacleMsg.msg"
     "/home/rss-student/rss-2014-team-3/src/gc_msgs/msg/PoseMsg.msg"
+    "/home/rss-student/rss-2014-team-3/src/gc_msgs/msg/StateMsg.msg"
+    "/home/rss-student/rss-2014-team-3/src/gc_msgs/msg/WheelErrorMsg.msg"
     "/home/rss-student/rss-2014-team-3/src/gc_msgs/msg/WheelVelocityMsg.msg"
     )
 ENDIF(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspecified")
