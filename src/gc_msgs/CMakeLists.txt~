@@ -55,7 +55,6 @@ find_package(catkin REQUIRED COMPONENTS
    HamperMsg.msg
    MotionMsg.msg
    MotionDistMsg.msg
-   MotionVoltMsg.msg
    #MotorCommandMsg.msg
    ObstacleAheadMsg.msg
    ObstacleMsg.msg

@@ -1,0 +1,2 @@
+float64 rightVoltage
+float64 leftVoltage
