@@ -190,7 +190,7 @@ if __name__=='__main__':
     #Spawn SensorThread
     t = threading.Thread(target=sensorThread, args = (rs,1))
     t.start()
-    while rs.startTime - time.time() < 600:
+    while rs.startTime - time.time() < 600: #10:00 Min Operation Time
        time.sleep(.01)
        try:
           rs.step()
