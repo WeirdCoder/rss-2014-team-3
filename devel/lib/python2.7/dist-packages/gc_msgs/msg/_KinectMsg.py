@@ -6,14 +6,16 @@ import struct
 
 
 class KinectMsg(genpy.Message):
-  _md5sum = "330b0cbd839da82abf2a23fd0978d352"
+  _md5sum = "1438d4f66ae39d8bbd549672f58db83f"
   _type = "gc_msgs/KinectMsg"
   _has_header = False #flag to mark the presence of a Header object
   _full_text = """float64 blockHeading
 bool blockSeen
+bool capture
+
 """
-  __slots__ = ['blockHeading','blockSeen']
-  _slot_types = ['float64','bool']
+  __slots__ = ['blockHeading','blockSeen','capture']
+  _slot_types = ['float64','bool','bool']
 
   def __init__(self, *args, **kwds):
     """
@@ -23,7 +25,7 @@ bool blockSeen
     changes.  You cannot mix in-order arguments and keyword arguments.
 
     The available fields are:
-       blockHeading,blockSeen
+       blockHeading,blockSeen,capture
 
     :param args: complete set of field values, in .msg order
     :param kwds: use keyword arguments corresponding to message field names
@@ -36,9 +38,12 @@ bool blockSeen
         self.blockHeading = 0.
       if self.blockSeen is None:
         self.blockSeen = False
+      if self.capture is None:
+        self.capture = False
     else:
       self.blockHeading = 0.
       self.blockSeen = False
+      self.capture = False
 
   def _get_types(self):
     """
@@ -53,7 +58,7 @@ bool blockSeen
     """
     try:
       _x = self
-      buff.write(_struct_dB.pack(_x.blockHeading, _x.blockSeen))
+      buff.write(_struct_d2B.pack(_x.blockHeading, _x.blockSeen, _x.capture))
     except struct.error as se: self._check_types(struct.error("%s: '%s' when writing '%s'" % (type(se), str(se), str(_x))))
     except TypeError as te: self._check_types(ValueError("%s: '%s' when writing '%s'" % (type(te), str(te), str(_x))))
 
@@ -66,9 +71,10 @@ bool blockSeen
       end = 0
       _x = self
       start = end
-      end += 9
-      (_x.blockHeading, _x.blockSeen,) = _struct_dB.unpack(str[start:end])
+      end += 10
+      (_x.blockHeading, _x.blockSeen, _x.capture,) = _struct_d2B.unpack(str[start:end])
       self.blockSeen = bool(self.blockSeen)
+      self.capture = bool(self.capture)
       return self
     except struct.error as e:
       raise genpy.DeserializationError(e) #most likely buffer underfill
@@ -82,7 +88,7 @@ bool blockSeen
     """
     try:
       _x = self
-      buff.write(_struct_dB.pack(_x.blockHeading, _x.blockSeen))
+      buff.write(_struct_d2B.pack(_x.blockHeading, _x.blockSeen, _x.capture))
     except struct.error as se: self._check_types(struct.error("%s: '%s' when writing '%s'" % (type(se), str(se), str(_x))))
     except TypeError as te: self._check_types(ValueError("%s: '%s' when writing '%s'" % (type(te), str(te), str(_x))))
 
@@ -96,12 +102,13 @@ bool blockSeen
       end = 0
       _x = self
       start = end
-      end += 9
-      (_x.blockHeading, _x.blockSeen,) = _struct_dB.unpack(str[start:end])
+      end += 10
+      (_x.blockHeading, _x.blockSeen, _x.capture,) = _struct_d2B.unpack(str[start:end])
       self.blockSeen = bool(self.blockSeen)
+      self.capture = bool(self.capture)
       return self
     except struct.error as e:
       raise genpy.DeserializationError(e) #most likely buffer underfill
 
 _struct_I = genpy.struct_I
-_struct_dB = struct.Struct("<dB")
+_struct_d2B = struct.Struct("<d2B")

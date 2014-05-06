@@ -3,4 +3,6 @@
           BLOCKHEADING
           BLOCKSEEN-VAL
           BLOCKSEEN
+          CAPTURE-VAL
+          CAPTURE
 ))

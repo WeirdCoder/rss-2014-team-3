@@ -16,15 +16,18 @@ class wanderRobotBrain(object):
 
         # variables to track state
         self.robotState = 'wander'
-        self.bumpStatus = [0,0,0,0]                  # for left and right bump sensors; 1 if either are being pressed
+        self.bumpStatus = [0,0,0,0]              # for left and right bump sensors; 1 if either are being pressed
         self.endTime = time.time() + 100         # TODO: extend to full game time
         self.numBumps = 0                        # counts up number of bumps
         self.BUMPS_BEFORE_SPIN = 5
         self.actionTimeout = time.time()         # timer used to decide when actions to complete
-        self.blockSeen = False 
+        self.captureTimer = time.time()
+        self.blockSeen = 0.0
+        self.blockHeading = 0.0 
         self.pastInput = None
         self.hamperStatus = 'closed'
         self.hamperTimeout = time.time()
+
         # creating publishers and subscribers
         self.bumpSub = rospy.Subscriber('/sensor/BumpStatus', BumpStatusMsg, self.handleBumpMsg)
         #self.sonarStatusSub = rospy.Subscriber('/sensor/SonarStatus', SonarStatusMsg,self.handleSonarMsg)
@@ -45,11 +48,13 @@ class wanderRobotBrain(object):
     def main(self):
         # main loop gets called from a while(true); robot's behavior depends on state
         print self.robotState
-        time.sleep(0.005)
-
+        time.sleep(0.01)
+     
         if self.robotState == 'wander':
             self.wander()
-
+            self.wiggleHamper()
+        elif self.robotState == 'capture':
+            self.capture()
         elif self.robotState == 'hitLeft':
             self.hitLeft()
 
@@ -67,7 +72,10 @@ class wanderRobotBrain(object):
 
         elif self.robotState == 'visualServo':
             self.visualServo()
-
+        #elif self.robotState == 'wiggle':
+        #    while time.time() < self.actionTimeout:
+        #        x =1
+        #    self.wiggleHamper()
         elif self.robotState == 'done':
             self.done()
 
@@ -83,32 +91,37 @@ class wanderRobotBrain(object):
     def visualServo(self):
         input = self.blockHeading
         P = 1.0
-        D = 0.5
+        D = 0.1
         DMax = 0.4 #Maximum of differential correction.  Counter Dirac Changes
-        RotationMax = 0.2 #Maximum rotation command
+        RotationMax = 0.4 #Maximum rotation command
         MotorMax = 0.5
-
         output = P * input
-
         if self.pastInput != None and abs(input-self.pastInput) < DMax:
             #Able to add D term to controller
-            output = D * (input - self.pastInput)
+            output += D * (input - self.pastInput)
         self.pastInput = input
 
         #Transform output to equivalent L&R motor value
-        forward = 0.2
+        forward = 0.3
         rotate = max(min(RotationMax, output),-RotationMax)
         motormsg = MotionVoltMsg()
-        motormsg.leftVoltage = max(min((forward + rotate),MotorMax),-MotorMax)
-        motormsg.rightVoltage = max(min((forward - rotate),MotorMax),-MotorMax)
+        motormsg.leftVoltage = max(min((forward - rotate),MotorMax),-MotorMax)
+        motormsg.rightVoltage = max(min((forward + rotate),MotorMax),-MotorMax)
+        #print motormsg.leftVoltage, motormsg.rightVoltage
         self.wheelPub.publish(motormsg)
         time.sleep(0.03) #TODO adjust for the encoder loop
+        if self.capture:
+            self.captureTimer = time.time()+10
         self.changeStates()
-     
+    # capture: robot moves forward
+    def capture(self):
+        self.wanderForward()
+        self.changeStates()
+        return
     # robot moves forward
     def wander(self):
         self.wanderForward()
-        self.wiggleHamper()
+        #self.wiggleHamper()
         self.changeStates()
         return 
 
@@ -159,16 +172,15 @@ class wanderRobotBrain(object):
     def dispense(self):
 
         # dispense1: stop and pause for a second
-        print "dispense 1"
+
         self.stopWheels()
         time.sleep(1)
+
         # dispense2: open hopper and wait for a second
-        print "dispense 2 done"
         self.setHamperAngle(1)
         time.sleep(1)
 
         # dispense3: drive forward for 5 seconds
-        print "dispense 3 done"
         self.actionTimeout = time.time() + 3
         while time.time() < self.actionTimeout:
             time.sleep(.005)
@@ -180,7 +192,6 @@ class wanderRobotBrain(object):
 
     # done
     def done(self):
-        print 'done'
         self.setHamperAngle(0)
         self.stopConveyorBelts()
         while(True):
@@ -189,6 +200,11 @@ class wanderRobotBrain(object):
 
     # method for determining transfer of states
     def changeStates(self):
+        # back Digest bump sensor is hit
+        #if self.bumpStatus[1]:
+        #    self.robotState = 'wiggle'
+        #    self.actionTimeout = time.time() + 2
+        
         # if both bump sensors are hit
         if self.bumpStatus[2] and self.bumpStatus[3]:
             self.robotState = 'hitBoth'
@@ -218,7 +234,9 @@ class wanderRobotBrain(object):
         elif time.time() > self.endTime:
             self.robotState = 'dispense'
             self.actionTimeout = time.time() + 1
-        elif self.blockSeen:
+        elif self.captureTimer > time.time():
+            self.robotState = 'capture'
+        elif self.blockSeen>0.6:
             self.robotState = 'visualServo'
         # if not doing anything else, wander
         else:
@@ -240,13 +258,12 @@ class wanderRobotBrain(object):
         msg.leftVoltage = 0
         self.wheelPub.publish(msg)
         return
-
+ 
     # move forward (called when wandering)
     def wanderForward(self):
-        print 'wandering forward'
         msg = MotionVoltMsg()
-        msg.rightVoltage = .55
-        msg.leftVoltage = .5
+        msg.rightVoltage = .31
+        msg.leftVoltage = .3
         self.wheelPub.publish(msg)
         return
 
@@ -337,8 +354,8 @@ class wanderRobotBrain(object):
 
     # handle message from kinect
     def handleKinectMsg(self, msg):
-        self.blockHeading = msg.blockHeading
-        self.blockSeen = msg.blockSeen
+        self.blockHeading = self.blockHeading*0.95+msg.blockHeading*0.05
+        self.blockSeen = self.blockSeen*0.95+ float(int(msg.blockSeen)) *0.05
         pass
 
 
@@ -359,11 +376,11 @@ class wanderRobotBrain(object):
             # if the hamper is ajar, close it
             elif self.hamperStatus == 'ajar':
                 self.setHamperAngle(.01)
-                self.hamperStatus = 'ajar'
+                self.hamperStatus = 'closed'
 
             # increment hamperTimeout
-            self.hamperTimeout = time.time() + 1
-
+            self.hamperTimeout = time.time() + 5
+        self.changeStates()
         return
 ########
 # Main #

@@ -58,11 +58,13 @@ struct KinectMsg_
 
   KinectMsg_()
     : blockHeading(0.0)
-    , blockSeen(false)  {
+    , blockSeen(false)
+    , capture(false)  {
     }
   KinectMsg_(const ContainerAllocator& _alloc)
     : blockHeading(0.0)
-    , blockSeen(false)  {
+    , blockSeen(false)
+    , capture(false)  {
     }
 
 
@@ -72,6 +74,9 @@ struct KinectMsg_
 
    typedef uint8_t _blockSeen_type;
   _blockSeen_type blockSeen;
+
+   typedef uint8_t _capture_type;
+  _capture_type capture;
 
 
 
@@ -151,12 +156,12 @@ struct MD5Sum< ::gc_msgs::KinectMsg_<ContainerAllocator> >
 {
   static const char* value()
   {
-    return "330b0cbd839da82abf2a23fd0978d352";
+    return "1438d4f66ae39d8bbd549672f58db83f";
   }
 
   static const char* value(const ::gc_msgs::KinectMsg_<ContainerAllocator>&) { return value(); }
-  static const uint64_t static_value1 = 0x330b0cbd839da82aULL;
-  static const uint64_t static_value2 = 0xbf2a23fd0978d352ULL;
+  static const uint64_t static_value1 = 0x1438d4f66ae39d8bULL;
+  static const uint64_t static_value2 = 0xbd549672f58db83fULL;
 };
 
 template<class ContainerAllocator>
@@ -177,6 +182,7 @@ struct Definition< ::gc_msgs::KinectMsg_<ContainerAllocator> >
   {
     return "float64 blockHeading\n\
 bool blockSeen\n\
+bool capture\n\
 ";
   }
 
@@ -197,6 +203,7 @@ namespace serialization
     {
       stream.next(m.blockHeading);
       stream.next(m.blockSeen);
+      stream.next(m.capture);
     }
 
     ROS_DECLARE_ALLINONE_SERIALIZER;
@@ -219,6 +226,8 @@ struct Printer< ::gc_msgs::KinectMsg_<ContainerAllocator> >
     Printer<double>::stream(s, indent + "  ", v.blockHeading);
     s << indent << "blockSeen: ";
     Printer<uint8_t>::stream(s, indent + "  ", v.blockSeen);
+    s << indent << "capture: ";
+    Printer<uint8_t>::stream(s, indent + "  ", v.capture);
   }
 };
 
