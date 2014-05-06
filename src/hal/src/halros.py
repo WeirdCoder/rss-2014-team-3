@@ -23,7 +23,7 @@ class RobotHardwareROS(RobotHardware):
         #Subscribers
         self.motionSub = rospy.Subscriber("command/Motors",MotionMsg,self.handleMsg_MotionMsg)
         self.motionDistSub = rospy.Subscriber("command/MotorsDist", MotionDistMsg, self.handleMsg_MotionDistMsg)
-        self.motionVoltSub = rospy.Subscriber("command/MotorVolt", MotionDistMsg, self.handleMsg_MotionVoltMsg)
+        self.motionVoltSub = rospy.Subscriber("command/MotorVolt", MotionVoltMsg, self.handleMsg_MotionVoltMsg)
         self.conveyorSub = rospy.Subscriber("command/Conveyor",ConveyorMsg,self.handleMsg_ConveyorMsg)
         self.hamperSub = rospy.Subscriber("command/Hamper",HamperMsg,self.handleMsg_HamperMsg)
         self.stateSub = rospy.Subscriber("command/State", StateMsg, self.handleMsg_StateMsg)

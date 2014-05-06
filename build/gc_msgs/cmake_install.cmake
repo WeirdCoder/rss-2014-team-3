@@ -35,6 +35,7 @@ ENDIF(NOT DEFINED CMAKE_INSTALL_SO_NO_EXE)
 IF(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspecified")
   FILE(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/gc_msgs/msg" TYPE FILE FILES
     "/home/rss-student/rss-2014-team-3/src/gc_msgs/msg/BumpMsg.msg"
+    "/home/rss-student/rss-2014-team-3/src/gc_msgs/msg/BumpStatusMsg.msg"
     "/home/rss-student/rss-2014-team-3/src/gc_msgs/msg/ConveyorMsg.msg"
     "/home/rss-student/rss-2014-team-3/src/gc_msgs/msg/ColorMsg.msg"
     "/home/rss-student/rss-2014-team-3/src/gc_msgs/msg/EncoderMsg.msg"
@@ -42,8 +43,10 @@ IF(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspeci
     "/home/rss-student/rss-2014-team-3/src/gc_msgs/msg/GUIPointMsg.msg"
     "/home/rss-student/rss-2014-team-3/src/gc_msgs/msg/GUIPolyMsg.msg"
     "/home/rss-student/rss-2014-team-3/src/gc_msgs/msg/HamperMsg.msg"
+    "/home/rss-student/rss-2014-team-3/src/gc_msgs/msg/KinectMsg.msg"
     "/home/rss-student/rss-2014-team-3/src/gc_msgs/msg/MotionMsg.msg"
     "/home/rss-student/rss-2014-team-3/src/gc_msgs/msg/MotionDistMsg.msg"
+    "/home/rss-student/rss-2014-team-3/src/gc_msgs/msg/MotionVoltMsg.msg"
     "/home/rss-student/rss-2014-team-3/src/gc_msgs/msg/ObstacleAheadMsg.msg"
     "/home/rss-student/rss-2014-team-3/src/gc_msgs/msg/ObstacleMsg.msg"
     "/home/rss-student/rss-2014-team-3/src/gc_msgs/msg/PoseMsg.msg"

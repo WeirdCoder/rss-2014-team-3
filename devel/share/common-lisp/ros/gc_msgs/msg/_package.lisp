@@ -1,6 +1,8 @@
 (cl:defpackage gc_msgs-msg
   (:use )
   (:export
+   "<BUMPSTATUSMSG>"
+   "BUMPSTATUSMSG"
    "<COLORMSG>"
    "COLORMSG"
    "<POSEMSG>"
@@ -11,6 +13,8 @@
    "HAMPERMSG"
    "<GCSERVOMSG>"
    "GCSERVOMSG"
+   "<MOTIONVOLTMSG>"
+   "MOTIONVOLTMSG"
    "<CONVEYORMSG>"
    "CONVEYORMSG"
    "<MOTIONDISTMSG>"
@@ -19,6 +23,8 @@
    "BUMPMSG"
    "<GUIPOLYMSG>"
    "GUIPOLYMSG"
+   "<KINECTMSG>"
+   "KINECTMSG"
    "<ENCODERMSG>"
    "ENCODERMSG"
    "<WHEELERRORMSG>"

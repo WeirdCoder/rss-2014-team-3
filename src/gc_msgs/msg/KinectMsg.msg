@@ -1,1 +1,2 @@
 float64 blockHeading
+bool blockSeen

@@ -80,8 +80,8 @@ class simpleRobotBrain(object):
 
         # if don't know where a block is, move ahead (until encounter obstacle)
         if self.blockLocation == None:
-            #self.wander()
-            
+            self.wander()
+
         # if know where a block is, move towards it with conveyor belts on
         else:
             self.consumeBlock()
