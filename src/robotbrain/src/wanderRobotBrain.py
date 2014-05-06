@@ -19,6 +19,7 @@ class wanderRobotBrain(object):
         self.numBumps = 0                        # counts up number of bumps
         self.BUMPS_BEFORE_SPIN = 5
         self.actionTimeout = time.time()         # timer used to decide when actions to complete
+        self.blockSeen = False 
 
         # creating publishers and subscribers
         self.bumpSub = rospy.Subscriber('/sensor/BumpStatus', BumpStatusMsg, self.handleBumpMsg);
@@ -68,6 +69,31 @@ class wanderRobotBrain(object):
 
     # TODO
     
+    #robot VisualServo
+    def visualServo(self):
+        input = self.blockHeading
+        P = 1.0
+        D = 0.5
+        DMax = 0.4 #Maximum of differential correction.  Counter Dirac Changes
+        RotationMax = 0.2 #Maximum rotation command
+        MotorMax = 0.5
+
+        output = P * input
+
+        if self.pastInput != None and abs(input-self.pastInput) < DMax:
+            #Able to add D term to controller
+            output = D * (input - self.pastInput)
+        self.pastInput = input
+
+        #Transform output to equivalent L&R motor value
+        forward = 0.2
+        rotate = max(min(RotationMax, output),-RotationMax)
+        motormsg = MotionVoltMsg()
+        motormsg.leftVoltage = max(min((forward + rotate),MotorMax),-MotorMax)
+        motormsg.rightVoltage = max(min((forward - rotate),MotorMax),-MotorMax)
+        self.wheelPub.publish(motormsg)
+        time.sleep(0.03) #TODO adjust for the encoder loop
+     
     # robot moves forward
     def wander(self):
         self.wanderForward()
@@ -146,17 +172,17 @@ class wanderRobotBrain(object):
         
         # if both bump sensors are hit
         if self.bumpStatus[0] and self.bumpStatus[1]:
-            self.robotState == 'hitBoth'
+            self.robotState = 'hitBoth'
             self.actionTimeout = time.time() + 3
 
         # if just left bump sensor is hit
         elif self.bumpStatus[0]:
-            self.robotState == 'hitLeft'
+            self.robotState = 'hitLeft'
             self.actionTimeout = time.time() + 3
 
         # if just right bump sensor is hit
         elif self.bumpStatus[1]:
-            self.robotState == 'hitRight'
+            self.robotState = 'hitRight'
             self.actionTimeout = time.time() + 3
 
         # if have been bumped too many times, spin
@@ -166,14 +192,15 @@ class wanderRobotBrain(object):
             if self.robotState != 'spin':
                 self.actionTimeout = time.time() + 5
 
-            self.robotState == 'spin'
+            self.robotState = 'spin'
 
             
         # if have run out of time
         elif time.time() > self.endTime:
-            self.robotState == 'dispense'
+            self.robotState = 'dispense'
             self.actionTimeout = time.time() + 1
-
+        elif self.blockSeen:
+            self.robotState = 'visualServo'
         # if not doing anything else, wander
         else:
             self.robotState == 'wander'
@@ -284,7 +311,8 @@ class wanderRobotBrain(object):
 
     # handle message from kinect
     def handleKinectMsg(self, msg):
-        # TODO
+        self.blockHeading = msg.bloackHeading
+        self.blockSeen = msg.blockSeen
         pass
 
 
