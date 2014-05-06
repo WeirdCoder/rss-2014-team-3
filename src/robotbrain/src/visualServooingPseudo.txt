@@ -1,0 +1,24 @@
+
+input = self.blockHeading
+P = 1.0
+D = 0.5
+DMax = 0.4 #Maximum of differential correction.  Counter Dirac Changes
+RotationMax = 0.2 #Maximum rotation command
+MotorMax = 0.5
+
+output = P * input
+
+if self.pastInput != None and abs(input-self.pastInput) < DMax:
+    #Able to add D term to controller
+    output = D * (input - self.pastInput)
+self.pastInput = input
+
+#Transform output to equivalent L&R motor value
+forward = 0.2
+rotate = max(min(RotationMax, output),-RotationMax)
+motormsg = MotionVoltMsg()
+motormsg.leftVoltage = max(min((forward + rotate),MotorMax),-MotorMax)
+motormsg.rightVoltage = max(min((forward - rotate),MotorMax),-MotorMax)
+self.motionVoltPub.publish(motormsg)
+
+time.sleep(0.03) #TODO adjust for the encoder loop
