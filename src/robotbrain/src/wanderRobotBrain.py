@@ -180,17 +180,17 @@ class wanderRobotBrain(object):
     # method for determining transfer of states
     def changeStates(self):
         # if both bump sensors are hit
-        if self.bumpStatus[0] and self.bumpStatus[1]:
+        if self.bumpStatus[2] and self.bumpStatus[3]:
             self.robotState = 'hitBoth'
             self.actionTimeout = time.time() + 3
 
         # if just left bump sensor is hit
-        elif self.bumpStatus[0]:
+        elif self.bumpStatus[2]:
             self.robotState = 'hitLeft'
             self.actionTimeout = time.time() + 3
 
         # if just right bump sensor is hit
-        elif self.bumpStatus[1]:
+        elif self.bumpStatus[3]:
             self.robotState = 'hitRight'
             self.actionTimeout = time.time() + 3
 
@@ -322,7 +322,7 @@ class wanderRobotBrain(object):
     def handleBumpMsg(self, msg):
         print 'getting bump msg'
         # messages gives too booleans [leftPressed, rightPressed]
-        self.bumpStatus = msg.bumpStatus[2:]
+        self.bumpStatus = msg.bumpStatus
         return
 
     # handle message from kinect
