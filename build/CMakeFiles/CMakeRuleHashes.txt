@@ -1,5 +1,6 @@
 # Hashes of file build rules.
 36768640083b9c988a986584657cbd71 /home/rss-student/rss-2014-team-3/devel/include/gc_msgs/BumpMsg.h
+9998a0065ec79bfc0953ab1a9b5bb04d /home/rss-student/rss-2014-team-3/devel/include/gc_msgs/BumpStatusMsg.h
 bbb51f508929a9b58ba333ff53487cd2 /home/rss-student/rss-2014-team-3/devel/include/gc_msgs/ColorMsg.h
 62f412028b6c15010e7128e310518082 /home/rss-student/rss-2014-team-3/devel/include/gc_msgs/ConveyorMsg.h
 6c3365b3f83a74609d4551cb97bae789 /home/rss-student/rss-2014-team-3/devel/include/gc_msgs/EncoderMsg.h
@@ -7,8 +8,10 @@ a7ed18ee79377cdbfff5260303685c3b /home/rss-student/rss-2014-team-3/devel/include
 45e59da07f6aef90d8572afe31abb4f1 /home/rss-student/rss-2014-team-3/devel/include/gc_msgs/GUIPointMsg.h
 fbb5cf2cae7a25e8af4cc4fcb990a65f /home/rss-student/rss-2014-team-3/devel/include/gc_msgs/GUIPolyMsg.h
 ce9dda5afebc8e939529ec4fe392bb92 /home/rss-student/rss-2014-team-3/devel/include/gc_msgs/HamperMsg.h
+f063a3188ab1292dabd57da48903e42b /home/rss-student/rss-2014-team-3/devel/include/gc_msgs/KinectMsg.h
 1243ddc4c4549ac3b588ed76a0f19ff4 /home/rss-student/rss-2014-team-3/devel/include/gc_msgs/MotionDistMsg.h
 4481dcde894e37844de4151778edff24 /home/rss-student/rss-2014-team-3/devel/include/gc_msgs/MotionMsg.h
+5001931e9054bbaf04fdcd9137dc4f09 /home/rss-student/rss-2014-team-3/devel/include/gc_msgs/MotionVoltMsg.h
 3d21e71c7590b9d8fb811200668d6d08 /home/rss-student/rss-2014-team-3/devel/include/gc_msgs/MotorCommandMsg.h
 ff1e4fc6d03cd2ff2bcfd12564e8e809 /home/rss-student/rss-2014-team-3/devel/include/gc_msgs/ObstacleAheadMsg.h
 f700bfafaa17d88d838cd88de54e7d54 /home/rss-student/rss-2014-team-3/devel/include/gc_msgs/ObstacleMsg.h
@@ -34,6 +37,7 @@ d5c79b8f5e6d9afc605c8b4971af08ac /home/rss-student/rss-2014-team-3/devel/include
 163e70064b341cc90ead6f4c44b7bea2 /home/rss-student/rss-2014-team-3/devel/include/rss_msgs/ResetMsg.h
 19b36b25b24bfc0ce6fb6f53c160d57c /home/rss-student/rss-2014-team-3/devel/include/rss_msgs/SonarMsg.h
 9b91e24ff583ad1c9e5ea76b9c3b09a5 /home/rss-student/rss-2014-team-3/devel/lib/python2.7/dist-packages/gc_msgs/msg/_BumpMsg.py
+d33a74145b17b8baa080d44570fddfb7 /home/rss-student/rss-2014-team-3/devel/lib/python2.7/dist-packages/gc_msgs/msg/_BumpStatusMsg.py
 df2fd2b4e4bfc2a047a574e77ad3a0db /home/rss-student/rss-2014-team-3/devel/lib/python2.7/dist-packages/gc_msgs/msg/_ColorMsg.py
 877d524bdf0493bc74d1b4757cd3ab70 /home/rss-student/rss-2014-team-3/devel/lib/python2.7/dist-packages/gc_msgs/msg/_ConveyorMsg.py
 b9de86d48fdfee73acd46f954fdbb60a /home/rss-student/rss-2014-team-3/devel/lib/python2.7/dist-packages/gc_msgs/msg/_EncoderMsg.py
@@ -41,8 +45,10 @@ fa64fafefd54294e8ec3efbb6e1c5ebe /home/rss-student/rss-2014-team-3/devel/lib/pyt
 8f0092a4a6974af1bfd87f3152e28410 /home/rss-student/rss-2014-team-3/devel/lib/python2.7/dist-packages/gc_msgs/msg/_GUIPointMsg.py
 36d1db12d03cf0ac507662859f381a1c /home/rss-student/rss-2014-team-3/devel/lib/python2.7/dist-packages/gc_msgs/msg/_GUIPolyMsg.py
 11aece1e881b7ba8a83f26feb2204372 /home/rss-student/rss-2014-team-3/devel/lib/python2.7/dist-packages/gc_msgs/msg/_HamperMsg.py
+f8750d002de39c19f03995e4ce2aeb28 /home/rss-student/rss-2014-team-3/devel/lib/python2.7/dist-packages/gc_msgs/msg/_KinectMsg.py
 14fdf3ab9a4733d90910eb3845720007 /home/rss-student/rss-2014-team-3/devel/lib/python2.7/dist-packages/gc_msgs/msg/_MotionDistMsg.py
 e70c08d5ba94dfe707e1db039d9705a7 /home/rss-student/rss-2014-team-3/devel/lib/python2.7/dist-packages/gc_msgs/msg/_MotionMsg.py
+4ee773cb79be33b545efbe17dc4e9e74 /home/rss-student/rss-2014-team-3/devel/lib/python2.7/dist-packages/gc_msgs/msg/_MotionVoltMsg.py
 3caabd079d8689d9f5337c1c25303667 /home/rss-student/rss-2014-team-3/devel/lib/python2.7/dist-packages/gc_msgs/msg/_MotorCommandMsg.py
 d10860869c2d7e067e766adc5b7e2ef1 /home/rss-student/rss-2014-team-3/devel/lib/python2.7/dist-packages/gc_msgs/msg/_ObstacleAheadMsg.py
 5292e6b7b4dd31061c2592a1a2eb20db /home/rss-student/rss-2014-team-3/devel/lib/python2.7/dist-packages/gc_msgs/msg/_ObstacleMsg.py
@@ -72,6 +78,7 @@ b3dcc2229aaef6d977038db60d8fc3a9 /home/rss-student/rss-2014-team-3/devel/lib/pyt
 714ee86546ddda018950bf7aa5d76f76 /home/rss-student/rss-2014-team-3/devel/lib/python2.7/dist-packages/rss_msgs/msg/_SonarMsg.py
 6770695eb12d86bca4cb0fcea5e23b94 /home/rss-student/rss-2014-team-3/devel/lib/python2.7/dist-packages/rss_msgs/msg/__init__.py
 30492c88e7fa4f7bab2e299db083eea1 /home/rss-student/rss-2014-team-3/devel/share/common-lisp/ros/gc_msgs/msg/BumpMsg.lisp
+832fd2c4c0a174d433da91f28f46cecc /home/rss-student/rss-2014-team-3/devel/share/common-lisp/ros/gc_msgs/msg/BumpStatusMsg.lisp
 59fbb7bda28c87130438f4686b497731 /home/rss-student/rss-2014-team-3/devel/share/common-lisp/ros/gc_msgs/msg/ColorMsg.lisp
 d2aa85345c7fb51ef62db1ce9dec240c /home/rss-student/rss-2014-team-3/devel/share/common-lisp/ros/gc_msgs/msg/ConveyorMsg.lisp
 bbb0c552c4683cfadc61af1d19a051ce /home/rss-student/rss-2014-team-3/devel/share/common-lisp/ros/gc_msgs/msg/EncoderMsg.lisp
@@ -79,8 +86,10 @@ e175618587385dc836e458b612522921 /home/rss-student/rss-2014-team-3/devel/share/c
 eecc4bdb75ccb23612907fb6e0851aa4 /home/rss-student/rss-2014-team-3/devel/share/common-lisp/ros/gc_msgs/msg/GUIPointMsg.lisp
 cd1cd356370b1cadee03417304be20c1 /home/rss-student/rss-2014-team-3/devel/share/common-lisp/ros/gc_msgs/msg/GUIPolyMsg.lisp
 24bd44999077061d4b48890caf5ffa03 /home/rss-student/rss-2014-team-3/devel/share/common-lisp/ros/gc_msgs/msg/HamperMsg.lisp
+115f9cafdba1299e484a1fcf4763cf06 /home/rss-student/rss-2014-team-3/devel/share/common-lisp/ros/gc_msgs/msg/KinectMsg.lisp
 18d1ff4192e3ed9d4911ed9f7f378a0f /home/rss-student/rss-2014-team-3/devel/share/common-lisp/ros/gc_msgs/msg/MotionDistMsg.lisp
 5753a0e204d02eaabb79e842c3371a22 /home/rss-student/rss-2014-team-3/devel/share/common-lisp/ros/gc_msgs/msg/MotionMsg.lisp
+cd4d7365ebc153703c206da600501b8d /home/rss-student/rss-2014-team-3/devel/share/common-lisp/ros/gc_msgs/msg/MotionVoltMsg.lisp
 6a5df6c342e1429d128a7f573177edb3 /home/rss-student/rss-2014-team-3/devel/share/common-lisp/ros/gc_msgs/msg/MotorCommandMsg.lisp
 1682e4cc41a462eddd2e5e5670889d0f /home/rss-student/rss-2014-team-3/devel/share/common-lisp/ros/gc_msgs/msg/ObstacleAheadMsg.lisp
 a6e86eaf6e3bd303ee9b48405ad3c438 /home/rss-student/rss-2014-team-3/devel/share/common-lisp/ros/gc_msgs/msg/ObstacleMsg.lisp

@@ -10,7 +10,6 @@ class BumpMsg(genpy.Message):
   _type = "gc_msgs/BumpMsg"
   _has_header = False #flag to mark the presence of a Header object
   _full_text = """uint8 bumpNumber
-
 """
   __slots__ = ['bumpNumber']
   _slot_types = ['uint8']

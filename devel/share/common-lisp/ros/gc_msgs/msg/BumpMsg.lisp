@@ -49,10 +49,10 @@
   "e26c7279c94f9c324f9891f26c5631f0")
 (cl:defmethod roslisp-msg-protocol:message-definition ((type (cl:eql '<BumpMsg>)))
   "Returns full string definition for message of type '<BumpMsg>"
-  (cl:format cl:nil "uint8 bumpNumber~%~%~%"))
+  (cl:format cl:nil "uint8 bumpNumber~%~%"))
 (cl:defmethod roslisp-msg-protocol:message-definition ((type (cl:eql 'BumpMsg)))
   "Returns full string definition for message of type 'BumpMsg"
-  (cl:format cl:nil "uint8 bumpNumber~%~%~%"))
+  (cl:format cl:nil "uint8 bumpNumber~%~%"))
 (cl:defmethod roslisp-msg-protocol:serialization-length ((msg <BumpMsg>))
   (cl:+ 0
      1
