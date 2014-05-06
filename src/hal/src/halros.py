@@ -12,6 +12,7 @@ from gc_msgs.msg import BumpStatusMsg
 from gc_msgs.msg import StateMsg
 from gc_msgs.msg import PoseMsg
 from gc_msgs.msg import WheelErrorMsg
+#from gc_msgs.msg import SonarStatusMsg
 from hal import RobotHardware
 from wheel_controller import WheelController
 import time
@@ -31,6 +32,7 @@ class RobotHardwareROS(RobotHardware):
         self.encoderPub = rospy.Publisher("sensor/Encoder",EncoderMsg)
         self.bumpPub = rospy.Publisher("sensor/Bump",BumpMsg)
         self.sonarPub = rospy.Publisher("sensor/Sonar", PoseMsg)
+        #self.sonarStatusPub = rospy.Publisher("sensor/SonarStatus",SonarStatusMsg)
         self.bumpStatusPub = rospy.Publisher("sensor/BumpStatus",BumpStatusMsg)
         self.wheelErrPub = rospy.Publisher("sensor/WheelErr", WheelErrorMsg)
 
@@ -129,6 +131,9 @@ class RobotHardwareROS(RobotHardware):
         dx = 0.25 #m
         dy = 0.25 #m
         sensordict = self.read_sonars()
+        #msg = SonarStatusMsg()
+        #msg.sonarStatus = [sensordict[self.sonarId[i] for i in range(4)]
+        #self.sonarStatusPub.publish(msg)
         ##FrontLeft
         read_dist = sensordict[self.sonarId[0]]
         if read_dist != None:

@@ -7,6 +7,7 @@ from gc_msgs.msg import MotionVoltMsg
 from gc_msgs.msg import ConveyorMsg
 from gc_msgs.msg import HamperMsg
 from gc_msgs.msg import KinectMsg
+#from gc_msgs.msg import SonarStatusMsg
 import time
 import random
 
@@ -24,8 +25,9 @@ class wanderRobotBrain(object):
         self.pastInput = None
 
         # creating publishers and subscribers
-        self.bumpSub = rospy.Subscriber('/sensor/BumpStatus', BumpStatusMsg, self.handleBumpMsg);
-        self.blockSeenSub = rospy.Subscriber('/sensor/kinect', KinectMsg, self.handleKinectMsg);
+        self.bumpSub = rospy.Subscriber('/sensor/BumpStatus', BumpStatusMsg, self.handleBumpMsg)
+        #self.sonarStatusSub = rospy.Subscriber('/sensor/SonarStatus', SonarStatusMsg,self.handleSonarMsg)
+        self.blockSeenSub = rospy.Subscriber('/sensor/kinect', KinectMsg, self.handleKinectMsg)
         self.wheelPub = rospy.Publisher('/command/MotorVolt', MotionVoltMsg)
         self.conveyorPub = rospy.Publisher('/command/Conveyor', ConveyorMsg)
         self.hamperPub = rospy.Publisher('/command/Hamper', HamperMsg)
@@ -309,6 +311,12 @@ class wanderRobotBrain(object):
     ######################
     # Subscriber Methods #
     ######################
+    
+    #given sonar messages, update self.sonar
+    
+    #def handleSonarMsg(self,msg):
+    #    self.sonarStatus = msg.sonarStatus
+    #    return
     
     # given bumper messages, update self.bump
     def handleBumpMsg(self, msg):
