@@ -8,6 +8,7 @@ from gc_msgs.msg import ConveyorMsg
 from gc_msgs.msg import HamperMsg
 from gc_msgs.msg import EncoderMsg
 from gc_msgs.msg import BumpMsg
+from gc_msgs.msg import BumpStatusMsg
 from gc_msgs.msg import StateMsg
 from gc_msgs.msg import PoseMsg
 from gc_msgs.msg import WheelErrorMsg
@@ -169,6 +170,9 @@ class RobotHardwareROS(RobotHardware):
                     msg.bumpNumber = i
                     self.bumpPub.publish(msg)
                 self.bumpState[i] = sensordict[self.bumpId[i]]
+        msg = BumpStatusMsg()
+        msg.bumpStatus = self.bumpState
+        self.bumpStatusPub.publish(msg)
 ########
 # Main #
 ########
@@ -186,7 +190,7 @@ if __name__=='__main__':
     #Spawn SensorThread
     t = threading.Thread(target=sensorThread, args = (rs,1))
     t.start()
-    while rs.startTime - time.time() < 600:
+    while rs.startTime - time.time() < 600: #10:00 Min Operation Time
        time.sleep(.01)
        try:
           rs.step()

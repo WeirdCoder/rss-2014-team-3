@@ -46,6 +46,7 @@ find_package(catkin REQUIRED COMPONENTS
  add_message_files(
    FILES
    BumpMsg.msg
+   BumpStatusMsg.msg
    ConveyorMsg.msg
    ColorMsg.msg
    EncoderMsg.msg
