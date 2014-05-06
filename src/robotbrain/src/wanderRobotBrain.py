@@ -23,7 +23,8 @@ class wanderRobotBrain(object):
         self.actionTimeout = time.time()         # timer used to decide when actions to complete
         self.blockSeen = False 
         self.pastInput = None
-
+        self.hamperStatus = 'closed'
+        self.hamperTimeout = time.time()
         # creating publishers and subscribers
         self.bumpSub = rospy.Subscriber('/sensor/BumpStatus', BumpStatusMsg, self.handleBumpMsg)
         #self.sonarStatusSub = rospy.Subscriber('/sensor/SonarStatus', SonarStatusMsg,self.handleSonarMsg)
@@ -107,6 +108,7 @@ class wanderRobotBrain(object):
     # robot moves forward
     def wander(self):
         self.wanderForward()
+        self.wiggleHamper()
         self.changeStates()
         return 
 
@@ -344,7 +346,25 @@ class wanderRobotBrain(object):
 # Helper functions #
 ####################
 
+    # wiggles hamper so blocks can 
+    def wiggleHamper(self):
 
+        # if it is time to move the hamper
+        if time.time() > self.hamperTimeout:
+            # if the hamper is closed, open it
+            if self.hamperStatus == 'closed':
+                self.setHamperAngle(-.04)
+                self.hamperStatus = 'ajar'
+
+            # if the hamper is ajar, close it
+            elif self.hamperStatus == 'ajar':
+                self.setHamperAngle(.01)
+                self.hamperStatus = 'ajar'
+
+            # increment hamperTimeout
+            self.hamperTimeout = time.time() + 1
+
+        return
 ########
 # Main #
 ########
