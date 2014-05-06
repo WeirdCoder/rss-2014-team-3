@@ -31,6 +31,7 @@ class RobotHardwareROS(RobotHardware):
         self.encoderPub = rospy.Publisher("sensor/Encoder",EncoderMsg)
         self.bumpPub = rospy.Publisher("sensor/Bump",BumpMsg)
         self.sonarPub = rospy.Publisher("sensor/Sonar", PoseMsg)
+        self.bumpStatusPub = rospy.Publisher("sensor/BumpStatus",BumpStatusMsg)
         self.wheelErrPub = rospy.Publisher("sensor/WheelErr", WheelErrorMsg)
 
         self.sonarId = ["front_left_sonar","front_right_sonar","back_left_sonar","back_right_sonar"]
@@ -55,7 +56,7 @@ class RobotHardwareROS(RobotHardware):
                 self.wController.reset(sensordict['left_position'],sensordict['right_position'],time.time())
 
     def handleMsg_MotionVoltMsg(self,msg):
-        self.command_actuators({"left_wheel"msg.leftVoltage:,"right_wheel":msg.rightVoltages})
+        self.command_actuators({"left_wheel":msg.leftVoltage,"right_wheel":msg.rightVoltage})
     def handleMsg_MotionDistMsg(self,msg):
         print 'recieved msg'
         td = msg.translationalDist
@@ -186,15 +187,16 @@ def sensorThread(rs,wtv):
 if __name__=='__main__':
     
     rs = RobotHardwareROS();
-    rs.startTime = time.time()
-    #Spawn SensorThread
+    #rs.startTime = time.time()
+    ##Spawn SensorThread
     t = threading.Thread(target=sensorThread, args = (rs,1))
     t.start()
-    while rs.startTime - time.time() < 600: #10:00 Min Operation Time
-       time.sleep(.01)
-       try:
-          rs.step()
-       except :
-          x =1
-    self.command_actuators({'left_wheel':0.0, 'right_wheel':0.0})
-    rs.signal_shutdown("Game Time Over")
+    #while rs.startTime - time.time() < 600: #10:00 Min Operation Time
+    #   time.sleep(.01)
+    #   try:
+    #      rs.step()
+    #   except :
+    #      x =1
+    #self.command_actuators({'left_wheel':0.0, 'right_wheel':0.0})
+    #rs.signal_shutdown("Game Time Over")
+    rospy.spin()

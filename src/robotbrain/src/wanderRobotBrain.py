@@ -6,12 +6,13 @@ from gc_msgs.msg import StateMsg
 from gc_msgs.msg import MotionVoltMsg
 from gc_msgs.msg import ConveyorMsg
 from gc_msgs.msg import HamperMsg
+from gc_msgs.msg import KinectMsg
 import time
 import random
 
 class wanderRobotBrain(object):
     def __init__(self):
-        
+
         # variables to track state
         self.robotState = 'wander'
         self.bumpStatus = [0,0]                  # for left and right bump sensors; 1 if either are being pressed
@@ -23,21 +24,24 @@ class wanderRobotBrain(object):
 
         # creating publishers and subscribers
         self.bumpSub = rospy.Subscriber('/sensor/BumpStatus', BumpStatusMsg, self.handleBumpMsg);
-        self.blockSeenSub = rospy.Subscriber('/sensor/blockSeen', PoseMsg, self.handleKinectMsg);
-        self.wheelPub = ropsy.Publisher('/command/MotorVolt', MotionVoltMsg)
-        self.conveyorPub = ropsy.Publisher('/command/Conveyor', ConveyorMsg)
-        self.hamperPub = ropsy.Publisher('/command/Hamper', HamperMsg)
+        self.blockSeenSub = rospy.Subscriber('/sensor/kinect', KinectMsg, self.handleKinectMsg);
+        self.wheelPub = rospy.Publisher('/command/MotorVolt', MotionVoltMsg)
+        self.conveyorPub = rospy.Publisher('/command/Conveyor', ConveyorMsg)
+        self.hamperPub = rospy.Publisher('/command/Hamper', HamperMsg)
+
+        # initialize node
+        rospy.init_node('robotbrain')
 
         # start conveyrs and close hamper
-        self.startBothBelts()
+        self.startConveyorBelts()
         self.setHamperAngle(0)
 
         return
 
     def main(self):
         # main loop gets called from a while(true); robot's behavior depends on state
-        
-        if self.robotState == 'wandering':
+        print self.robotState 
+        if self.robotState == 'wander':
             self.wander()
 
         elif self.robotState == 'hitLeft':
@@ -93,11 +97,13 @@ class wanderRobotBrain(object):
         motormsg.rightVoltage = max(min((forward - rotate),MotorMax),-MotorMax)
         self.wheelPub.publish(motormsg)
         time.sleep(0.03) #TODO adjust for the encoder loop
+        self.changeStates()
      
     # robot moves forward
     def wander(self):
         self.wanderForward()
         self.changeStates()
+        time.sleep(0.1)
         return 
 
     # behavior when left bumper is pressed
@@ -108,6 +114,7 @@ class wanderRobotBrain(object):
         if time.time() > self.actionTimeout:
             self.robotState = 'wander'
             self.numBumps += 1
+        time.sleep(0.1)
         return 
 
     # behavior when right bumper is pressed
@@ -118,6 +125,7 @@ class wanderRobotBrain(object):
         if time.time() > self.actionTimeout:
             self.robotState = 'wander'
             self.numBumps += 1
+        time.sleep(0.1)
         return
 
     # behavior when both bumpers are pressed
@@ -128,6 +136,7 @@ class wanderRobotBrain(object):
         if time.time() > self.actionTimeout:
             self.robotState = 'wander'
             self.numBumps += 1
+        time.sleep(0.1)
         return
 
     # robot spins around
@@ -141,6 +150,7 @@ class wanderRobotBrain(object):
         # pays attention to new bumps
         self.changeStates()
 
+        time.sleep(0.1)
         return
 
     # open hamper and drive off
@@ -160,6 +170,7 @@ class wanderRobotBrain(object):
             self.dispenseForward
         
         self.robotState == 'done'
+        time.sleep(0.05)
         return
 
     # done
@@ -216,56 +227,56 @@ class wanderRobotBrain(object):
 
     # stop wheels
     def stopWheels(self):
-        msg = MotionVoltMsg
-        msg.rightVolage = 0
+        msg = MotionVoltMsg()
+        msg.rightVoltage = 0
         msg.leftVoltage = 0
         self.wheelPub.publish(msg)
         return
 
     # move forward (called when wandering)
     def wanderForward(self):
-        msg = MotionVoltMsg
-        msg.rightVolage = .55
+        msg = MotionVoltMsg()
+        msg.rightVoltage = .55
         msg.leftVoltage = .5
         self.wheelPub.publish(msg)
         return
 
     # back up and turn, as called in hit left state
     def backUpLeft(self):
-        msg = MotionVoltMsg
-        msg.rightVolage = -.5
+        msg = MotionVoltMsg()
+        msg.rightVoltage = -.5
         msg.leftVoltage = -.3
         self.wheelPub.publish(msg)
         return
 
     # back up and turn, as called in hit right state
     def backUpRight(self):
-        msg = MotionVoltMsg
-        msg.rightVolage = -.5
+        msg = MotionVoltMsg()
+        msg.rightVoltage = -.5
         msg.leftVoltage = .3
         self.wheelPub.publish(msg)
         return        
 
     # back up, as called in hitBoth state
     def backUpBoth(self):
-        msg = MotionVoltMsg
-        msg.rightVolage = -.4
+        msg = MotionVoltMsg()
+        msg.rightVoltage = -.4
         msg.leftVoltage = -.4
         self.wheelPub.publish(msg)
         return        
 
     # turn, as called in spin
     def spinTurn(self):
-        msg = MotionVoltMsg
-        msg.rightVolage = -.5
+        msg = MotionVoltMsg()
+        msg.rightVoltage = -.5
         msg.leftVoltage = .5
         self.wheelPub.publish(msg)
         return
     
     # move forward, as called in dispense
     def dispenseForward(self):
-        msg = MotionVoltMsg
-        msg.rightVolage = .5
+        msg = MotionVoltMsg()
+        msg.rightVoltage = .5
         msg.leftVoltage = .5
         self.wheelPub.publish(msg)
         return        
@@ -305,8 +316,9 @@ class wanderRobotBrain(object):
     
     # given bumper messages, update self.bump
     def handleBumpMsg(self, msg):
+        print 'getting bump msg'
         # messages gives too booleans [leftPressed, rightPressed]
-        self.bumpStatus = msg.bumpStatus
+        self.bumpStatus = msg.bumpStatus[3:]
         return
 
     # handle message from kinect
@@ -327,7 +339,7 @@ class wanderRobotBrain(object):
 
 if __name__ == '__main__':
     try:
-        print 'running as main'
+
         robotbrain = wanderRobotBrain()
         
         while(True):
