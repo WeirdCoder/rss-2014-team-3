@@ -15,6 +15,8 @@
     (:file "_package_StateMsg" :depends-on ("_package"))
     (:file "HamperMsg" :depends-on ("_package_HamperMsg"))
     (:file "_package_HamperMsg" :depends-on ("_package"))
+    (:file "SonarStatusMsg" :depends-on ("_package_SonarStatusMsg"))
+    (:file "_package_SonarStatusMsg" :depends-on ("_package"))
     (:file "GCServoMsg" :depends-on ("_package_GCServoMsg"))
     (:file "_package_GCServoMsg" :depends-on ("_package"))
     (:file "MotionVoltMsg" :depends-on ("_package_MotionVoltMsg"))

@@ -57,6 +57,7 @@ gc_msgs/CMakeFiles/gc_msgs_generate_messages_lisp: /home/rss-student/rss-2014-te
 gc_msgs/CMakeFiles/gc_msgs_generate_messages_lisp: /home/rss-student/rss-2014-team-3/devel/share/common-lisp/ros/gc_msgs/msg/MotionMsg.lisp
 gc_msgs/CMakeFiles/gc_msgs_generate_messages_lisp: /home/rss-student/rss-2014-team-3/devel/share/common-lisp/ros/gc_msgs/msg/GCServoMsg.lisp
 gc_msgs/CMakeFiles/gc_msgs_generate_messages_lisp: /home/rss-student/rss-2014-team-3/devel/share/common-lisp/ros/gc_msgs/msg/ConveyorMsg.lisp
+gc_msgs/CMakeFiles/gc_msgs_generate_messages_lisp: /home/rss-student/rss-2014-team-3/devel/share/common-lisp/ros/gc_msgs/msg/SonarStatusMsg.lisp
 gc_msgs/CMakeFiles/gc_msgs_generate_messages_lisp: /home/rss-student/rss-2014-team-3/devel/share/common-lisp/ros/gc_msgs/msg/GUIPointMsg.lisp
 gc_msgs/CMakeFiles/gc_msgs_generate_messages_lisp: /home/rss-student/rss-2014-team-3/devel/share/common-lisp/ros/gc_msgs/msg/WheelErrorMsg.lisp
 gc_msgs/CMakeFiles/gc_msgs_generate_messages_lisp: /home/rss-student/rss-2014-team-3/devel/share/common-lisp/ros/gc_msgs/msg/ObstacleMsg.lisp
@@ -153,28 +154,34 @@ gc_msgs/CMakeFiles/gc_msgs_generate_messages_lisp: /home/rss-student/rss-2014-te
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold "Generating Lisp code from gc_msgs/ConveyorMsg.msg"
 	cd /home/rss-student/rss-2014-team-3/build/gc_msgs && ../catkin_generated/env_cached.sh /usr/bin/python /opt/ros/hydro/share/genlisp/cmake/../../../lib/genlisp/gen_lisp.py /home/rss-student/rss-2014-team-3/src/gc_msgs/msg/ConveyorMsg.msg -Igc_msgs:/home/rss-student/rss-2014-team-3/src/gc_msgs/msg -Istd_msgs:/opt/ros/hydro/share/std_msgs/cmake/../msg -Ilab6_msgs:/home/rss-student/rss-2014-team-3/src/lab6_msgs/msg -Ilab5_msgs:/home/rss-student/rss-2014-team-3/src/lab5_msgs/msg -p gc_msgs -o /home/rss-student/rss-2014-team-3/devel/share/common-lisp/ros/gc_msgs/msg
 
+/home/rss-student/rss-2014-team-3/devel/share/common-lisp/ros/gc_msgs/msg/SonarStatusMsg.lisp: /opt/ros/hydro/share/genlisp/cmake/../../../lib/genlisp/gen_lisp.py
+/home/rss-student/rss-2014-team-3/devel/share/common-lisp/ros/gc_msgs/msg/SonarStatusMsg.lisp: /home/rss-student/rss-2014-team-3/src/gc_msgs/msg/SonarStatusMsg.msg
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/rss-student/rss-2014-team-3/build/CMakeFiles $(CMAKE_PROGRESS_16)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold "Generating Lisp code from gc_msgs/SonarStatusMsg.msg"
+	cd /home/rss-student/rss-2014-team-3/build/gc_msgs && ../catkin_generated/env_cached.sh /usr/bin/python /opt/ros/hydro/share/genlisp/cmake/../../../lib/genlisp/gen_lisp.py /home/rss-student/rss-2014-team-3/src/gc_msgs/msg/SonarStatusMsg.msg -Igc_msgs:/home/rss-student/rss-2014-team-3/src/gc_msgs/msg -Istd_msgs:/opt/ros/hydro/share/std_msgs/cmake/../msg -Ilab6_msgs:/home/rss-student/rss-2014-team-3/src/lab6_msgs/msg -Ilab5_msgs:/home/rss-student/rss-2014-team-3/src/lab5_msgs/msg -p gc_msgs -o /home/rss-student/rss-2014-team-3/devel/share/common-lisp/ros/gc_msgs/msg
+
 /home/rss-student/rss-2014-team-3/devel/share/common-lisp/ros/gc_msgs/msg/GUIPointMsg.lisp: /opt/ros/hydro/share/genlisp/cmake/../../../lib/genlisp/gen_lisp.py
 /home/rss-student/rss-2014-team-3/devel/share/common-lisp/ros/gc_msgs/msg/GUIPointMsg.lisp: /home/rss-student/rss-2014-team-3/src/gc_msgs/msg/GUIPointMsg.msg
 /home/rss-student/rss-2014-team-3/devel/share/common-lisp/ros/gc_msgs/msg/GUIPointMsg.lisp: /home/rss-student/rss-2014-team-3/src/gc_msgs/msg/ColorMsg.msg
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/rss-student/rss-2014-team-3/build/CMakeFiles $(CMAKE_PROGRESS_16)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/rss-student/rss-2014-team-3/build/CMakeFiles $(CMAKE_PROGRESS_17)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold "Generating Lisp code from gc_msgs/GUIPointMsg.msg"
 	cd /home/rss-student/rss-2014-team-3/build/gc_msgs && ../catkin_generated/env_cached.sh /usr/bin/python /opt/ros/hydro/share/genlisp/cmake/../../../lib/genlisp/gen_lisp.py /home/rss-student/rss-2014-team-3/src/gc_msgs/msg/GUIPointMsg.msg -Igc_msgs:/home/rss-student/rss-2014-team-3/src/gc_msgs/msg -Istd_msgs:/opt/ros/hydro/share/std_msgs/cmake/../msg -Ilab6_msgs:/home/rss-student/rss-2014-team-3/src/lab6_msgs/msg -Ilab5_msgs:/home/rss-student/rss-2014-team-3/src/lab5_msgs/msg -p gc_msgs -o /home/rss-student/rss-2014-team-3/devel/share/common-lisp/ros/gc_msgs/msg
 
 /home/rss-student/rss-2014-team-3/devel/share/common-lisp/ros/gc_msgs/msg/WheelErrorMsg.lisp: /opt/ros/hydro/share/genlisp/cmake/../../../lib/genlisp/gen_lisp.py
 /home/rss-student/rss-2014-team-3/devel/share/common-lisp/ros/gc_msgs/msg/WheelErrorMsg.lisp: /home/rss-student/rss-2014-team-3/src/gc_msgs/msg/WheelErrorMsg.msg
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/rss-student/rss-2014-team-3/build/CMakeFiles $(CMAKE_PROGRESS_17)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/rss-student/rss-2014-team-3/build/CMakeFiles $(CMAKE_PROGRESS_18)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold "Generating Lisp code from gc_msgs/WheelErrorMsg.msg"
 	cd /home/rss-student/rss-2014-team-3/build/gc_msgs && ../catkin_generated/env_cached.sh /usr/bin/python /opt/ros/hydro/share/genlisp/cmake/../../../lib/genlisp/gen_lisp.py /home/rss-student/rss-2014-team-3/src/gc_msgs/msg/WheelErrorMsg.msg -Igc_msgs:/home/rss-student/rss-2014-team-3/src/gc_msgs/msg -Istd_msgs:/opt/ros/hydro/share/std_msgs/cmake/../msg -Ilab6_msgs:/home/rss-student/rss-2014-team-3/src/lab6_msgs/msg -Ilab5_msgs:/home/rss-student/rss-2014-team-3/src/lab5_msgs/msg -p gc_msgs -o /home/rss-student/rss-2014-team-3/devel/share/common-lisp/ros/gc_msgs/msg
 
 /home/rss-student/rss-2014-team-3/devel/share/common-lisp/ros/gc_msgs/msg/ObstacleMsg.lisp: /opt/ros/hydro/share/genlisp/cmake/../../../lib/genlisp/gen_lisp.py
 /home/rss-student/rss-2014-team-3/devel/share/common-lisp/ros/gc_msgs/msg/ObstacleMsg.lisp: /home/rss-student/rss-2014-team-3/src/gc_msgs/msg/ObstacleMsg.msg
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/rss-student/rss-2014-team-3/build/CMakeFiles $(CMAKE_PROGRESS_18)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/rss-student/rss-2014-team-3/build/CMakeFiles $(CMAKE_PROGRESS_19)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold "Generating Lisp code from gc_msgs/ObstacleMsg.msg"
 	cd /home/rss-student/rss-2014-team-3/build/gc_msgs && ../catkin_generated/env_cached.sh /usr/bin/python /opt/ros/hydro/share/genlisp/cmake/../../../lib/genlisp/gen_lisp.py /home/rss-student/rss-2014-team-3/src/gc_msgs/msg/ObstacleMsg.msg -Igc_msgs:/home/rss-student/rss-2014-team-3/src/gc_msgs/msg -Istd_msgs:/opt/ros/hydro/share/std_msgs/cmake/../msg -Ilab6_msgs:/home/rss-student/rss-2014-team-3/src/lab6_msgs/msg -Ilab5_msgs:/home/rss-student/rss-2014-team-3/src/lab5_msgs/msg -p gc_msgs -o /home/rss-student/rss-2014-team-3/devel/share/common-lisp/ros/gc_msgs/msg
 
 /home/rss-student/rss-2014-team-3/devel/share/common-lisp/ros/gc_msgs/msg/BumpStatusMsg.lisp: /opt/ros/hydro/share/genlisp/cmake/../../../lib/genlisp/gen_lisp.py
 /home/rss-student/rss-2014-team-3/devel/share/common-lisp/ros/gc_msgs/msg/BumpStatusMsg.lisp: /home/rss-student/rss-2014-team-3/src/gc_msgs/msg/BumpStatusMsg.msg
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/rss-student/rss-2014-team-3/build/CMakeFiles $(CMAKE_PROGRESS_19)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/rss-student/rss-2014-team-3/build/CMakeFiles $(CMAKE_PROGRESS_20)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold "Generating Lisp code from gc_msgs/BumpStatusMsg.msg"
 	cd /home/rss-student/rss-2014-team-3/build/gc_msgs && ../catkin_generated/env_cached.sh /usr/bin/python /opt/ros/hydro/share/genlisp/cmake/../../../lib/genlisp/gen_lisp.py /home/rss-student/rss-2014-team-3/src/gc_msgs/msg/BumpStatusMsg.msg -Igc_msgs:/home/rss-student/rss-2014-team-3/src/gc_msgs/msg -Istd_msgs:/opt/ros/hydro/share/std_msgs/cmake/../msg -Ilab6_msgs:/home/rss-student/rss-2014-team-3/src/lab6_msgs/msg -Ilab5_msgs:/home/rss-student/rss-2014-team-3/src/lab5_msgs/msg -p gc_msgs -o /home/rss-student/rss-2014-team-3/devel/share/common-lisp/ros/gc_msgs/msg
 
@@ -194,6 +201,7 @@ gc_msgs_generate_messages_lisp: /home/rss-student/rss-2014-team-3/devel/share/co
 gc_msgs_generate_messages_lisp: /home/rss-student/rss-2014-team-3/devel/share/common-lisp/ros/gc_msgs/msg/MotionMsg.lisp
 gc_msgs_generate_messages_lisp: /home/rss-student/rss-2014-team-3/devel/share/common-lisp/ros/gc_msgs/msg/GCServoMsg.lisp
 gc_msgs_generate_messages_lisp: /home/rss-student/rss-2014-team-3/devel/share/common-lisp/ros/gc_msgs/msg/ConveyorMsg.lisp
+gc_msgs_generate_messages_lisp: /home/rss-student/rss-2014-team-3/devel/share/common-lisp/ros/gc_msgs/msg/SonarStatusMsg.lisp
 gc_msgs_generate_messages_lisp: /home/rss-student/rss-2014-team-3/devel/share/common-lisp/ros/gc_msgs/msg/GUIPointMsg.lisp
 gc_msgs_generate_messages_lisp: /home/rss-student/rss-2014-team-3/devel/share/common-lisp/ros/gc_msgs/msg/WheelErrorMsg.lisp
 gc_msgs_generate_messages_lisp: /home/rss-student/rss-2014-team-3/devel/share/common-lisp/ros/gc_msgs/msg/ObstacleMsg.lisp

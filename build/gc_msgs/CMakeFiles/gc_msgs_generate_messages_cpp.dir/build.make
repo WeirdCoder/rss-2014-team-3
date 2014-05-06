@@ -57,6 +57,7 @@ gc_msgs/CMakeFiles/gc_msgs_generate_messages_cpp: /home/rss-student/rss-2014-tea
 gc_msgs/CMakeFiles/gc_msgs_generate_messages_cpp: /home/rss-student/rss-2014-team-3/devel/include/gc_msgs/MotionMsg.h
 gc_msgs/CMakeFiles/gc_msgs_generate_messages_cpp: /home/rss-student/rss-2014-team-3/devel/include/gc_msgs/GCServoMsg.h
 gc_msgs/CMakeFiles/gc_msgs_generate_messages_cpp: /home/rss-student/rss-2014-team-3/devel/include/gc_msgs/ConveyorMsg.h
+gc_msgs/CMakeFiles/gc_msgs_generate_messages_cpp: /home/rss-student/rss-2014-team-3/devel/include/gc_msgs/SonarStatusMsg.h
 gc_msgs/CMakeFiles/gc_msgs_generate_messages_cpp: /home/rss-student/rss-2014-team-3/devel/include/gc_msgs/GUIPointMsg.h
 gc_msgs/CMakeFiles/gc_msgs_generate_messages_cpp: /home/rss-student/rss-2014-team-3/devel/include/gc_msgs/WheelErrorMsg.h
 gc_msgs/CMakeFiles/gc_msgs_generate_messages_cpp: /home/rss-student/rss-2014-team-3/devel/include/gc_msgs/ObstacleMsg.h
@@ -168,32 +169,39 @@ gc_msgs/CMakeFiles/gc_msgs_generate_messages_cpp: /home/rss-student/rss-2014-tea
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold "Generating C++ code from gc_msgs/ConveyorMsg.msg"
 	cd /home/rss-student/rss-2014-team-3/build/gc_msgs && ../catkin_generated/env_cached.sh /usr/bin/python /opt/ros/hydro/share/gencpp/cmake/../../../lib/gencpp/gen_cpp.py /home/rss-student/rss-2014-team-3/src/gc_msgs/msg/ConveyorMsg.msg -Igc_msgs:/home/rss-student/rss-2014-team-3/src/gc_msgs/msg -Istd_msgs:/opt/ros/hydro/share/std_msgs/cmake/../msg -Ilab6_msgs:/home/rss-student/rss-2014-team-3/src/lab6_msgs/msg -Ilab5_msgs:/home/rss-student/rss-2014-team-3/src/lab5_msgs/msg -p gc_msgs -o /home/rss-student/rss-2014-team-3/devel/include/gc_msgs -e /opt/ros/hydro/share/gencpp/cmake/..
 
+/home/rss-student/rss-2014-team-3/devel/include/gc_msgs/SonarStatusMsg.h: /opt/ros/hydro/share/gencpp/cmake/../../../lib/gencpp/gen_cpp.py
+/home/rss-student/rss-2014-team-3/devel/include/gc_msgs/SonarStatusMsg.h: /home/rss-student/rss-2014-team-3/src/gc_msgs/msg/SonarStatusMsg.msg
+/home/rss-student/rss-2014-team-3/devel/include/gc_msgs/SonarStatusMsg.h: /opt/ros/hydro/share/gencpp/cmake/../msg.h.template
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/rss-student/rss-2014-team-3/build/CMakeFiles $(CMAKE_PROGRESS_16)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold "Generating C++ code from gc_msgs/SonarStatusMsg.msg"
+	cd /home/rss-student/rss-2014-team-3/build/gc_msgs && ../catkin_generated/env_cached.sh /usr/bin/python /opt/ros/hydro/share/gencpp/cmake/../../../lib/gencpp/gen_cpp.py /home/rss-student/rss-2014-team-3/src/gc_msgs/msg/SonarStatusMsg.msg -Igc_msgs:/home/rss-student/rss-2014-team-3/src/gc_msgs/msg -Istd_msgs:/opt/ros/hydro/share/std_msgs/cmake/../msg -Ilab6_msgs:/home/rss-student/rss-2014-team-3/src/lab6_msgs/msg -Ilab5_msgs:/home/rss-student/rss-2014-team-3/src/lab5_msgs/msg -p gc_msgs -o /home/rss-student/rss-2014-team-3/devel/include/gc_msgs -e /opt/ros/hydro/share/gencpp/cmake/..
+
 /home/rss-student/rss-2014-team-3/devel/include/gc_msgs/GUIPointMsg.h: /opt/ros/hydro/share/gencpp/cmake/../../../lib/gencpp/gen_cpp.py
 /home/rss-student/rss-2014-team-3/devel/include/gc_msgs/GUIPointMsg.h: /home/rss-student/rss-2014-team-3/src/gc_msgs/msg/GUIPointMsg.msg
 /home/rss-student/rss-2014-team-3/devel/include/gc_msgs/GUIPointMsg.h: /home/rss-student/rss-2014-team-3/src/gc_msgs/msg/ColorMsg.msg
 /home/rss-student/rss-2014-team-3/devel/include/gc_msgs/GUIPointMsg.h: /opt/ros/hydro/share/gencpp/cmake/../msg.h.template
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/rss-student/rss-2014-team-3/build/CMakeFiles $(CMAKE_PROGRESS_16)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/rss-student/rss-2014-team-3/build/CMakeFiles $(CMAKE_PROGRESS_17)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold "Generating C++ code from gc_msgs/GUIPointMsg.msg"
 	cd /home/rss-student/rss-2014-team-3/build/gc_msgs && ../catkin_generated/env_cached.sh /usr/bin/python /opt/ros/hydro/share/gencpp/cmake/../../../lib/gencpp/gen_cpp.py /home/rss-student/rss-2014-team-3/src/gc_msgs/msg/GUIPointMsg.msg -Igc_msgs:/home/rss-student/rss-2014-team-3/src/gc_msgs/msg -Istd_msgs:/opt/ros/hydro/share/std_msgs/cmake/../msg -Ilab6_msgs:/home/rss-student/rss-2014-team-3/src/lab6_msgs/msg -Ilab5_msgs:/home/rss-student/rss-2014-team-3/src/lab5_msgs/msg -p gc_msgs -o /home/rss-student/rss-2014-team-3/devel/include/gc_msgs -e /opt/ros/hydro/share/gencpp/cmake/..
 
 /home/rss-student/rss-2014-team-3/devel/include/gc_msgs/WheelErrorMsg.h: /opt/ros/hydro/share/gencpp/cmake/../../../lib/gencpp/gen_cpp.py
 /home/rss-student/rss-2014-team-3/devel/include/gc_msgs/WheelErrorMsg.h: /home/rss-student/rss-2014-team-3/src/gc_msgs/msg/WheelErrorMsg.msg
 /home/rss-student/rss-2014-team-3/devel/include/gc_msgs/WheelErrorMsg.h: /opt/ros/hydro/share/gencpp/cmake/../msg.h.template
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/rss-student/rss-2014-team-3/build/CMakeFiles $(CMAKE_PROGRESS_17)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/rss-student/rss-2014-team-3/build/CMakeFiles $(CMAKE_PROGRESS_18)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold "Generating C++ code from gc_msgs/WheelErrorMsg.msg"
 	cd /home/rss-student/rss-2014-team-3/build/gc_msgs && ../catkin_generated/env_cached.sh /usr/bin/python /opt/ros/hydro/share/gencpp/cmake/../../../lib/gencpp/gen_cpp.py /home/rss-student/rss-2014-team-3/src/gc_msgs/msg/WheelErrorMsg.msg -Igc_msgs:/home/rss-student/rss-2014-team-3/src/gc_msgs/msg -Istd_msgs:/opt/ros/hydro/share/std_msgs/cmake/../msg -Ilab6_msgs:/home/rss-student/rss-2014-team-3/src/lab6_msgs/msg -Ilab5_msgs:/home/rss-student/rss-2014-team-3/src/lab5_msgs/msg -p gc_msgs -o /home/rss-student/rss-2014-team-3/devel/include/gc_msgs -e /opt/ros/hydro/share/gencpp/cmake/..
 
 /home/rss-student/rss-2014-team-3/devel/include/gc_msgs/ObstacleMsg.h: /opt/ros/hydro/share/gencpp/cmake/../../../lib/gencpp/gen_cpp.py
 /home/rss-student/rss-2014-team-3/devel/include/gc_msgs/ObstacleMsg.h: /home/rss-student/rss-2014-team-3/src/gc_msgs/msg/ObstacleMsg.msg
 /home/rss-student/rss-2014-team-3/devel/include/gc_msgs/ObstacleMsg.h: /opt/ros/hydro/share/gencpp/cmake/../msg.h.template
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/rss-student/rss-2014-team-3/build/CMakeFiles $(CMAKE_PROGRESS_18)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/rss-student/rss-2014-team-3/build/CMakeFiles $(CMAKE_PROGRESS_19)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold "Generating C++ code from gc_msgs/ObstacleMsg.msg"
 	cd /home/rss-student/rss-2014-team-3/build/gc_msgs && ../catkin_generated/env_cached.sh /usr/bin/python /opt/ros/hydro/share/gencpp/cmake/../../../lib/gencpp/gen_cpp.py /home/rss-student/rss-2014-team-3/src/gc_msgs/msg/ObstacleMsg.msg -Igc_msgs:/home/rss-student/rss-2014-team-3/src/gc_msgs/msg -Istd_msgs:/opt/ros/hydro/share/std_msgs/cmake/../msg -Ilab6_msgs:/home/rss-student/rss-2014-team-3/src/lab6_msgs/msg -Ilab5_msgs:/home/rss-student/rss-2014-team-3/src/lab5_msgs/msg -p gc_msgs -o /home/rss-student/rss-2014-team-3/devel/include/gc_msgs -e /opt/ros/hydro/share/gencpp/cmake/..
 
 /home/rss-student/rss-2014-team-3/devel/include/gc_msgs/BumpStatusMsg.h: /opt/ros/hydro/share/gencpp/cmake/../../../lib/gencpp/gen_cpp.py
 /home/rss-student/rss-2014-team-3/devel/include/gc_msgs/BumpStatusMsg.h: /home/rss-student/rss-2014-team-3/src/gc_msgs/msg/BumpStatusMsg.msg
 /home/rss-student/rss-2014-team-3/devel/include/gc_msgs/BumpStatusMsg.h: /opt/ros/hydro/share/gencpp/cmake/../msg.h.template
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/rss-student/rss-2014-team-3/build/CMakeFiles $(CMAKE_PROGRESS_19)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/rss-student/rss-2014-team-3/build/CMakeFiles $(CMAKE_PROGRESS_20)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold "Generating C++ code from gc_msgs/BumpStatusMsg.msg"
 	cd /home/rss-student/rss-2014-team-3/build/gc_msgs && ../catkin_generated/env_cached.sh /usr/bin/python /opt/ros/hydro/share/gencpp/cmake/../../../lib/gencpp/gen_cpp.py /home/rss-student/rss-2014-team-3/src/gc_msgs/msg/BumpStatusMsg.msg -Igc_msgs:/home/rss-student/rss-2014-team-3/src/gc_msgs/msg -Istd_msgs:/opt/ros/hydro/share/std_msgs/cmake/../msg -Ilab6_msgs:/home/rss-student/rss-2014-team-3/src/lab6_msgs/msg -Ilab5_msgs:/home/rss-student/rss-2014-team-3/src/lab5_msgs/msg -p gc_msgs -o /home/rss-student/rss-2014-team-3/devel/include/gc_msgs -e /opt/ros/hydro/share/gencpp/cmake/..
 
@@ -213,6 +221,7 @@ gc_msgs_generate_messages_cpp: /home/rss-student/rss-2014-team-3/devel/include/g
 gc_msgs_generate_messages_cpp: /home/rss-student/rss-2014-team-3/devel/include/gc_msgs/MotionMsg.h
 gc_msgs_generate_messages_cpp: /home/rss-student/rss-2014-team-3/devel/include/gc_msgs/GCServoMsg.h
 gc_msgs_generate_messages_cpp: /home/rss-student/rss-2014-team-3/devel/include/gc_msgs/ConveyorMsg.h
+gc_msgs_generate_messages_cpp: /home/rss-student/rss-2014-team-3/devel/include/gc_msgs/SonarStatusMsg.h
 gc_msgs_generate_messages_cpp: /home/rss-student/rss-2014-team-3/devel/include/gc_msgs/GUIPointMsg.h
 gc_msgs_generate_messages_cpp: /home/rss-student/rss-2014-team-3/devel/include/gc_msgs/WheelErrorMsg.h
 gc_msgs_generate_messages_cpp: /home/rss-student/rss-2014-team-3/devel/include/gc_msgs/ObstacleMsg.h

@@ -15,6 +15,7 @@ FILE(REMOVE_RECURSE
   "/home/rss-student/rss-2014-team-3/devel/lib/python2.7/dist-packages/gc_msgs/msg/_MotionMsg.py"
   "/home/rss-student/rss-2014-team-3/devel/lib/python2.7/dist-packages/gc_msgs/msg/_GCServoMsg.py"
   "/home/rss-student/rss-2014-team-3/devel/lib/python2.7/dist-packages/gc_msgs/msg/_ConveyorMsg.py"
+  "/home/rss-student/rss-2014-team-3/devel/lib/python2.7/dist-packages/gc_msgs/msg/_SonarStatusMsg.py"
   "/home/rss-student/rss-2014-team-3/devel/lib/python2.7/dist-packages/gc_msgs/msg/_GUIPointMsg.py"
   "/home/rss-student/rss-2014-team-3/devel/lib/python2.7/dist-packages/gc_msgs/msg/_WheelErrorMsg.py"
   "/home/rss-student/rss-2014-team-3/devel/lib/python2.7/dist-packages/gc_msgs/msg/_ObstacleMsg.py"

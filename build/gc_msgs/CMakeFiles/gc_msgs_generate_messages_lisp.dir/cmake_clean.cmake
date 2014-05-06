@@ -15,6 +15,7 @@ FILE(REMOVE_RECURSE
   "/home/rss-student/rss-2014-team-3/devel/share/common-lisp/ros/gc_msgs/msg/MotionMsg.lisp"
   "/home/rss-student/rss-2014-team-3/devel/share/common-lisp/ros/gc_msgs/msg/GCServoMsg.lisp"
   "/home/rss-student/rss-2014-team-3/devel/share/common-lisp/ros/gc_msgs/msg/ConveyorMsg.lisp"
+  "/home/rss-student/rss-2014-team-3/devel/share/common-lisp/ros/gc_msgs/msg/SonarStatusMsg.lisp"
   "/home/rss-student/rss-2014-team-3/devel/share/common-lisp/ros/gc_msgs/msg/GUIPointMsg.lisp"
   "/home/rss-student/rss-2014-team-3/devel/share/common-lisp/ros/gc_msgs/msg/WheelErrorMsg.lisp"
   "/home/rss-student/rss-2014-team-3/devel/share/common-lisp/ros/gc_msgs/msg/ObstacleMsg.lisp"

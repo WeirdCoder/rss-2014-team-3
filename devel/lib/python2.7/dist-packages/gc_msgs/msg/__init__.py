@@ -1,3 +1,4 @@
+from ._SonarStatusMsg import *
 from ._WheelVelocityMsg import *
 from ._WheelErrorMsg import *
 from ._GUIPointMsg import *

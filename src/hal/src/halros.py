@@ -12,7 +12,7 @@ from gc_msgs.msg import BumpStatusMsg
 from gc_msgs.msg import StateMsg
 from gc_msgs.msg import PoseMsg
 from gc_msgs.msg import WheelErrorMsg
-#from gc_msgs.msg import SonarStatusMsg
+from gc_msgs.msg import SonarStatusMsg
 from hal import RobotHardware
 from wheel_controller import WheelController
 import time
@@ -32,7 +32,7 @@ class RobotHardwareROS(RobotHardware):
         self.encoderPub = rospy.Publisher("sensor/Encoder",EncoderMsg)
         self.bumpPub = rospy.Publisher("sensor/Bump",BumpMsg)
         self.sonarPub = rospy.Publisher("sensor/Sonar", PoseMsg)
-        #self.sonarStatusPub = rospy.Publisher("sensor/SonarStatus",SonarStatusMsg)
+        self.sonarStatusPub = rospy.Publisher("sensor/SonarStatus",SonarStatusMsg)
         self.bumpStatusPub = rospy.Publisher("sensor/BumpStatus",BumpStatusMsg)
         self.wheelErrPub = rospy.Publisher("sensor/WheelErr", WheelErrorMsg)
 
@@ -131,9 +131,12 @@ class RobotHardwareROS(RobotHardware):
         dx = 0.25 #m
         dy = 0.25 #m
         sensordict = self.read_sonars()
-        #msg = SonarStatusMsg()
-        #msg.sonarStatus = [sensordict[self.sonarId[i] for i in range(4)]
-        #self.sonarStatusPub.publish(msg)
+        msg = SonarStatusMsg()
+        msg.sonarStatus = [0.0,0.0,0.0,0.0]
+        for i in range(4):
+            if sensordict[self.sonarId[i]] is not None:
+                msg.sonarStatus[i] = sensordict[self.sonarId[i]]
+        self.sonarStatusPub.publish(msg)
         ##FrontLeft
         read_dist = sensordict[self.sonarId[0]]
         if read_dist != None:
@@ -196,24 +199,26 @@ def sensorThread(rs,wtv):
     while True:
         rs.get_Sonar()
         rs.get_Bump()
-        time.sleep(0.05)
+        time.sleep(0.1)
 
 if __name__=='__main__':
     
     rs = RobotHardwareROS();
-    #rs.startTime = time.time()
+    rs.startTime = time.time()
     ##Spawn SensorThread
     sensorT = threading.Thread(target=sensorThread, args = (rs,1))
     sensorT.start()
     ##Spawn DigestThread
     #digestT = threading.Thread(target=digestThread, args = (rs,1))
     #digestT.start()
-    #while rs.startTime - time.time() < 600: #10:00 Min Operation Time
-    #   time.sleep(.01)
+    while rs.startTime - time.time() < 600: #10:00 Min Operation Time
+       time.sleep(.01)
     #   try:
     #      rs.step()
     #   except :
+    
     #      x =1
-    #self.command_actuators({'left_wheel':0.0, 'right_wheel':0.0})
-    #rs.signal_shutdown("Game Time Over")
-    rospy.spin()
+    print "GameOver"
+    self.command_actuators({'left_wheel':0.0, 'right_wheel':0.0})
+    rs.signal_shutdown("Game Time Over")
+    #rospy.spin()

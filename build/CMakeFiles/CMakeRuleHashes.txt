@@ -16,6 +16,7 @@ f063a3188ab1292dabd57da48903e42b /home/rss-student/rss-2014-team-3/devel/include
 ff1e4fc6d03cd2ff2bcfd12564e8e809 /home/rss-student/rss-2014-team-3/devel/include/gc_msgs/ObstacleAheadMsg.h
 f700bfafaa17d88d838cd88de54e7d54 /home/rss-student/rss-2014-team-3/devel/include/gc_msgs/ObstacleMsg.h
 3f01adba433ffe7ac894cf54604c3228 /home/rss-student/rss-2014-team-3/devel/include/gc_msgs/PoseMsg.h
+8ac8028ae745a37d1aaf07386b9a30f9 /home/rss-student/rss-2014-team-3/devel/include/gc_msgs/SonarStatusMsg.h
 fc9406a09323a2049c7dd1f479c9e288 /home/rss-student/rss-2014-team-3/devel/include/gc_msgs/StateMsg.h
 0baf7f0a980ecd25ebbc1d4da0747ff4 /home/rss-student/rss-2014-team-3/devel/include/gc_msgs/WheelErrorMsg.h
 37c63cde1eb6555eda598aab33eca0e3 /home/rss-student/rss-2014-team-3/devel/include/gc_msgs/WheelVelocityMsg.h
@@ -53,6 +54,7 @@ e70c08d5ba94dfe707e1db039d9705a7 /home/rss-student/rss-2014-team-3/devel/lib/pyt
 d10860869c2d7e067e766adc5b7e2ef1 /home/rss-student/rss-2014-team-3/devel/lib/python2.7/dist-packages/gc_msgs/msg/_ObstacleAheadMsg.py
 5292e6b7b4dd31061c2592a1a2eb20db /home/rss-student/rss-2014-team-3/devel/lib/python2.7/dist-packages/gc_msgs/msg/_ObstacleMsg.py
 b9fd7c4425a9fbb9500273c1c91db0e7 /home/rss-student/rss-2014-team-3/devel/lib/python2.7/dist-packages/gc_msgs/msg/_PoseMsg.py
+197ae3f08389d0cf4ce2d4874c644ce8 /home/rss-student/rss-2014-team-3/devel/lib/python2.7/dist-packages/gc_msgs/msg/_SonarStatusMsg.py
 9ec563c8fd30a19f5daa4d8e5f21f805 /home/rss-student/rss-2014-team-3/devel/lib/python2.7/dist-packages/gc_msgs/msg/_StateMsg.py
 28707f20d02dcb5f5dbb8b79cdfbae56 /home/rss-student/rss-2014-team-3/devel/lib/python2.7/dist-packages/gc_msgs/msg/_WheelErrorMsg.py
 ef9d94712f8c4d464ef8065ae244bbe7 /home/rss-student/rss-2014-team-3/devel/lib/python2.7/dist-packages/gc_msgs/msg/_WheelVelocityMsg.py
@@ -94,6 +96,7 @@ cd4d7365ebc153703c206da600501b8d /home/rss-student/rss-2014-team-3/devel/share/c
 1682e4cc41a462eddd2e5e5670889d0f /home/rss-student/rss-2014-team-3/devel/share/common-lisp/ros/gc_msgs/msg/ObstacleAheadMsg.lisp
 a6e86eaf6e3bd303ee9b48405ad3c438 /home/rss-student/rss-2014-team-3/devel/share/common-lisp/ros/gc_msgs/msg/ObstacleMsg.lisp
 78a2d791b31db44c4e84f788ab127576 /home/rss-student/rss-2014-team-3/devel/share/common-lisp/ros/gc_msgs/msg/PoseMsg.lisp
+8cc54226d3ca62bf8c52b9f5806b700f /home/rss-student/rss-2014-team-3/devel/share/common-lisp/ros/gc_msgs/msg/SonarStatusMsg.lisp
 eaae7e826785d0c4098bbeeb31b3771b /home/rss-student/rss-2014-team-3/devel/share/common-lisp/ros/gc_msgs/msg/StateMsg.lisp
 d38e2d084cf1cc64c214571a6aceb707 /home/rss-student/rss-2014-team-3/devel/share/common-lisp/ros/gc_msgs/msg/WheelErrorMsg.lisp
 52aafc593934cdf05d810fd146273ec9 /home/rss-student/rss-2014-team-3/devel/share/common-lisp/ros/gc_msgs/msg/WheelVelocityMsg.lisp

@@ -1,6 +1,6 @@
 # generated from genmsg/cmake/pkg-genmsg.cmake.em
 
-message(STATUS "gc_msgs: 19 messages, 0 services")
+message(STATUS "gc_msgs: 20 messages, 0 services")
 
 set(MSG_I_FLAGS "-Igc_msgs:/home/rss-student/rss-2014-team-3/src/gc_msgs/msg;-Istd_msgs:/opt/ros/hydro/share/std_msgs/cmake/../msg;-Ilab6_msgs:/home/rss-student/rss-2014-team-3/src/lab6_msgs/msg;-Ilab5_msgs:/home/rss-student/rss-2014-team-3/src/lab5_msgs/msg")
 
@@ -103,6 +103,12 @@ _generate_msg_cpp(gc_msgs
 )
 _generate_msg_cpp(gc_msgs
   "/home/rss-student/rss-2014-team-3/src/gc_msgs/msg/ConveyorMsg.msg"
+  "${MSG_I_FLAGS}"
+  ""
+  ${CATKIN_DEVEL_PREFIX}/${gencpp_INSTALL_DIR}/gc_msgs
+)
+_generate_msg_cpp(gc_msgs
+  "/home/rss-student/rss-2014-team-3/src/gc_msgs/msg/SonarStatusMsg.msg"
   "${MSG_I_FLAGS}"
   ""
   ${CATKIN_DEVEL_PREFIX}/${gencpp_INSTALL_DIR}/gc_msgs
@@ -245,6 +251,12 @@ _generate_msg_lisp(gc_msgs
   ${CATKIN_DEVEL_PREFIX}/${genlisp_INSTALL_DIR}/gc_msgs
 )
 _generate_msg_lisp(gc_msgs
+  "/home/rss-student/rss-2014-team-3/src/gc_msgs/msg/SonarStatusMsg.msg"
+  "${MSG_I_FLAGS}"
+  ""
+  ${CATKIN_DEVEL_PREFIX}/${genlisp_INSTALL_DIR}/gc_msgs
+)
+_generate_msg_lisp(gc_msgs
   "/home/rss-student/rss-2014-team-3/src/gc_msgs/msg/GUIPointMsg.msg"
   "${MSG_I_FLAGS}"
   "/home/rss-student/rss-2014-team-3/src/gc_msgs/msg/ColorMsg.msg"
@@ -377,6 +389,12 @@ _generate_msg_py(gc_msgs
 )
 _generate_msg_py(gc_msgs
   "/home/rss-student/rss-2014-team-3/src/gc_msgs/msg/ConveyorMsg.msg"
+  "${MSG_I_FLAGS}"
+  ""
+  ${CATKIN_DEVEL_PREFIX}/${genpy_INSTALL_DIR}/gc_msgs
+)
+_generate_msg_py(gc_msgs
+  "/home/rss-student/rss-2014-team-3/src/gc_msgs/msg/SonarStatusMsg.msg"
   "${MSG_I_FLAGS}"
   ""
   ${CATKIN_DEVEL_PREFIX}/${genpy_INSTALL_DIR}/gc_msgs

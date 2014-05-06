@@ -1,1 +1,1 @@
-float64 sonarStatus
+float64[] sonarStatus
