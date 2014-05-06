@@ -182,7 +182,7 @@ def sensorThread(rs,wtv):
     while True:
         rs.get_Sonar()
         rs.get_Bump()
-        time.sleep(0.3)
+        time.sleep(0.05)
 
 if __name__=='__main__':
     

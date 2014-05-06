@@ -15,12 +15,13 @@ class wanderRobotBrain(object):
 
         # variables to track state
         self.robotState = 'wander'
-        self.bumpStatus = [0,0]                  # for left and right bump sensors; 1 if either are being pressed
+        self.bumpStatus = [0,0,0,0]                  # for left and right bump sensors; 1 if either are being pressed
         self.endTime = time.time() + 300         # TODO: extend to full game time
         self.numBumps = 0                        # counts up number of bumps
         self.BUMPS_BEFORE_SPIN = 5
         self.actionTimeout = time.time()         # timer used to decide when actions to complete
         self.blockSeen = False 
+        self.pastInput = None
 
         # creating publishers and subscribers
         self.bumpSub = rospy.Subscriber('/sensor/BumpStatus', BumpStatusMsg, self.handleBumpMsg);
@@ -40,10 +41,9 @@ class wanderRobotBrain(object):
 
     def main(self):
         # main loop gets called from a while(true); robot's behavior depends on state
-        print self.robotState 
+        time.sleep(0.005)
         if self.robotState == 'wander':
             self.wander()
-
         elif self.robotState == 'hitLeft':
             self.hitLeft()
 
@@ -72,9 +72,10 @@ class wanderRobotBrain(object):
 ####################
 
     # TODO
-    
+   
     #robot VisualServo
     def visualServo(self):
+        print "test"
         input = self.blockHeading
         P = 1.0
         D = 0.5
@@ -97,13 +98,13 @@ class wanderRobotBrain(object):
         motormsg.rightVoltage = max(min((forward - rotate),MotorMax),-MotorMax)
         self.wheelPub.publish(motormsg)
         time.sleep(0.03) #TODO adjust for the encoder loop
+        print self.robotState, self.blockSeen
         self.changeStates()
      
     # robot moves forward
     def wander(self):
         self.wanderForward()
         self.changeStates()
-        time.sleep(0.1)
         return 
 
     # behavior when left bumper is pressed
@@ -114,7 +115,6 @@ class wanderRobotBrain(object):
         if time.time() > self.actionTimeout:
             self.robotState = 'wander'
             self.numBumps += 1
-        time.sleep(0.1)
         return 
 
     # behavior when right bumper is pressed
@@ -125,7 +125,6 @@ class wanderRobotBrain(object):
         if time.time() > self.actionTimeout:
             self.robotState = 'wander'
             self.numBumps += 1
-        time.sleep(0.1)
         return
 
     # behavior when both bumpers are pressed
@@ -136,7 +135,6 @@ class wanderRobotBrain(object):
         if time.time() > self.actionTimeout:
             self.robotState = 'wander'
             self.numBumps += 1
-        time.sleep(0.1)
         return
 
     # robot spins around
@@ -150,7 +148,6 @@ class wanderRobotBrain(object):
         # pays attention to new bumps
         self.changeStates()
 
-        time.sleep(0.1)
         return
 
     # open hamper and drive off
@@ -180,7 +177,6 @@ class wanderRobotBrain(object):
 
     # method for determining transfer of states
     def changeStates(self):
-        
         # if both bump sensors are hit
         if self.bumpStatus[0] and self.bumpStatus[1]:
             self.robotState = 'hitBoth'
@@ -214,7 +210,7 @@ class wanderRobotBrain(object):
             self.robotState = 'visualServo'
         # if not doing anything else, wander
         else:
-            self.robotState == 'wander'
+            self.robotState = 'wander'
         return
 
 ################################
@@ -318,12 +314,12 @@ class wanderRobotBrain(object):
     def handleBumpMsg(self, msg):
         print 'getting bump msg'
         # messages gives too booleans [leftPressed, rightPressed]
-        self.bumpStatus = msg.bumpStatus[3:]
+        self.bumpStatus = msg.bumpStatus[2:]
         return
 
     # handle message from kinect
     def handleKinectMsg(self, msg):
-        self.blockHeading = msg.bloackHeading
+        self.blockHeading = msg.blockHeading
         self.blockSeen = msg.blockSeen
         pass
 
