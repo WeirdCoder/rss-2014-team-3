@@ -45,7 +45,7 @@ class wanderRobotBrain(object):
     def main(self):
         # main loop gets called from a while(true); robot's behavior depends on state
         print self.robotState
-        time.sleep(0.005)
+        time.sleep(0.05)
 
         if self.robotState == 'wander':
             self.wander()

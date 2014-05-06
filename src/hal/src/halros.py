@@ -212,7 +212,7 @@ if __name__=='__main__':
     #digestT = threading.Thread(target=digestThread, args = (rs,1))
     #digestT.start()
     while rs.startTime - time.time() < 600: #10:00 Min Operation Time
-       time.sleep(.01)
+       time.sleep(1)
     #   try:
     #      rs.step()
     #   except :
