@@ -1,23 +1,13 @@
-File Edit Options Buffers Tools Python Help                                                                                        
 #!/usr/bin/env python                                                                                                              
 import rospy
-import motionplanner
-import pathplanner
-import location
-import math
-import pose
-import mapParser
-from gc_msgs.msg import MotionMsg  # for sending commands to motors 
-from gc_msgs.msg import BumpMsg    # for listening to bump sensors                                                                
-from gc_msgs.msg import PoseMsg    # for listening to when the kinect sees a block
-from gc_msgs.msg import ObstacleAheadMsg    # for listening to when the kinect sees a wall 
+
+from gc_msgs.msg import BumpStatusMsg    # for listening to bump sensors                                                         
 from gc_msgs.msg import StateMsg
-from gc_msgs.msg import ObstacleMsg
-from gc_msgs.msg import GUIPointMsg
-from gc_msgs.msg import GUIPolyMsg
 from gc_msgs.msg import MotionVoltMsg
+from gc_msgs.msg import ConveyorMsg
+from gc_msgs.msg import HamperMsg
 import time
-eimport random
+import random
 
 class wanderRobotBrain(object):
     def __init__(self):
@@ -45,7 +35,7 @@ class wanderRobotBrain(object):
 
     def main(self):
         # main loop gets called from a while(true); robot's behavior depends on state
-
+        
         if self.robotState == 'wandering':
             self.wander()
 
@@ -307,8 +297,9 @@ class wanderRobotBrain(object):
 # Main #
 ########
 
-if __name__ == 'main':
+if __name__ == '__main__':
     try:
+        print 'running as main'
         robotbrain = wanderRobotBrain()
         
         while(True):
