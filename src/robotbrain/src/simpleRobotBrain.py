@@ -35,7 +35,7 @@ class simpleRobotBrain(object):
         self.wanderCountMax = 200*30; # ten counts per second, 30 seconds before turn
         self.blockLocation = None
         self.currentPose = pose.Pose(0., 0., 0.)
-        self.motionPlanner = motionplanner.MotionPlanner(self.startTime, self.dumpTime)
+        self.motionPlanner = motionplanner.MotionPlanner()
         self.bumpFlag = 0
 
         
