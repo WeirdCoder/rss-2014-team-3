@@ -183,6 +183,15 @@ class RobotHardwareROS(RobotHardware):
 # Main #
 ########
 
+def digestThread(rs,wtv):
+    state = True
+    while True:
+        if state: #open, should close
+           rs.command_actuators({'hopper':-0.03})
+        else: #close, should open
+           rs.command_actuators({'hopper':0.1})
+        time.sleep(5.0)
+
 def sensorThread(rs,wtv):
     while True:
         rs.get_Sonar()
@@ -194,8 +203,11 @@ if __name__=='__main__':
     rs = RobotHardwareROS();
     #rs.startTime = time.time()
     ##Spawn SensorThread
-    t = threading.Thread(target=sensorThread, args = (rs,1))
-    t.start()
+    sensorT = threading.Thread(target=sensorThread, args = (rs,1))
+    sensorT.start()
+    ##Spawn DigestThread
+    #digestT = threading.Thread(target=digestThread, args = (rs,1))
+    #digestT.start()
     #while rs.startTime - time.time() < 600: #10:00 Min Operation Time
     #   time.sleep(.01)
     #   try:
