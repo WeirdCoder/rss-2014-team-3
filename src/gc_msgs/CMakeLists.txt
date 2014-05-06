@@ -53,8 +53,10 @@ find_package(catkin REQUIRED COMPONENTS
    GUIPointMsg.msg
    GUIPolyMsg.msg
    HamperMsg.msg
+   KinectMsg.msg
    MotionMsg.msg
    MotionDistMsg.msg
+   MotionVoltMsg.msg
    #MotorCommandMsg.msg
    ObstacleAheadMsg.msg
    ObstacleMsg.msg

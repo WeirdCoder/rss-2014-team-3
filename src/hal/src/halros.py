@@ -3,6 +3,7 @@ import rospy
 import gc_msgs
 from gc_msgs.msg import MotionMsg
 from gc_msgs.msg import MotionDistMsg
+from gc_msgs.msg import MotionVoltMsg
 from gc_msgs.msg import ConveyorMsg
 from gc_msgs.msg import HamperMsg
 from gc_msgs.msg import EncoderMsg
@@ -21,6 +22,7 @@ class RobotHardwareROS(RobotHardware):
         #Subscribers
         self.motionSub = rospy.Subscriber("command/Motors",MotionMsg,self.handleMsg_MotionMsg)
         self.motionDistSub = rospy.Subscriber("command/MotorsDist", MotionDistMsg, self.handleMsg_MotionDistMsg)
+        self.motionVoltSub = rospy.Subscriber("command/MotorVolt", MotionDistMsg, self.handleMsg_MotionVoltMsg)
         self.conveyorSub = rospy.Subscriber("command/Conveyor",ConveyorMsg,self.handleMsg_ConveyorMsg)
         self.hamperSub = rospy.Subscriber("command/Hamper",HamperMsg,self.handleMsg_HamperMsg)
         self.stateSub = rospy.Subscriber("command/State", StateMsg, self.handleMsg_StateMsg)
@@ -51,6 +53,8 @@ class RobotHardwareROS(RobotHardware):
 	        sensordict=self.read_wheels()
                 self.wController.reset(sensordict['left_position'],sensordict['right_position'],time.time())
 
+    def handleMsg_MotionVoltMsg(self,msg):
+        self.command_actuators({"left_wheel"msg.leftVoltage:,"right_wheel":msg.rightVoltages})
     def handleMsg_MotionDistMsg(self,msg):
         print 'recieved msg'
         td = msg.translationalDist
